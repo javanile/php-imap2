@@ -99,7 +99,14 @@ class Connection
     public static function close($imap, $flags = 0)
     {
         if (is_a($imap, Connection::class)) {
-            return $imap->getClient()->close();
+            $client = $imap->getClient();
+            if ($client->close()) {
+                return true;
+            }
+
+            $client->closeConnection();
+
+            return true;
         }
 
         imap_close($imap, $flags);

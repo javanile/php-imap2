@@ -2,29 +2,25 @@
 
 namespace Javanile\Imap2\Tests;
 
-use Javanile\Imap2\Connection;
 use PHPUnit\Framework\Error\Warning;
 
-class CompatibilityTest extends ImapTestCase
+class ErrorsTest extends ImapTestCase
 {
     public function testOpenAndClose()
     {
         $username = 'wrong@username.local';
-        $imap1 = @imap_open($this->mailbox, $username, $this->password);
-        $imap2 = @imap2_open($this->mailbox, $username, $this->accessToken, OP_XOAUTH2);
+        $this->expectException(Warning::class);
+        $this->expectExceptionMessage('imap_open(): Couldn\'t open stream {imap.gmail.com:993/imap/ssl}');
+        $imap1 = imap_open($this->mailbox, $username, $this->password);
+
+        var_dump($imap1);die();
+
+        $this->expectException(Warning::class);
+        $this->expectExceptionMessage('imap_open(): Couldn\'t open stream {imap.gmail.com:993/imap/ssl}');
+        $imap2 = imap2_open($this->mailbox, $username, $this->accessToken, OP_XOAUTH2);
 
         $this->assertEquals($imap1, $imap2);
 
-        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
-        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
-
-        $this->assertTrue(is_resource($imap1));
-        $this->assertInstanceOf(Connection::class, $imap2);
-
-        $close1 = imap_close($imap1);
-        $close2 = imap2_close($imap2);
-
-        $this->assertEquals($close1, $close2);
     }
 
     public function testAppend()
