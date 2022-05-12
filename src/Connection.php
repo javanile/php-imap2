@@ -23,6 +23,8 @@ class Connection
     protected $options;
     protected $client;
     protected $host;
+    protected $port;
+    protected $sslMode;
 
     /**
      *
@@ -38,9 +40,9 @@ class Connection
 
         $mailboxParts = Functions::parseMailboxString($mailbox);
 
-        var_dump($mailboxParts);
-
-        $this->host = $mailboxParts->host;
+        $this->host = Functions::getHostFromMailbox($mailboxParts);
+        $this->port = $mailboxParts['port'];
+        $this->sslMode = Functions::getSslModeFromMailbox($mailboxParts);
 
         $this->client = new ImapClient();
     }
@@ -68,9 +70,20 @@ class Connection
      */
     public function connect()
     {
+        $this->client->setDebug(true);
 
-        $this->client->connect($this->host);
+        $success = $this->client->connect($this->host, $this->user, $this->password, [
+            'port' => $this->port,
+            'ssl_mode' => $this->sslMode,
+            'auth_type' => $this->flags & OP_XOAUTH2 ? 'XOAUTH2' : 'CHECK'
+        ]);
 
-        return $this;
+        var_dump($this->client->error);
+
+        if ($success) {
+            return $this;
+        }
+
+        return false;
     }
 }

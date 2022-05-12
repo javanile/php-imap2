@@ -23,7 +23,26 @@ class Functions
         $values = parse_url($mailboxParts[0]);
 
         $values['mailbox'] = $mailboxParts[1] ?? '';
+        $values['path'] = explode('/', $values['path']);
 
         return $values;
+    }
+
+    public static function getHostFromMailbox($mailbox)
+    {
+        $mailboxParts = is_array($mailbox) ? $mailbox : self::parseMailboxString($mailbox);
+
+        return $mailboxParts['host'];
+    }
+
+    public static function getSslModeFromMailbox($mailbox)
+    {
+        $mailboxParts = is_array($mailbox) ? $mailbox : self::parseMailboxString($mailbox);
+
+        if (in_array('ssl', $mailboxParts['path'])) {
+            return 'ssl';
+        }
+
+        return false;
     }
 }
