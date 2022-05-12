@@ -2,6 +2,8 @@
 bash:
 	docker-compose run --rm php bash
 
+build:
+	docker-compose build
 
 install:
 	docker-compose run --rm composer install
