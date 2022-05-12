@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-use Javanile\PhpInput\PhpInput;
+use Javanile\Imap2\Imap2;
 
-if (!function_exists('input')) {
+if (!function_exists('imap2_open')) {
     function input($inputName, $defaultValue = null)
     {
         return PhpInput::input($inputName, $defaultValue);

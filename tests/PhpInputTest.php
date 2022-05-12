@@ -1,11 +1,16 @@
 <?php
 
-test('$_GET', function () {
-    $_GET['VALUE1'] = 'the value #1';
-    expect(input('value1'))->toEqual('the value #1');
-});
+namespace Javanile\MysqlImport\Tests;
 
-test('$_POST', function () {
-    $_GET['VALUE1'] = 'the value #1';
-    expect(input('value1'))->toEqual('the value #1');
-});
+use Javanile\MysqlImport\MysqlImport;
+use PHPUnit\Framework\TestCase;
+
+class MysqlImportTest extends TestCase
+{
+    public function testWrongArguments()
+    {
+
+        $this->assertEquals(2, $mysqlImport->getExitCode());
+    }
+
+}
