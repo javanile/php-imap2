@@ -6,6 +6,9 @@ class CompatibilityTest extends ImapTestCase
 {
     public function testAppend()
     {
+        var_dump($this->mailbox);
+        die();
+
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
@@ -28,5 +31,19 @@ class CompatibilityTest extends ImapTestCase
         imap2_close($imap2);
 
         $this->assertEquals($initialCount + 2, $finalCount);
+    }
+
+    public function testList()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $boxes1 = imap_list($imap1, $this->mailbox, '*');
+        $boxes2 = imap2_list($imap2, $this->mailbox, '*');
+
+        imap_close($imap1);
+        imap2_close($imap2);
+
+        $this->assertEquals($boxes1, $boxes2);
     }
 }

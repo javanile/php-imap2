@@ -23,3 +23,8 @@ test-imap:
 test-append:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testAppend
 
+test-list:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testList
+
+test-xoauth:
+	@docker-compose run --rm phpunit tests --filter XoauthTest
