@@ -1,8 +1,7 @@
 <?php
 
-namespace Javanile\MysqlImport\Tests;
+namespace Javanile\Imap2\Tests;
 
-use Javanile\Imap2\MysqlImport;
 use PHPUnit\Framework\TestCase;
 
 class ImapTestCase extends TestCase
@@ -19,6 +18,6 @@ class ImapTestCase extends TestCase
         $this->username = getenv('IMAP_USERNAME');
         $this->password = getenv('IMAP_PASSWORD');
         $this->accessToken = getenv('IMAP_ACCESS_TOKEN');
-        $this->message = file_get_contents('tests/fixtures/sample.eml');
+        $this->message = file_get_contents('tests/fixtures/message.eml');
     }
 }

@@ -28,6 +28,11 @@
       "bootstrap.php"
     ]
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Javanile\\Imap2\\Tests\\": "tests"
+    }
+  },
   "minimum-stability": "dev",
   "extra": {
     "thanks": {

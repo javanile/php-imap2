@@ -1,9 +1,6 @@
 <?php
 
-namespace Javanile\MysqlImport\Tests;
-
-use Javanile\Imap2\MysqlImport;
-use PHPUnit\Framework\TestCase;
+namespace Javanile\Imap2\Tests;
 
 class CompatibilityTest extends ImapTestCase
 {
