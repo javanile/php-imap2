@@ -5,6 +5,7 @@ services:
   php:
     build: .
     volumes: ['./:/app']
+    env_file: ['.env']
 
   composer:
     extends: { service: php }

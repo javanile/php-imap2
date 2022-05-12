@@ -9,18 +9,22 @@
  * file that was distributed with this source code.
  */
 
-use Javanile\Imap2\Imap2;
+use Javanile\Imap2\Connection;
+
+if (!defined('OP_XOAUTH2')) {
+    define('OP_XOAUTH2', 512);
+}
 
 if (!function_exists('imap2_open')) {
-    function input($inputName, $defaultValue = null)
+    function imap2_open($mailbox, $user, $password, $flags = 0, $retries = 0, $options = [])
     {
-        return PhpInput::input($inputName, $defaultValue);
+        return Connection::open($mailbox, $user, $password, $flags, $retries, $options);
     }
 }
 
 if (!function_exists('getallheaders')) {
     function getallheaders()
     {
-        return PhpInput::getAllHeaders();
+        return PhpInput::getAllHeaders ();
     }
 }
