@@ -28,7 +28,8 @@ class XoauthTest extends ImapTestCase
         $success = imap2_createmailbox($imap, $randomMailboxName);
         $list = imap2_list($imap, $this->mailbox, '*');
 
-        $this->assertInstanceOf(Connection::class, $imap);
+        $this->assertTrue($success);
+        $this->assertContains($this->mailbox.$randomMailboxName, $list);
     }
 
 }
