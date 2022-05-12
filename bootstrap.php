@@ -10,6 +10,7 @@
  */
 
 use Javanile\Imap2\Connection;
+use Javanile\Imap2\Mailbox;
 
 if (!defined('OP_XOAUTH2')) {
     define('OP_XOAUTH2', 512);
@@ -22,9 +23,16 @@ if (!function_exists('imap2_open')) {
     }
 }
 
-if (!function_exists('getallheaders')) {
-    function getallheaders()
+if (!function_exists('imap2_close')) {
+    function imap2_close($imap)
     {
-        return PhpInput::getAllHeaders ();
+        return Connection::close($imap);
+    }
+}
+
+if (!function_exists('imap2_list')) {
+    function imap2_list($imap, $reference, $pattern)
+    {
+        return Mailbox::list($imap, $reference, $pattern);
     }
 }

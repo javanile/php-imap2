@@ -68,9 +68,9 @@ class Connection
     /**
      *
      */
-    public function connect()
+    protected function connect()
     {
-        $this->client->setDebug(true);
+        //$this->client->setDebug(true);
 
         $success = $this->client->connect($this->host, $this->user, $this->password, [
             'port' => $this->port,
@@ -78,12 +78,30 @@ class Connection
             'auth_type' => $this->flags & OP_XOAUTH2 ? 'XOAUTH2' : 'CHECK'
         ]);
 
-        var_dump($this->client->error);
-
         if ($success) {
             return $this;
         }
 
         return false;
+    }
+
+    /**
+     *
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     *
+     */
+    public static function close($imap)
+    {
+        if (is_a($imap, Connection::class)) {
+            return $imap->client->close();
+        }
+
+        imap_close($imap);
     }
 }
