@@ -24,9 +24,9 @@ if (!function_exists('imap2_open')) {
 }
 
 if (!function_exists('imap2_close')) {
-    function imap2_close($imap)
+    function imap2_close($imap, $flags = 0)
     {
-        return Connection::close($imap);
+        return Connection::close($imap, $flags);
     }
 }
 

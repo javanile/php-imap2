@@ -96,12 +96,12 @@ class Connection
     /**
      *
      */
-    public static function close($imap)
+    public static function close($imap, $flags = 0)
     {
         if (is_a($imap, Connection::class)) {
-            return $imap->client->close();
+            return $imap->getClient()->close();
         }
 
-        imap_close($imap);
+        imap_close($imap, $flags);
     }
 }
