@@ -36,13 +36,10 @@ class CompatibilityTest extends ImapTestCase
     public function testList()
     {
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
-        var_dump(imap_errors());
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
         $boxes1 = imap_list($imap1, $this->mailbox, '*');
         $boxes2 = imap2_list($imap2, $this->mailbox, '*');
-
-        file_put_contents('test.json', json_encode(['a' => $boxes1, 'b' => $boxes2], JSON_PRETTY_PRINT));
 
         imap_close($imap1);
         imap2_close($imap2);

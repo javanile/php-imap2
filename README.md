@@ -78,27 +78,28 @@
 
 ## XOAUTH2 Compatibility
 
-imap_alerts(
-imap_append(
-imap_check(
-imap_close(
-imap_createmailbox(
-imap_delete(
-imap_deletemailbox(
-imap_errors(
-imap_expunge(
-imap_fetchbody(
-imap_fetchheader(
-imap_fetchstructure(
-imap_getmailboxes(
-imap_headerinfo(
-imap_msgno(
-imap_open(
-imap_ping(
-imap_reopen(
-imap_savebody(
-imap_search(
-imap_sort(
-imap_status(
-imap_thread(
-imap_undelete(
+- [ ] imap_alerts
+- [ ] imap_append
+- [ ] imap_check
+- [ ] imap_close
+- [ ] imap_createmailbox
+- [ ] imap_delete
+- [ ] imap_deletemailbox
+- [ ] imap_errors
+- [ ] imap_expunge
+- [ ] imap_fetchbody
+- [ ] imap_fetchheader
+- [ ] imap_fetchstructure
+- [ ] imap_getmailboxes
+- [ ] imap_headerinfo
+- [x] imap_list
+- [ ] imap_msgno
+- [ ] imap_open
+- [ ] imap_ping
+- [ ] imap_reopen
+- [ ] imap_savebody
+- [ ] imap_search
+- [ ] imap_sort
+- [ ] imap_status
+- [ ] imap_thread
+- [ ] imap_undelete
