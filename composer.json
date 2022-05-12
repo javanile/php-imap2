@@ -1,0 +1,41 @@
+{
+  "name": "javanile/php-iimap2",
+  "type": "library",
+  "description": "Implement no-code input function for PHP",
+  "keywords": [
+    "input",
+    "webrequest",
+    "nocode",
+    "lowcode",
+    "web3"
+  ],
+  "homepage": "https://github.com/javanile/php-inpuy",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Francesco Bianco",
+      "homepage": "https://github.com/francescobianco"
+    }
+  ],
+  "require": {
+    "php": ">=7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Javanile\\Imap2\\": "src"
+    },
+    "files": [
+      "bootstrap.php"
+    ]
+  },
+  "minimum-stability": "dev",
+  "extra": {
+    "thanks": {
+      "name": "javanile/webrequest",
+      "url": "https://github.com/javanile/webrequest"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.5"
+  }
+}

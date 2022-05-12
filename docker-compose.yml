@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+
+  php:
+    build: .
+    volumes: ['./:/app']
+
+  composer:
+    extends: { service: php }
+    entrypoint: ['composer']
+
+  phpunit:
+    extends: { service: php }
+    entrypoint: ['./vendor/bin/phpunit']
+

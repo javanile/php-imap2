@@ -1,1 +1,1 @@
-# php-imap2
+# php-input
