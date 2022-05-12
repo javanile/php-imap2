@@ -32,4 +32,15 @@ class Mailbox
 
         return imap_list($imap, $reference, $pattern);
     }
+
+    public static function createMailbox($imap, $mailbox)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+
+            return $client->createFolder($mailbox);
+        }
+
+        return imap_createmailbox($imap, $mailbox);
+    }
 }

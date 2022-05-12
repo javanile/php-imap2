@@ -11,7 +11,9 @@ class CompatibilityTest extends ImapTestCase
     {
         $username = 'wrong@username.local';
         $imap1 = @imap_open($this->mailbox, $username, $this->password);
+        $error1 = @imap_errors();
         $imap2 = @imap2_open($this->mailbox, $username, $this->accessToken, OP_XOAUTH2);
+        $error2 = @imap2_errors();
 
         $this->assertEquals($imap1, $imap2);
 
@@ -57,6 +59,20 @@ class CompatibilityTest extends ImapTestCase
     }
 
     public function testList()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $boxes1 = imap_list($imap1, $this->mailbox, '*');
+        $boxes2 = imap2_list($imap2, $this->mailbox, '*');
+
+        imap_close($imap1);
+        imap2_close($imap2);
+
+        $this->assertEquals($boxes1, $boxes2);
+    }
+
+    public function testCreateMailbox()
     {
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
