@@ -2,8 +2,20 @@
 
 namespace Javanile\Imap2\Tests;
 
+use PHPUnit\Framework\Error\Warning;
+
 class CompatibilityTest extends ImapTestCase
 {
+    public function testOpenAndClose()
+    {
+        $username = 'wrong@username.local';
+        $imap1 = @imap_open($this->mailbox, $username, $this->password);
+        $imap2 = @imap2_open($this->mailbox, $username, $this->accessToken, OP_XOAUTH2);
+
+        $this->assertEquals($imap1, $imap2);
+
+    }
+
     public function testAppend()
     {
         var_dump($this->mailbox);
