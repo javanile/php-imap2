@@ -123,6 +123,42 @@ class Message
         return imap_savebody($imap, $file, $messageNum, $section, $flags);
     }
 
+    public static function fetchStructure($imap, $messageNum, $flags = 0)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $client->setDebug(true);
+
+            $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+
+            if ($section) {
+                return $messages[$messageNum]->bodypart[$section];
+            }
+
+            return $messages[$messageNum]->body;
+        }
+
+        return imap_fetchstructure($imap, $messageNum, $flags);
+    }
+
+    public static function fetchHeader($imap, $messageNum, $flags = 0)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $client->setDebug(true);
+
+            $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+
+            if ($section) {
+                return $messages[$messageNum]->bodypart[$section];
+            }
+
+            return $messages[$messageNum]->body;
+        }
+
+        return imap_fetchheader($imap, $messageNum, $flags);
+    }
+
     public static function delete($imap, $messageNums, $flags = 0)
     {
         if (is_a($imap, Connection::class)) {

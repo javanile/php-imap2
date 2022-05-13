@@ -131,6 +131,20 @@ if (!function_exists('imap2_savebody')) {
     }
 }
 
+if (!function_exists('imap2_fetchstructure')) {
+    function imap2_fetchstructure($imap, $messageNum, $flags = 0)
+    {
+        return Message::fetchStructure($imap, $messageNum, $flags);
+    }
+}
+
+if (!function_exists('imap2_fetchheader')) {
+    function imap2_fetchheader($imap, $messageNum, $flags = 0)
+    {
+        return Message::fetchHeader($imap, $messageNum, $flags);
+    }
+}
+
 if (!function_exists('imap2_delete')) {
     function imap2_delete($imap, $messageNums, $flags = 0)
     {
