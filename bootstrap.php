@@ -136,6 +136,38 @@ if (!function_exists('imap2_getmailboxes')) {
 }
 
 /**
+ * imap2_listsubscribed
+ */
+if (!function_exists('imap_listsubscribed')) {
+    function imap_listsubscribed($imap, $reference, $pattern)
+    {
+        return imap2_listsubscribed($imap, $reference, $pattern);
+    }
+}
+if (!function_exists('imap2_listsubscribed')) {
+    function imap2_listsubscribed($imap, $reference, $pattern)
+    {
+        return Mailbox::listSubscribed($imap, $reference, $pattern);
+    }
+}
+
+/**
+ * imap2_lsub
+ */
+if (!function_exists('imap_lsub')) {
+    function imap_lsub($imap, $reference, $pattern)
+    {
+        return imap2_lsub($imap, $reference, $pattern);
+    }
+}
+if (!function_exists('imap2_lsub')) {
+    function imap2_lsub($imap, $reference, $pattern)
+    {
+        return Mailbox::listSubscribed($imap, $reference, $pattern);
+    }
+}
+
+/**
  * imap2_getsubscribed
  */
 if (!function_exists('imap_getsubscribed')) {
