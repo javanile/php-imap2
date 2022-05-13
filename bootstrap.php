@@ -40,6 +40,13 @@ if (!function_exists('imap2_check')) {
     }
 }
 
+if (!function_exists('imap2_status')) {
+    function imap2_status($imap, $mailbox, $flags)
+    {
+        return Mailbox::status($imap, $mailbox, $flags);
+    }
+}
+
 if (!function_exists('imap2_list')) {
     function imap2_list($imap, $reference, $pattern)
     {

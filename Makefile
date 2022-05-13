@@ -26,6 +26,9 @@ test-open:
 test-check:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testCheck
 
+test-status:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testStatus
+
 test-append:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testAppend
 

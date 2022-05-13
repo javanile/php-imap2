@@ -119,15 +119,25 @@ class XoauthTest extends ImapTestCase
     }
     */
 
+    /*
     public function testThread()
     {
         $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
         $thread = imap2_thread($imap);
 
-        var_dump($thread);
-        die();
-
         $this->assertEquals(['4', '5'], $thread);
+    }
+    */
+
+    public function testStatus()
+    {
+        $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $status = imap2_status($imap, SA_ALL);
+
+        var_dump($status);
+
+        //$this->assertEquals(['4', '5'], $status);
     }
 }
