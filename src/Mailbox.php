@@ -41,6 +41,9 @@ class Mailbox
             $statusKeys = [
                 'MESSAGES' => 'messages',
                 'UNSEEN' => 'unseen',
+                'RECENT' => 'recent',
+                'UIDNEXT' => 'uidnext',
+                'UIDVALIDITY' => 'uidvalidity',
             ];
 
             if ($flags & SA_MESSAGES || $flags & SA_ALL) {
