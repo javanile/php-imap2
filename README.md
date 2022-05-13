@@ -80,7 +80,7 @@
 
 - [ ] imap_alerts
 - [ ] imap_append
-- [ ] imap_check
+- [x] imap_check
 - [ ] imap_close
 - [x] imap_createmailbox
 - [ ] imap_delete
