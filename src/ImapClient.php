@@ -1954,12 +1954,12 @@ class ImapClient
         $old_sel = $this->selected;
 
         if (!$this->select($mailbox)) {
-            return new rcube_result_index($mailbox);
+            return new ResultIndex($mailbox);
         }
 
         // return empty result when folder is empty and we're just after SELECT
         if ($old_sel != $mailbox && !$this->data['EXISTS']) {
-            return new rcube_result_index($mailbox, '* SEARCH');
+            return new ResultIndex($mailbox, '* SEARCH');
         }
 
         // If ESEARCH is supported always use ALL
@@ -1991,7 +1991,7 @@ class ImapClient
             $response = null;
         }
 
-        return new rcube_result_index($mailbox, $response);
+        return new ResultIndex($mailbox, $response);
     }
 
     /**
@@ -2021,7 +2021,7 @@ class ImapClient
             $msg_index = is_array($msg_index) ? '* SEARCH' : null;
         }
 
-        return new rcube_result_index($mailbox, $msg_index);
+        return new ResultIndex($mailbox, $msg_index);
     }
 
     /**

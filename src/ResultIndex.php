@@ -19,6 +19,8 @@
 +-----------------------------------------------------------------------+
  */
 
+namespace Javanile\Imap2;
+
 /**
  * Class for accessing IMAP's SORT/SEARCH/ESEARCH result
  *
