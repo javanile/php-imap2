@@ -35,7 +35,6 @@ class Message
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
-            $client->setDebug(true);
 
             $messages = $client->fetch($imap->getMailboxName(), $messageNums, false, ['UID']);
             foreach ($messages as $message) {
@@ -51,11 +50,15 @@ class Message
     public static function undelete($imap, $messageNums, $flags = 0)
     {
         if (is_a($imap, Connection::class)) {
-            $imap->openMailbox();
             $client = $imap->getClient();
+            $client->setDebug(true);
 
+            $messages = $client->fetch($imap->getMailboxName(), $messageNums, false, ['UID']);
+            foreach ($messages as $message) {
+                $client->unflag($imap->getMailboxName(), $message->uid, $client->flags['DELETED']);
+            }
 
-            return $messages[$messageNum]->body;
+            return true;
         }
 
         return imap_undelete($imap, $messageNums, $flags);
