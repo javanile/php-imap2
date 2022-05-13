@@ -109,25 +109,11 @@ class XoauthTest extends ImapTestCase
     {
         $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
+        $this->assertTrue(imap2_expunge($imap));
+        $this->assertTrue(imap2_delete($imap, '4:5'));
+
         $deletedMessages = imap2_search($imap, 'DELETED');
 
-        var_dump($deletedMessages);
-        die();
-
-
-        $check = imap2_check($imap);
-        $initialCount = $check->Nmsgs;
-
-        $deleteSuccess = imap2_delete($imap, '1:2');
-        $undeleteSuccess = imap2_undelete($imap, '1:2');
-        $expungeSuccess = imap2_expunge($imap);
-
-        $check = imap2_check($imap);
-        $finalCount = $check->Nmsgs;
-
-        $this->assertTrue($deleteSuccess);
-        $this->assertTrue($undeleteSuccess);
-        $this->assertTrue($expungeSuccess);
-        $this->assertEquals($initialCount, $finalCount);
+        $this->assertEquals(['4', '5'], $deletedMessages);
     }
 }

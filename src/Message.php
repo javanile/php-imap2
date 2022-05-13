@@ -19,7 +19,18 @@ class Message
             $client = $imap->getClient();
             $client->setDebug(true);
 
-            return $client->search($imap->getMailboxName(), $criteria, $flags & SE_UID);
+            $result = $client->search($imap->getMailboxName(), $criteria, $flags & SE_UID);
+
+            if (empty($result->count())) {
+                return false;
+            }
+
+            $messages = $result->get();
+            foreach ($messages as &$message) {
+                $message = is_numeric($message) ? intval($message) : $message;
+            }
+
+            return $messages;
         }
 
         return imap_search($imap, $criteria, $flags, $charset);

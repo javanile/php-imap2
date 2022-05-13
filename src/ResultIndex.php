@@ -106,7 +106,7 @@ class ResultIndex
 // @TODO: work with compressed result?!
                     if (isset($this->params['ALL'])) {
                         $data_item = implode(self::SEPARATOR_ELEMENT,
-                            rcube_imap_generic::uncompressMessageSet($this->params['ALL']));
+                            ImapClient::uncompressMessageSet($this->params['ALL']));
                     }
                 }
 
