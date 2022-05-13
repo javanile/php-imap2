@@ -68,6 +68,13 @@ if (!function_exists('imap2_list')) {
     }
 }
 
+if (!function_exists('imap2_getmailboxes')) {
+    function imap2_getmailboxes($imap, $reference, $pattern)
+    {
+        return Mailbox::getMailboxes($imap, $reference, $pattern);
+    }
+}
+
 if (!function_exists('imap2_createmailbox')) {
     function imap2_createmailbox($imap, $mailbox)
     {
