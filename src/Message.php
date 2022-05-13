@@ -36,6 +36,41 @@ class Message
         return imap_search($imap, $criteria, $flags, $charset);
     }
 
+    public static function sort($imap, $criteria, $reverse, $flags = 0, $searchCriteria = null, $charset = null)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $client->setDebug(true);
+
+            $result = $client->search($imap->getMailboxName(), $criteria, $flags & SE_UID);
+
+            if (empty($result->count())) {
+                return false;
+            }
+
+            $messages = $result->get();
+            foreach ($messages as &$message) {
+                $message = is_numeric($message) ? intval($message) : $message;
+            }
+
+            return $messages;
+        }
+
+        return imap_sort($imap, $criteria, $reverse, $flags, $searchCriteria, $charset);
+    }
+
+    public static function msgno($imap, $messageUid)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $client->setDebug(true);
+
+            return 1;
+        }
+
+        return imap_msgno($imap, $messageUid);
+    }
+
     public static function fetchBody($imap, $messageNum, $section, $flags = 0)
     {
         if (is_a($imap, Connection::class)) {
@@ -52,6 +87,22 @@ class Message
         }
 
         return imap_fetchbody($imap, $messageNum, $section, $flags);
+    }
+
+    public static function saveBody($imap, $file, $messageNum, $section = "", $flags = 0)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $client->setDebug(true);
+
+            $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+
+            $body = $section ? $messages[$messageNum]->bodypart[$section] : $messages[$messageNum]->body;
+
+            return file_put_contents($file, $body);
+        }
+
+        return imap_savebody($imap, $file, $messageNum, $section, $flags);
     }
 
     public static function delete($imap, $messageNums, $flags = 0)

@@ -100,6 +100,6 @@
 - [ ] imap_savebody
 - [ ] imap_search
 - [ ] imap_sort
-- [ ] imap_status
+- [x] imap_status
 - [ ] imap_thread
 - [x] imap_undelete

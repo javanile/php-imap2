@@ -67,6 +67,28 @@ class Connection
         return imap_open($mailbox, $user, $password, $flags, $retries, $options);
     }
 
+    public static function reopen($imap, $mailbox, $flags = 0, $retries = 0)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+
+            return true;
+        }
+
+        return imap_reopen($imap, $mailbox, $flags, $retries);
+    }
+
+    public static function ping($imap)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+
+            return true;
+        }
+
+        return imap_ping($imap);
+    }
+
     /**
      *
      */
@@ -144,6 +166,6 @@ class Connection
             return true;
         }
 
-        imap_close($imap, $flags);
+        return imap_close($imap, $flags);
     }
 }

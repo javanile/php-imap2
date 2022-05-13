@@ -26,6 +26,20 @@ if (!function_exists('imap2_open')) {
     }
 }
 
+if (!function_exists('imap2_reopen')) {
+    function imap2_reopen($imap, $mailbox, $flags = 0, $retries = 0)
+    {
+        return Connection::reopen($imap, $mailbox, $flags, $retries);
+    }
+}
+
+if (!function_exists('imap2_ping')) {
+    function imap2_ping($imap)
+    {
+        return Connection::ping($imap);
+    }
+}
+
 if (!function_exists('imap2_close')) {
     function imap2_close($imap, $flags = 0)
     {
@@ -75,10 +89,31 @@ if (!function_exists('imap2_search')) {
     }
 }
 
+if (!function_exists('imap2_msgno')) {
+    function imap2_msgno($imap, $messageUid)
+    {
+        return Message::msgno($imap, $messageUid);
+    }
+}
+
+if (!function_exists('imap2_sort')) {
+    function imap2_sort($imap, $criteria, $reverse, $flags = 0, $searchCriteria = null, $charset = null)
+    {
+        return Message::sort($imap, $criteria, $reverse, $flags, $searchCriteria, $charset);
+    }
+}
+
 if (!function_exists('imap2_fetchbody')) {
     function imap2_fetchbody($imap, $messageNum, $section, $flags = 0)
     {
         return Message::fetchBody($imap, $messageNum, $section, $flags);
+    }
+}
+
+if (!function_exists('imap2_savebody')) {
+    function imap2_savebody($imap, $file, $messageNum, $section = "", $flags = 0)
+    {
+        return Message::saveBody($imap, $file, $messageNum, $section, $flags);
     }
 }
 
