@@ -68,6 +68,27 @@ if (!function_exists('imap2_fetchbody')) {
     }
 }
 
+if (!function_exists('imap2_delete')) {
+    function imap2_delete($imap, $messageNums, $flags = 0)
+    {
+        return Message::delete($imap, $messageNums, $flags);
+    }
+}
+
+if (!function_exists('imap2_undelete')) {
+    function imap2_undelete($imap, $messageNums, $flags = 0)
+    {
+        return Message::undelete($imap, $messageNums, $flags);
+    }
+}
+
+if (!function_exists('imap2_expunge')) {
+    function imap2_expunge($imap)
+    {
+        return Message::expunge($imap);
+    }
+}
+
 if (!function_exists('imap2_errors')) {
     function imap2_errors()
     {

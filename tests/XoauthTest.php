@@ -49,7 +49,6 @@ class XoauthTest extends ImapTestCase
         $this->assertTrue($success);
         $this->assertNotContains($this->mailbox.$randomMailboxName, $list);
     }
-    */
 
     public function testFetchBody()
     {
@@ -62,4 +61,38 @@ class XoauthTest extends ImapTestCase
         $this->assertTrue($success);
         $this->assertNotContains($this->mailbox.$randomMailboxName, $list);
     }
+    */
+
+    public function testDelete()
+    {
+        $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $check = imap2_check($imap);
+        $initialCount = $check->Nmsgs;
+
+        $deleteSuccess = imap2_delete($imap, '1:2');
+        $expungeSuccess = imap2_expunge($imap);
+
+        $check = imap2_check($imap);
+        $finalCount = $check->Nmsgs;
+
+        $this->assertTrue($deleteSuccess);
+        $this->assertTrue($expungeSuccess);
+        $this->assertEquals($initialCount - 2, $finalCount);
+    }
+
+    /*
+    public function testUndelete()
+    {
+        $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $check = imap2_check($imap);
+
+        $body = imap2_fetchbody($imap, 1, null);
+        var_dump($body);
+        die();
+
+        $this->assertTrue($success);
+        $this->assertNotContains($this->mailbox.$randomMailboxName, $list);
+    }*/
 }
