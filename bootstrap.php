@@ -14,6 +14,7 @@ use Javanile\Imap2\Errors;
 use Javanile\Imap2\Mailbox;
 use Javanile\Imap2\Message;
 use Javanile\Imap2\Thread;
+use Javanile\Imap2\Polyfill;
 
 if (!defined('OP_XOAUTH2')) {
     define('OP_XOAUTH2', 512);
@@ -159,6 +160,15 @@ if (!function_exists('imap2_undelete')) {
     }
 }
 
+/**
+ * imap2_expunge
+ */
+if (!function_exists('imap_expunge')) {
+    function imap_expunge($imap)
+    {
+        return imap2_expunge($imap);
+    }
+}
 if (!function_exists('imap2_expunge')) {
     function imap2_expunge($imap)
     {
@@ -166,6 +176,15 @@ if (!function_exists('imap2_expunge')) {
     }
 }
 
+/**
+ * imap2_thread
+ */
+if (!function_exists('imap_thread')) {
+    function imap_thread($imap, $flags = SE_FREE)
+    {
+        return imap2_thread($imap, $flags);
+    }
+}
 if (!function_exists('imap2_thread')) {
     function imap2_thread($imap, $flags = SE_FREE)
     {
@@ -173,6 +192,15 @@ if (!function_exists('imap2_thread')) {
     }
 }
 
+/**
+ * imap2_errors
+ */
+if (!function_exists('imap_errors')) {
+    function imap_errors()
+    {
+        return imap2_errors();
+    }
+}
 if (!function_exists('imap2_errors')) {
     function imap2_errors()
     {
@@ -180,6 +208,15 @@ if (!function_exists('imap2_errors')) {
     }
 }
 
+/**
+ * imap2_alerts
+ */
+if (!function_exists('imap_alerts')) {
+    function imap_alerts()
+    {
+        return imap2_alerts();
+    }
+}
 if (!function_exists('imap2_alerts')) {
     function imap2_alerts()
     {
@@ -187,3 +224,18 @@ if (!function_exists('imap2_alerts')) {
     }
 }
 
+/**
+ * imap2_8bit
+ */
+if (!function_exists('imap_8bit')) {
+    function imap_8bit($string)
+    {
+        return imap2_8bit($string);
+    }
+}
+if (!function_exists('imap2_8bit')) {
+    function imap2_8bit($string)
+    {
+        return function_exists('imap_8bit') ? imap_8bit($string) : Polyfill::convert8bit($string);
+    }
+}

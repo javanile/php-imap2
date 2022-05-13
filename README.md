@@ -1,7 +1,7 @@
 # php-imap2
 
-- imap_8bit — Convert an 8bit string to a quoted-printable string
-- imap_alerts — Returns all IMAP alert messages that have occurred
+- imap2_8bit — Convert an 8bit string to a quoted-printable string
+- imap2_alerts — Returns all IMAP alert messages that have occurred
 - imap_append — Append a string message to a specified mailbox
 - imap_base64 — Decode BASE64 encoded text
 - imap_binary — Convert an 8bit string to a base64 string
