@@ -46,3 +46,6 @@ test-fetch-body:
 
 test-xoauth:
 	@docker-compose run --rm phpunit tests --filter XoauthTest
+
+test-signatures:
+	@docker-compose run --rm phpunit tests --filter SignaturesTest
