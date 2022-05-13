@@ -164,4 +164,47 @@ class CompatibilityTest extends ImapTestCase
         imap_close($imap1);
         imap2_close($imap2);
     }
+
+    public function testAlerts()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        imap_deletemailbox($imap1, 'wrong-mailbox');
+        $alerts1 = imap_alerts();
+        $errors1 = imap_errors();
+
+        var_dump($alerts1, $errors1);
+        die();
+
+        $status2 = imap2_status($imap2, $this->mailbox, SA_ALL);
+
+        unset($status1->flags);
+
+        $this->assertEquals($status1, $status2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
+    public function testErrors()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        imap_deletemailbox($imap1, 'wrong-mailbox');
+        $errors1 = imap_errors();
+
+        var_dump($errors1);
+        die();
+
+        $status2 = imap2_status($imap2, $this->mailbox, SA_ALL);
+
+        unset($status1->flags);
+
+        $this->assertEquals($status1, $status2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
 }

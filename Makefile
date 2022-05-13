@@ -23,6 +23,9 @@ test-imap:
 test-open:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testOpenAndClose
 
+test-alerts:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testAlerts
+
 test-check:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testCheck
 

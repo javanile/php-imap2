@@ -130,6 +130,11 @@ class XoauthTest extends ImapTestCase
     }
     */
 
+    public function testAlert()
+    {
+        $this->assertFalse(imap2_alerts());
+    }
+
     public function testStatus()
     {
         $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);

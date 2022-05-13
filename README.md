@@ -78,7 +78,7 @@
 
 ## XOAUTH2 Compatibility
 
-- [ ] imap_alerts
+- [x] imap_alerts
 - [ ] imap_append
 - [x] imap_check
 - [ ] imap_close
