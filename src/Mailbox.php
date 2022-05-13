@@ -13,6 +13,23 @@ namespace Javanile\Imap2;
 
 class Mailbox
 {
+    public static function check($imap)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $imap->openMailbox();
+
+            return (object) [
+                'Driver' => 'imap',
+                'Mailbox' => $imap->getMailbox(),
+                'Nmsgs' => $client->data['EXISTS'],
+                'Recent' => $client->data['RECENT'],
+            ];
+        }
+
+        return imap_check($imap);
+    }
+
     public static function list($imap, $reference, $pattern)
     {
         if (is_a($imap, Connection::class)) {

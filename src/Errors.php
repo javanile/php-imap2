@@ -19,4 +19,9 @@ class Errors
     {
         return [];
     }
+
+    public static function alerts()
+    {
+        return [];
+    }
 }

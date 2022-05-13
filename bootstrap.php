@@ -33,6 +33,13 @@ if (!function_exists('imap2_close')) {
     }
 }
 
+if (!function_exists('imap2_check')) {
+    function imap2_check($imap)
+    {
+        return Mailbox::check($imap);
+    }
+}
+
 if (!function_exists('imap2_list')) {
     function imap2_list($imap, $reference, $pattern)
     {
@@ -65,6 +72,13 @@ if (!function_exists('imap2_errors')) {
     function imap2_errors()
     {
         return Errors::errors();
+    }
+}
+
+if (!function_exists('imap2_alerts')) {
+    function imap2_alerts()
+    {
+        return Errors::alerts();
     }
 }
 

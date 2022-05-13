@@ -25,6 +25,7 @@ class Connection
     protected $host;
     protected $port;
     protected $sslMode;
+    protected $currentMailbox;
 
     /**
      *
@@ -43,6 +44,7 @@ class Connection
         $this->host = Functions::getHostFromMailbox($mailboxParts);
         $this->port = $mailboxParts['port'];
         $this->sslMode = Functions::getSslModeFromMailbox($mailboxParts);
+        $this->currentMailbox = $mailboxParts['mailbox'];
 
         $this->client = new ImapClient();
     }
@@ -78,11 +80,19 @@ class Connection
             'auth_type' => $this->flags & OP_XOAUTH2 ? 'XOAUTH2' : 'CHECK'
         ]);
 
-        if ($success) {
-            return $this;
+        if (empty($success)) {
+            return false;
         }
 
-        return false;
+        if (empty($this->currentMailbox)) {
+            $mailboxes = $this->client->listMailboxes('', '*');
+            if (in_array('INBOX', $mailboxes)) {
+                $this->currentMailbox = 'INBOX';
+                $this->mailbox .= 'INBOX';
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -96,9 +106,26 @@ class Connection
     /**
      *
      */
+    public function getMailbox()
+    {
+        return $this->mailbox;
+    }
+
+
+    /**
+     *
+     */
     public function getMailboxName()
     {
-        return 'INBOX';
+        return $this->currentMailbox;
+    }
+
+    /**
+     *
+     */
+    public function openMailbox()
+    {
+        $this->client->select($this->currentMailbox);
     }
 
     /**
