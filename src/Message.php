@@ -71,7 +71,7 @@ class Message
         return imap_msgno($imap, $messageUid);
     }
 
-    public static function headerInfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0)
+    public static function headerInfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0, $defaultHost = null)
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();

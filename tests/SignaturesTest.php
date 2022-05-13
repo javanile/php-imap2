@@ -97,6 +97,7 @@ class SignaturesTest extends ImapTestCase
                 $parameters1[$index]['name'] = $parameter['name'];
             }
 
+            var_dump($parameters1);
             $this->assertEquals($parameters1, $parameters2);
         }
     }
