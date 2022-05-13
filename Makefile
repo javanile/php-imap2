@@ -32,6 +32,9 @@ test-append:
 test-list:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testList
 
+test-delete:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testDelete
+
 test-fetch-body:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchBody
 

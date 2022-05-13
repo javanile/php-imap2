@@ -118,4 +118,33 @@ class CompatibilityTest extends ImapTestCase
         imap_close($imap1);
         imap2_close($imap2);
     }
+
+    public function testDelete()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $messages = '4:6';
+
+        imap_expunge($imap1);
+        $this->assertFalse(imap_search($imap1, 'DELETED'));
+        $this->assertTrue(imap_delete($imap1, $messages));
+        $deletedMessages1 = imap_search($imap1, 'DELETED');
+        $deletedMessagesUid1 = imap_search($imap1, 'DELETED', SE_UID);
+        $this->assertTrue(imap_undelete($imap1, $messages));
+        $this->assertFalse(imap_search($imap1, 'DELETED'));
+
+        $this->assertFalse(imap2_search($imap1, 'DELETED'));
+        $this->assertTrue(imap2_delete($imap1, $messages));
+        $deletedMessages2 = imap2_search($imap1, 'DELETED');
+        $deletedMessagesUid2 = imap2_search($imap1, 'DELETED', SE_UID);
+        $this->assertTrue(imap2_undelete($imap1, $messages));
+        $this->assertFalse(imap2_search($imap1, 'DELETED'));
+
+        $this->assertEquals($deletedMessages1, $deletedMessages2);
+        $this->assertEquals($deletedMessagesUid1, $deletedMessagesUid2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
 }

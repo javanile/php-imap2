@@ -61,6 +61,13 @@ if (!function_exists('imap2_deletemailbox')) {
     }
 }
 
+if (!function_exists('imap2_search')) {
+    function imap2_search($imap, $criteria, $flags = SE_FREE, $charset = "")
+    {
+        return Message::search($imap, $criteria, $flags, $charset);
+    }
+}
+
 if (!function_exists('imap2_fetchbody')) {
     function imap2_fetchbody($imap, $messageNum, $section, $flags = 0)
     {

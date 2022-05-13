@@ -1871,16 +1871,16 @@ class ImapClient
         }
 
         if (!in_array($field, $supported)) {
-            return new rcube_result_index($mailbox);
+            return new ResultIndex($mailbox);
         }
 
         if (!$this->select($mailbox)) {
-            return new rcube_result_index($mailbox);
+            return new ResultIndex($mailbox);
         }
 
         // return empty result when folder is empty and we're just after SELECT
         if ($old_sel != $mailbox && !$this->data['EXISTS']) {
-            return new rcube_result_index($mailbox, '* SORT');
+            return new ResultIndex($mailbox, '* SORT');
         }
 
         // RFC 5957: SORT=DISPLAY
@@ -1898,7 +1898,7 @@ class ImapClient
             $response = null;
         }
 
-        return new rcube_result_index($mailbox, $response);
+        return new ResultIndex($mailbox, $response);
     }
 
     /**

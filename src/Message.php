@@ -13,6 +13,18 @@ namespace Javanile\Imap2;
 
 class Message
 {
+    public static function search($imap, $criteria, $flags = SE_FREE, $charset = "")
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $client->setDebug(true);
+
+            return $client->search($imap->getMailboxName(), $criteria, $flags & SE_UID);
+        }
+
+        return imap_search($imap, $criteria, $flags, $charset);
+    }
+
     public static function fetchBody($imap, $messageNum, $section, $flags = 0)
     {
         if (is_a($imap, Connection::class)) {
