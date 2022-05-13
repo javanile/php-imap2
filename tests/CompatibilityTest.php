@@ -85,4 +85,21 @@ class CompatibilityTest extends ImapTestCase
 
         $this->assertEquals($boxes1, $boxes2);
     }
+
+    public function testFetchBody()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $body1 = imap_fetchbody($imap1, 1, null);
+        $body2 = imap2_fetchbody($imap2, 1, null);
+
+        var_dump($body2);
+        die();
+
+        imap_close($imap1);
+        imap2_close($imap2);
+
+        $this->assertEquals($boxes1, $boxes2);
+    }
 }

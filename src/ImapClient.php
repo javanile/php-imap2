@@ -2469,7 +2469,7 @@ class ImapClient
             if (preg_match('/^\* ([0-9]+) FETCH/', $line, $m)) {
                 $id = intval($m[1]);
 
-                $result[$id]            = new rcube_message_header;
+                $result[$id]            = new MessageHeader;
                 $result[$id]->id        = $id;
                 $result[$id]->subject   = '';
                 $result[$id]->messageID = 'mid:' . $id;

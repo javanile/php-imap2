@@ -10,8 +10,10 @@
  */
 
 use Javanile\Imap2\Connection;
-use Javanile\Imap2\Mailbox;
 use Javanile\Imap2\Errors;
+use Javanile\Imap2\Mailbox;
+use Javanile\Imap2\Message;
+
 
 if (!defined('OP_XOAUTH2')) {
     define('OP_XOAUTH2', 512);
@@ -42,6 +44,20 @@ if (!function_exists('imap2_createmailbox')) {
     function imap2_createmailbox($imap, $mailbox)
     {
         return Mailbox::createMailbox($imap, $mailbox);
+    }
+}
+
+if (!function_exists('imap2_deletemailbox')) {
+    function imap2_deletemailbox($imap, $mailbox)
+    {
+        return Mailbox::deleteMailbox($imap, $mailbox);
+    }
+}
+
+if (!function_exists('imap2_fetchbody')) {
+    function imap2_fetchbody($imap, $messageNum, $section, $flags = 0)
+    {
+        return Message::fetchBody($imap, $messageNum, $section, $flags);
     }
 }
 

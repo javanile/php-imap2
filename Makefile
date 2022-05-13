@@ -29,5 +29,8 @@ test-append:
 test-list:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testList
 
+test-fetch-body:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchBody
+
 test-xoauth:
 	@docker-compose run --rm phpunit tests --filter XoauthTest

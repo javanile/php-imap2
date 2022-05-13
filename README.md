@@ -82,9 +82,9 @@
 - [ ] imap_append
 - [ ] imap_check
 - [ ] imap_close
-- [ ] imap_createmailbox
+- [x] imap_createmailbox
 - [ ] imap_delete
-- [ ] imap_deletemailbox
+- [x] imap_deletemailbox
 - [ ] imap_errors
 - [ ] imap_expunge
 - [ ] imap_fetchbody

@@ -96,6 +96,14 @@ class Connection
     /**
      *
      */
+    public function getMailboxName()
+    {
+        return 'INBOX';
+    }
+
+    /**
+     *
+     */
     public static function close($imap, $flags = 0)
     {
         if (is_a($imap, Connection::class)) {
