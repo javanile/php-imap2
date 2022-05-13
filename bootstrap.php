@@ -13,7 +13,7 @@ use Javanile\Imap2\Connection;
 use Javanile\Imap2\Errors;
 use Javanile\Imap2\Mailbox;
 use Javanile\Imap2\Message;
-
+use Javanile\Imap2\Thread;
 
 if (!defined('OP_XOAUTH2')) {
     define('OP_XOAUTH2', 512);
@@ -93,6 +93,13 @@ if (!function_exists('imap2_expunge')) {
     function imap2_expunge($imap)
     {
         return Message::expunge($imap);
+    }
+}
+
+if (!function_exists('imap2_thread')) {
+    function imap2_thread($imap, $flags = SE_FREE)
+    {
+        return Thread::thread($imap, $flags);
     }
 }
 

@@ -102,4 +102,4 @@
 - [ ] imap_sort
 - [ ] imap_status
 - [ ] imap_thread
-- [ ] imap_undelete
+- [x] imap_undelete
