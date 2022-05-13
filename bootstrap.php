@@ -103,6 +103,13 @@ if (!function_exists('imap2_sort')) {
     }
 }
 
+if (!function_exists('imap2_headerinfo')) {
+    function imap2_headerinfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0)
+    {
+        return Message::headerInfo($imap, $messageNum, $fromLength, $subjectLength);
+    }
+}
+
 if (!function_exists('imap2_fetchbody')) {
     function imap2_fetchbody($imap, $messageNum, $section, $flags = 0)
     {

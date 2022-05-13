@@ -71,6 +71,24 @@ class Message
         return imap_msgno($imap, $messageUid);
     }
 
+    public static function headerInfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $client->setDebug(true);
+
+            $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+
+            if ($section) {
+                return $messages[$messageNum]->bodypart[$section];
+            }
+
+            return $messages[$messageNum]->body;
+        }
+
+        return imap_headerinfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0);
+    }
+
     public static function fetchBody($imap, $messageNum, $section, $flags = 0)
     {
         if (is_a($imap, Connection::class)) {
