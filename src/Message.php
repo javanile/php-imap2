@@ -19,7 +19,13 @@ class Message
             $client = $imap->getClient();
             $client->setDebug(true);
 
-            return $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY[]']);
+            $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+
+            if ($section) {
+                return $messages[$messageNum]->bodypart[$section];
+            }
+
+            return $messages[$messageNum]->body;
         }
 
         return imap_fetchbody($imap, $messageNum, $section, $flags);

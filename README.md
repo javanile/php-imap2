@@ -87,7 +87,7 @@
 - [x] imap_deletemailbox
 - [ ] imap_errors
 - [ ] imap_expunge
-- [ ] imap_fetchbody
+- [x] imap_fetchbody
 - [ ] imap_fetchheader
 - [ ] imap_fetchstructure
 - [ ] imap_getmailboxes
