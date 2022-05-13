@@ -536,6 +536,38 @@ if (!function_exists('imap2_clearflag_full')) {
 }
 
 /**
+ * imap2_mail_compose
+ */
+if (!function_exists('imap_mail_compose')) {
+    function imap_mail_compose($envelope, $bodies)
+    {
+        return imap2_mail_compose($envelope, $bodies);
+    }
+}
+if (!function_exists('imap2_mail_compose')) {
+    function imap2_mail_compose($envelope, $bodies)
+    {
+        return Polyfill::mailCompose($envelope, $bodies);
+    }
+}
+
+/**
+ * imap2_mail_compose
+ */
+if (!function_exists('imap_mail_copy')) {
+    function imap_mail_copy($imap, $message_nums, $mailbox, $flags = 0)
+    {
+        return imap2_mail_copy($imap, $message_nums, $mailbox, $flags);
+    }
+}
+if (!function_exists('imap2_mail_copy')) {
+    function imap2_mail_copy($imap, $message_nums, $mailbox, $flags = 0)
+    {
+        return Mail::copy($imap, $message_nums, $mailbox, $flags);
+    }
+}
+
+/**
  * imap2_expunge
  */
 if (!function_exists('imap_expunge')) {
