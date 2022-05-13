@@ -1917,12 +1917,12 @@ class ImapClient
         $old_sel = $this->selected;
 
         if (!$this->select($mailbox)) {
-            return new rcube_result_thread($mailbox);
+            return new ResultThread($mailbox);
         }
 
         // return empty result when folder is empty and we're just after SELECT
         if ($old_sel != $mailbox && !$this->data['EXISTS']) {
-            return new rcube_result_thread($mailbox, '* THREAD');
+            return new ResultThread($mailbox, '* THREAD');
         }
 
         $encoding  = $encoding ? trim($encoding) : 'US-ASCII';
@@ -1936,7 +1936,7 @@ class ImapClient
             $response = null;
         }
 
-        return new rcube_result_thread($mailbox, $response);
+        return new ResultThread($mailbox, $response);
     }
 
     /**

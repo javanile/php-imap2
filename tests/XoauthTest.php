@@ -105,6 +105,7 @@ class XoauthTest extends ImapTestCase
     }
     */
 
+    /*
     public function testSearch()
     {
         $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
@@ -115,5 +116,18 @@ class XoauthTest extends ImapTestCase
         $deletedMessages = imap2_search($imap, 'DELETED');
 
         $this->assertEquals(['4', '5'], $deletedMessages);
+    }
+    */
+
+    public function testThread()
+    {
+        $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $thread = imap2_thread($imap);
+
+        var_dump($thread);
+        die();
+
+        $this->assertEquals(['4', '5'], $thread);
     }
 }

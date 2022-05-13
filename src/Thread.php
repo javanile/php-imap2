@@ -19,20 +19,15 @@ class Thread
             $client = $imap->getClient();
             $client->setDebug(true);
 
-            $result = $client->search($imap->getMailboxName(), $criteria, $flags & SE_UID);
+            $thread = $client->thread($imap->getMailboxName());
 
-            if (empty($result->count())) {
+            if (empty($thread->count())) {
                 return false;
             }
 
-            $messages = $result->get();
-            foreach ($messages as &$message) {
-                $message = is_numeric($message) ? intval($message) : $message;
-            }
-
-            return $messages;
+            return $thread->get();
         }
 
-        return imap_search($imap, $criteria, $flags, $charset);
+        return imap_thread($imap, $flags);
     }
 }
