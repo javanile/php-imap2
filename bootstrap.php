@@ -552,7 +552,7 @@ if (!function_exists('imap2_mail_compose')) {
 }
 
 /**
- * imap2_mail_compose
+ * imap2_mail_copy
  */
 if (!function_exists('imap_mail_copy')) {
     function imap_mail_copy($imap, $message_nums, $mailbox, $flags = 0)
@@ -564,6 +564,38 @@ if (!function_exists('imap2_mail_copy')) {
     function imap2_mail_copy($imap, $message_nums, $mailbox, $flags = 0)
     {
         return Mail::copy($imap, $message_nums, $mailbox, $flags);
+    }
+}
+
+/**
+ * imap2_mail_move
+ */
+if (!function_exists('imap_mail_move')) {
+    function imap_mail_move($imap, $messageNums, $mailbox, $flags = 0)
+    {
+        return imap2_mail_move($imap, $messageNums, $mailbox, $flags);
+    }
+}
+if (!function_exists('imap2_mail_move')) {
+    function imap2_mail_move($imap, $messageNums, $mailbox, $flags = 0)
+    {
+        return Mail::move($imap, $messageNums, $mailbox, $flags);
+    }
+}
+
+/**
+ * imap2_mail
+ */
+if (!function_exists('imap_mail')) {
+    function imap_mail($to, $subject, $message, $additionalHeaders = null, $cc = null, $bcc = null, $returnPath = null)
+    {
+        return imap2_mail($to, $subject, $message, $additionalHeaders, $cc, $bcc, $returnPath);
+    }
+}
+if (!function_exists('imap2_mail')) {
+    function imap2_mail($to, $subject, $message, $additionalHeaders = null, $cc = null, $bcc = null, $returnPath = null)
+    {
+        return Mail::send($to, $subject, $message, $additionalHeaders, $cc, $bcc, $returnPath);
     }
 }
 
