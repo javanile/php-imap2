@@ -93,7 +93,7 @@ if (!function_exists('imap_timeout')) {
         return Connection::close($timeoutType, $timeout);
     }
 }
-if (!function_exists('imap_timeout')) {
+if (!function_exists('imap2_timeout')) {
     function imap2_timeout($timeoutType, $timeout = -1)
     {
         return Connection::close($timeoutType, $timeout);
@@ -325,6 +325,22 @@ if (!function_exists('imap2_subscribe')) {
 }
 
 /**
+ * imap2_unsubscribe
+ */
+if (!function_exists('imap_unsubscribe')) {
+    function imap_unsubscribe($imap, $mailbox)
+    {
+        return imap2_unsubscribe($imap, $mailbox);
+    }
+}
+if (!function_exists('imap2_unsubscribe')) {
+    function imap2_unsubscribe($imap, $mailbox)
+    {
+        return Mailbox::unsubscribe($imap, $mailbox);
+    }
+}
+
+/**
  * imap2_createmailbox
  */
 if (!function_exists('imap_createmailbox')) {
@@ -465,6 +481,22 @@ if (!function_exists('imap2_msgno')) {
     function imap2_msgno($imap, $messageUid)
     {
         return Message::msgno($imap, $messageUid);
+    }
+}
+
+/**
+ * imap2_uid
+ */
+if (!function_exists('imap_uid')) {
+    function imap_uid($imap, $messageNum)
+    {
+        return imap2_uid($imap, $messageNum);
+    }
+}
+if (!function_exists('imap2_uid')) {
+    function imap2_uid($imap, $messageNum)
+    {
+        return Message::uid($imap, $messageNum);
     }
 }
 
@@ -1119,6 +1151,70 @@ if (!function_exists('imap_rfc822_write_address')) {
 }
 if (!function_exists('imap2_rfc822_write_address')) {
     function imap2_rfc822_write_address($mailbox, $hostname, $personal)
+    {
+        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+    }
+}
+
+/**
+ * imap_utf7_decode
+ */
+if (!function_exists('imap_utf7_decode')) {
+    function imap_utf7_decode($string)
+    {
+        return imap2_utf7_decode($string);
+    }
+}
+if (!function_exists('imap2_utf7_decode')) {
+    function imap2_utf7_decode($string)
+    {
+        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+    }
+}
+
+/**
+ * imap_utf7_encode
+ */
+if (!function_exists('imap_utf7_encode')) {
+    function imap_utf7_encode($string)
+    {
+        return imap2_utf7_encode($string);
+    }
+}
+if (!function_exists('imap2_utf7_encode')) {
+    function imap2_utf7_encode($string)
+    {
+        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+    }
+}
+
+/**
+ * imap2_utf8_to_mutf7
+ */
+if (!function_exists('imap_utf8_to_mutf7')) {
+    function imap_utf8_to_mutf7($string)
+    {
+        return imap2_utf8_to_mutf7($string);
+    }
+}
+if (!function_exists('imap2_utf8_to_mutf7')) {
+    function imap2_utf8_to_mutf7($string)
+    {
+        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+    }
+}
+
+/**
+ * imap2_utf8
+ */
+if (!function_exists('imap_utf8')) {
+    function imap_utf8($string)
+    {
+        return imap2_utf8($string);
+    }
+}
+if (!function_exists('imap2_utf8')) {
+    function imap2_utf8($string)
     {
         return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
     }
