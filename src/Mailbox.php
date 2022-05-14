@@ -95,6 +95,26 @@ class Mailbox
         return imap_list($imap, $reference, $pattern);
     }
 
+    public static function listScan($imap, $reference, $pattern)
+    {
+        if (is_a($imap, Connection::class)) {
+            $referenceParts = explode('}', $reference);
+            $client = $imap->getClient();
+            $return = [];
+            $mailboxes = $client->listMailboxes($referenceParts[1], $pattern);
+            foreach ($mailboxes as $mailbox) {
+                if (in_array('\\Noselect', $client->data['LIST'][$mailbox])) {
+                    continue;
+                }
+                $return[] = $referenceParts[0].'}'.$mailbox;
+            }
+
+            return $return;
+        }
+
+        return imap_list($imap, $reference, $pattern);
+    }
+
     public static function getMailboxes($imap, $reference, $pattern)
     {
         if (is_a($imap, Connection::class)) {
@@ -138,6 +158,28 @@ class Mailbox
     }
 
     public static function append($imap, $mailbox)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+
+            return $client->deleteFolder($mailbox);
+        }
+
+        return imap_deletemailbox($imap, $mailbox);
+    }
+
+    public static function getSubscribed($imap, $mailbox)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+
+            return $client->deleteFolder($mailbox);
+        }
+
+        return imap_deletemailbox($imap, $mailbox);
+    }
+
+    public static function listSubscribed($imap, $mailbox)
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();

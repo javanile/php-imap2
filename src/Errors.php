@@ -15,12 +15,17 @@ use Javanile\Imap2\ImapClient;
 
 class Errors
 {
+    public static function alerts()
+    {
+        return false;
+    }
+
     public static function errors()
     {
         return false;
     }
 
-    public static function alerts()
+    public static function lastError()
     {
         return false;
     }

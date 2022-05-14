@@ -89,6 +89,24 @@ class Message
         return imap_headerinfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0);
     }
 
+    public static function headers($imap, $messageNum, $fromLength = 0, $subjectLength = 0, $defaultHost = null)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $client->setDebug(true);
+
+            $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+
+            if ($section) {
+                return $messages[$messageNum]->bodypart[$section];
+            }
+
+            return $messages[$messageNum]->body;
+        }
+
+        return imap_headerinfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0);
+    }
+
     public static function body($imap, $messageNum, $section, $flags = 0)
     {
         if (is_a($imap, Connection::class)) {
@@ -229,6 +247,17 @@ class Message
     }
 
     public static function expunge($imap)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+
+            return $client->expunge($imap->getMailboxName());
+        }
+
+        return imap_expunge($imap);
+    }
+
+    public static function clearFlagFull($imap)
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();

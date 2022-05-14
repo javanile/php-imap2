@@ -17,4 +17,9 @@ class Polyfill
     {
         return $string;
     }
+
+    public static function mailCompose($string)
+    {
+        return $string;
+    }
 }

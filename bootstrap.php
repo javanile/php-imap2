@@ -992,7 +992,7 @@ if (!function_exists('imap_last_error')) {
 if (!function_exists('imap2_last_error')) {
     function imap2_last_error()
     {
-        return Errors::lastErrors();
+        return Errors::lastError();
     }
 }
 
