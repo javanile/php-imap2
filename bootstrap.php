@@ -17,9 +17,156 @@ use Javanile\Imap2\Message;
 use Javanile\Imap2\Thread;
 use Javanile\Imap2\Polyfill;
 
+if (!defined('NIL')) {
+    define('NIL', 0);
+}
+if (!defined('OP_DEBUG')) {
+    define('OP_DEBUG', 1);
+}
+if (!defined('OP_READONLY')) {
+    define('OP_READONLY', 2);
+}
+if (!defined('OP_ANONYMOUS')) {
+    define('OP_ANONYMOUS', 4);
+}
+if (!defined('OP_SHORTCACHE')) {
+    define('OP_SHORTCACHE', 8);
+}
+if (!defined('OP_SILENT')) {
+    define('OP_SILENT', 16);
+}
+if (!defined('OP_PROTOTYPE')) {
+    define('OP_PROTOTYPE', 32);
+}
+if (!defined('OP_HALFOPEN')) {
+    define('OP_HALFOPEN', 64);
+}
+if (!defined('OP_EXPUNGE')) {
+    define('OP_EXPUNGE', 128);
+}
+if (!defined('OP_SECURE')) {
+    define('OP_SECURE', 256);
+}
 if (!defined('OP_XOAUTH2')) {
     define('OP_XOAUTH2', 512);
 }
+if (!defined('CL_EXPUNGE')) {
+    define('CL_EXPUNGE', 32768);
+}
+if (!defined('FT_UID')) {
+    define('FT_UID', 1);
+}
+if (!defined('FT_PEEK')) {
+    define('FT_PEEK', 2);
+}
+if (!defined('FT_NOT')) {
+    define('FT_NOT', 4);
+}
+if (!defined('FT_INTERNAL')) {
+    define('FT_INTERNAL', 8);
+}
+if (!defined('FT_PREFETCHTEXT')) {
+    define('FT_PREFETCHTEXT', 32);
+}
+
+
+/*
+if (!defined('                 ')) {
+    define('            ', 512);
+}
+if (!defined('                 ')) {
+    define('            ', 512);
+}
+if (!defined('                 ')) {
+    define('            ', 512);
+}
+if (!defined('                 ')) {
+    define('            ', 512);
+}
+if (!defined('                 ')) {
+    define('            ', 512);
+}
+if (!defined('                 ')) {
+    define('            ', 512);
+}
+if (!defined('                 ')) {
+    define('            ', 512);
+}
+
+ST_UID (int)
+ST_SILENT (int)
+ST_SET (int)
+
+
+CP_UID (int)
+CP_MOVE (int)
+
+
+SE_UID (int)
+SE_FREE (int)
+SE_NOPREFETCH (int)
+
+
+SO_FREE (int)
+SO_NOSERVER (int)
+
+
+SA_MESSAGES (int)
+SA_RECENT (int)
+SA_UNSEEN (int)
+SA_UIDNEXT (int)
+SA_UIDVALIDITY (int)
+SA_ALL (int)
+
+
+LATT_NOINFERIORS (int)
+LATT_NOSELECT (int)
+LATT_MARKED (int)
+LATT_UNMARKED (int)
+LATT_REFERRAL (int)
+LATT_HASCHILDREN (int)
+LATT_HASNOCHILDREN (int)
+
+
+SORTDATE (int)
+SORTARRIVAL (int)
+SORTFROM (int)
+SORTSUBJECT (int)
+SORTTO (int)
+SORTCC (int)
+SORTSIZE (int)
+
+
+TYPETEXT (int)
+TYPEMULTIPART (int)
+TYPEMESSAGE (int)
+TYPEAPPLICATION (int)
+TYPEAUDIO (int)
+TYPEIMAGE (int)
+TYPEVIDEO (int)
+TYPEMODEL (int)
+TYPEOTHER (int)
+
+
+ENC7BIT (int)
+ENC8BIT (int)
+ENCBINARY (int)
+ENCBASE64 (int)
+ENCQUOTEDPRINTABLE (int)
+ENCOTHER (int)
+
+
+
+IMAP_OPENTIMEOUT (int)
+IMAP_READTIMEOUT (int)
+IMAP_WRITETIMEOUT (int)
+IMAP_CLOSETIMEOUT (int)
+IMAP_GC_ELT (int)
+IMAP_GC_ENV (int)
+IMAP_GC_TEXTS (int)
+
+*/
+
 
 /**
  * imap2_open
