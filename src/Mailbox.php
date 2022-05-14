@@ -30,7 +30,86 @@ class Mailbox
         return imap_check($imap);
     }
 
+    public static function numMsg($imap)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $imap->openMailbox();
+
+            return (object) [
+                'Driver' => 'imap',
+                'Mailbox' => $imap->getMailbox(),
+                'Nmsgs' => $client->data['EXISTS'],
+                'Recent' => $client->data['RECENT'],
+            ];
+        }
+
+        return imap_check($imap);
+    }
+
+    public static function numRecent($imap)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $imap->openMailbox();
+
+            return (object) [
+                'Driver' => 'imap',
+                'Mailbox' => $imap->getMailbox(),
+                'Nmsgs' => $client->data['EXISTS'],
+                'Recent' => $client->data['RECENT'],
+            ];
+        }
+
+        return imap_check($imap);
+    }
+
     public static function status($imap, $mailbox, $flags)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $mailboxParts = explode('}', $mailbox);
+            $mailboxName = $mailboxParts[2] ?? 'INBOX';
+            $items = [];
+
+            $statusKeys = [
+                'MESSAGES' => 'messages',
+                'UNSEEN' => 'unseen',
+                'RECENT' => 'recent',
+                'UIDNEXT' => 'uidnext',
+                'UIDVALIDITY' => 'uidvalidity',
+            ];
+
+            if ($flags & SA_MESSAGES || $flags & SA_ALL) {
+                $items[] = 'MESSAGES';
+            }
+            if ($flags & SA_RECENT || $flags & SA_ALL) {
+                $items[] = 'RECENT';
+            }
+            if ($flags & SA_UNSEEN || $flags & SA_ALL) {
+                $items[] = 'UNSEEN';
+            }
+            if ($flags & SA_UIDNEXT || $flags & SA_ALL) {
+                $items[] = 'UIDNEXT';
+            }
+            if ($flags & SA_UIDVALIDITY || $flags & SA_ALL) {
+                $items[] = 'UIDVALIDITY';
+            }
+
+            $status = $client->status($mailboxName, $items);
+
+            $returnStatus = [];
+            foreach ($status as $key => $value) {
+                $returnStatus[$statusKeys[$key]] = is_numeric($value) ? intval($value) : $value;
+            }
+
+            return (object) $returnStatus;
+        }
+
+        return imap_status($imap, $mailbox, $flags);
+    }
+
+    public static function mailboxMsgInfo($imap, $mailbox, $flags)
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();

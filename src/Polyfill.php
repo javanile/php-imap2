@@ -18,8 +18,23 @@ class Polyfill
         return $string;
     }
 
-    public static function mailCompose($string)
+    public static function mimeHeaderDecode($string)
     {
         return $string;
+    }
+
+    public static function mutf7ToUtf8($string)
+    {
+        return $string;
+    }
+
+    public static function qPrint($string)
+    {
+        return $string;
+    }
+
+    public static function mailCompose($envelope, $bodies)
+    {
+        return false;
     }
 }

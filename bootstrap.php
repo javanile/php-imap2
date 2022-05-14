@@ -11,6 +11,7 @@
 
 use Javanile\Imap2\Connection;
 use Javanile\Imap2\Errors;
+use Javanile\Imap2\Mail;
 use Javanile\Imap2\Mailbox;
 use Javanile\Imap2\Message;
 use Javanile\Imap2\Thread;
@@ -1066,13 +1067,13 @@ if (!function_exists('imap2_binary')) {
 if (!function_exists('imap_mime_header_decode')) {
     function imap_mime_header_decode($string)
     {
-        return imap2_mime_header_decode($string);
+        return Polyfill::mimeHeaderDecode($string);
     }
 }
 if (!function_exists('imap2_mime_header_decode')) {
     function imap2_mime_header_decode($string)
     {
-        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string);
+        return imap_mime_header_decode($string);
     }
 }
 
@@ -1082,13 +1083,13 @@ if (!function_exists('imap2_mime_header_decode')) {
 if (!function_exists('imap_mutf7_to_utf8')) {
     function imap_mutf7_to_utf8($string)
     {
-        return imap2_mutf7_to_utf8($string);
+        return Polyfill::mutf7ToUtf8($string);
     }
 }
 if (!function_exists('imap2_mutf7_to_utf8')) {
     function imap2_mutf7_to_utf8($string)
     {
-        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string);
+        return imap_mutf7_to_utf8($string);
     }
 }
 
@@ -1098,7 +1099,7 @@ if (!function_exists('imap2_mutf7_to_utf8')) {
 if (!function_exists('imap_qprint')) {
     function imap_qprint($string)
     {
-        return imap2_qprint($string);
+        return Polyfill::qPrint($string);
     }
 }
 if (!function_exists('imap2_qprint')) {
@@ -1214,7 +1215,7 @@ if (!function_exists('imap_utf8')) {
     }
 }
 if (!function_exists('imap2_utf8')) {
-    function imap2_utf8($string)
+    function imap2_utf8(string $string)
     {
         return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
     }

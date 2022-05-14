@@ -103,8 +103,14 @@ class SignaturesTest extends ImapTestCase
 
     public function testInputOutput()
     {
+        $inputs = json_decode(file_get_contents('tests/fixtures/inputs.json'), true);
+
         foreach ($this->functions as $function) {
-            $parameters = array_map(function($parameter) { return (array) $parameter; }, (new \ReflectionFunction('imap_'.$function))->getParameters());
+            $parameters = $inputs[$function] ?? array_map(
+                function($parameter) use ($function) { return $parameter->name; },
+                (new \ReflectionFunction('imap2_'.$function))->getParameters()
+            );
+
             var_dump($function);
             $output1 = call_user_func_array('imap_'.$function, $parameters);
             $output2 = call_user_func_array('imap2_'.$function, $parameters);

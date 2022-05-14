@@ -13,5 +13,18 @@ namespace Javanile\Imap2;
 
 class Mail
 {
+    public static function copy()
+    {
+        return null;
+    }
 
+    public static function move()
+    {
+        return null;
+    }
+
+    public static function send()
+    {
+        return true;
+    }
 }

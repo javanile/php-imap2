@@ -49,3 +49,6 @@ test-xoauth:
 
 test-signatures:
 	@docker-compose run --rm phpunit tests --filter SignaturesTest
+
+test-polyfill:
+	@docker-compose run --rm phpunit tests --filter PolyfillTest
