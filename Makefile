@@ -44,6 +44,9 @@ test-delete:
 test-fetch-body:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchBody
 
+test-fetch-overview:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchOverview
+
 test-xoauth:
 	@docker-compose run --rm phpunit tests --filter XoauthTest
 

@@ -211,4 +211,20 @@ class CompatibilityTest extends ImapTestCase
         imap_close($imap1);
         imap2_close($imap2);
     }
+
+    public function testFetchOverview()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $sequence = '1'; //$flags
+        $overview1 = imap_fetch_overview($imap1, $sequence);
+        $overview2 = imap2_fetch_overview($imap2, $sequence);
+
+        $this->assertEquals($overview1, $overview2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
 }

@@ -229,13 +229,13 @@ class MessageHeader
         if ($decode) {
             if (is_array($value)) {
                 foreach ($value as $key => $val) {
-                    $val         = rcube_mime::decode_header($val, $this->charset);
-                    $value[$key] = rcube_charset::clean($val);
+                    $val         = Mime::decode_header($val, $this->charset);
+                    $value[$key] = Charset::clean($val);
                 }
             }
             else {
-                $value = rcube_mime::decode_header($value, $this->charset);
-                $value = rcube_charset::clean($value);
+                $value = Mime::decode_header($value, $this->charset);
+                $value = Charset::clean($value);
             }
         }
 
@@ -266,7 +266,7 @@ class MessageHeader
      */
     public static function from_array($arr)
     {
-        $obj = new rcube_message_header;
+        $obj = new MessageHeader;
         foreach ($arr as $k => $v)
             $obj->set($k, $v);
 

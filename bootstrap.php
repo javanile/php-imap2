@@ -838,7 +838,7 @@ if (!function_exists('imap_fetch_overview')) {
 if (!function_exists('imap2_fetch_overview')) {
     function imap2_fetch_overview($imap, $sequence, $flags = 0)
     {
-        return Message::fetchHeader($imap, $sequence, $flags);
+        return Message::fetchOverview($imap, $sequence, $flags);
     }
 }
 

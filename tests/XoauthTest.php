@@ -130,6 +130,7 @@ class XoauthTest extends ImapTestCase
     }
     */
 
+    /*
     public function testAlert()
     {
         $this->assertFalse(imap2_alerts());
@@ -144,5 +145,40 @@ class XoauthTest extends ImapTestCase
         var_dump($status);
 
         //$this->assertEquals(['4', '5'], $status);
+    }
+    */
+
+    /*
+    public function testClearFlagFull()
+    {
+        $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $messages = imap2_fetch_overview($imap, 1);
+
+        var_dump($messages);
+        die();
+
+        //imap2_search($imap, )
+
+
+
+        imap2_close($imap);
+    }
+    */
+
+    public function testClearFlagFull()
+    {
+        $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $messages = imap2_fetch_overview($imap, 1);
+
+        var_dump($messages);
+        die();
+
+        //imap2_search($imap, )
+
+
+
+        imap2_close($imap);
     }
 }

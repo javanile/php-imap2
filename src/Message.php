@@ -213,6 +213,47 @@ class Message
         return imap_fetchheader($imap, $messageNum, $flags);
     }
 
+    public static function fetchOverview($imap, $sequence, $flags = 0)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $client->setDebug(true);
+
+            $messages = $client->fetch($imap->getMailboxName(), $sequence, false, ['FLAGS']);
+
+            $overview = [];
+            foreach ($messages as $message) {
+                $overview[] = (object) [
+                    'subject' => $message->get('subject'),
+                    'from' => $message->get('from'),
+                    'to' => $message->get('to'),
+                    //"Sat, 14 May 2022 08:42:39 -0700 (PDT)"
+                    'date'=> $message->get('date'),
+                    'message_id'=> $message->get('message_id'),
+                    'size'=> $message->get('size'),
+                    'uid'=> $message->get('uid'),
+                    'msgno'=> $message->get('msgno'),
+                    'recent'=> $message->get('recent'),
+                    'flagged'=> $message->get('flagged'),
+                    'answered'=> $message->get('answered'),
+                    'deleted'=> $message->get('deleted'),
+                    'seen'=> $message->get('seen'),
+                    'draft'=> $message->get('draft'),
+                    'udate'=> $message->get('udate'),
+                ];
+            }
+
+            return $overview;
+
+        } elseif (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_fetch_overview($imap, $sequence, $flags);
+        }
+
+        trigger_error(Errors::invalidImapConnection(debug_backtrace(), 1), E_USER_WARNING);
+
+        return false;
+    }
+
     public static function delete($imap, $messageNums, $flags = 0)
     {
         if (is_a($imap, Connection::class)) {

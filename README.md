@@ -79,8 +79,8 @@
 ## XOAUTH2 Compatibility
 
 - [x] imap_alerts
-- [ ] imap_append
-- [ ] imap_check
+- [x] imap_append
+- [x] imap_check
 - [ ] imap_clearflag_full
 - [ ] imap_close
 - [ ] imap_createmailbox
@@ -112,3 +112,7 @@
 - [ ] imap_thread
 - [ ] imap_timeout
 - [ ] imap_undelete
+
+## Reference
+
+- <https://www.atmail.com/blog/imap-commands/>
