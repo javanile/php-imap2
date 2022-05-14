@@ -88,16 +88,15 @@ class SignaturesTest extends ImapTestCase
         ];
 
         foreach ($functions as $function) {
-            echo $function."\n";
             $function1 = new \ReflectionFunction('imap_'.$function);
             $function2 = new \ReflectionFunction('imap2_'.$function);
             $parameters1 = array_map(function($parameter) { return (array) $parameter; }, $function1->getParameters());
             $parameters2 = array_map(function($parameter) { return (array) $parameter; }, $function2->getParameters());
+
             foreach ($parameters2 as $index => $parameter) {
                 $parameters1[$index]['name'] = $parameter['name'];
             }
 
-            var_dump($parameters1);
             $this->assertEquals($parameters1, $parameters2);
         }
     }
