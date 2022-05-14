@@ -16,18 +16,26 @@ class Mailbox
     public static function check($imap)
     {
         if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
             $imap->openMailbox();
 
+            $client = $imap->getClient();
+            $status = $client->status($imap->getMailboxName(), ['MESSAGES', 'RECENT']);
+
             return (object) [
+                'Date' => date('Y-m-d H:i:s'),
                 'Driver' => 'imap',
                 'Mailbox' => $imap->getMailbox(),
-                'Nmsgs' => $client->data['EXISTS'],
-                'Recent' => $client->data['RECENT'],
+                'Nmsgs' => $status['MESSAGES'],
+                'Recent' => $status['RECENT'],
             ];
+
+        } elseif (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_check($imap);
         }
 
-        return imap_check($imap);
+        trigger_error(Errors::invalidImapConnection(debug_backtrace(), 1), E_USER_WARNING);
+
+        return false;
     }
 
     public static function numMsg($imap)
@@ -261,12 +269,20 @@ class Mailbox
     public static function append($imap, $folder, $message, $options = null, $internalDate = null)
     {
         if (is_a($imap, Connection::class)) {
+            $folderParts = explode('}', $folder);
             $client = $imap->getClient();
+            $client->setDebug(true);
+            $mailbox = empty($folderParts[1]) ? 'INBOX' : $folderParts[1];
 
-            return $client->deleteFolder($mailbox);
+            return $client->append($mailbox, $message);
+
+        } elseif (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_append($imap, $folder, $message, $options, $internalDate);
         }
 
-        return imap_append($imap, $folder, $message, $options, $internalDate);
+        trigger_error(Errors::invalidImapConnection(debug_backtrace(), 1), E_USER_WARNING);
+
+        return false;
     }
 
     public static function getSubscribed($imap, $mailbox)
