@@ -45,4 +45,16 @@ class Functions
 
         return false;
     }
+
+    public static function expectedNumberOfMessages($sequence)
+    {
+        if (strpos($sequence, ',') > 0) {
+            return count(explode(',', $sequence));
+        } elseif (strpos($sequence, ':') > 0) {
+            $range = explode(':', $sequence);
+            return $range[1] - $range[0];
+        } else {
+            return 1;
+        }
+    }
 }

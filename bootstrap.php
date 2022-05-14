@@ -17,6 +17,7 @@ use Javanile\Imap2\Message;
 use Javanile\Imap2\Thread;
 use Javanile\Imap2\Polyfill;
 
+define('IMAP2_CHARSET', 'UTF-8');
 define('IMAP2_RETROFIT_MODE', function_exists('imap_open'));
 
 if (!defined('NIL')) {

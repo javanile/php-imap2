@@ -2148,12 +2148,12 @@ class ImapClient
                     if (preg_match('/BODY\[HEADER\.FIELDS \("*DATE"*\)\] (.*)/', $line, $matches)) {
                         $value = preg_replace(array('/^"*[a-z]+:/i'), '', $matches[1]);
                         $value = trim($value);
-                        $result[$id] = rcube_utils::strtotime($value);
+                        $result[$id] = Utils::strtotime($value);
                     }
                     // non-existent/empty Date: header, use INTERNALDATE
                     if (empty($result[$id])) {
                         if (preg_match('/INTERNALDATE "([^"]+)"/', $line, $matches)) {
-                            $result[$id] = rcube_utils::strtotime($matches[1]);
+                            $result[$id] = Utils::strtotime($matches[1]);
                         }
                         else {
                             $result[$id] = 0;
@@ -2185,7 +2185,7 @@ class ImapClient
                 }
                 else if ($mode == 4) {
                     if (preg_match('/INTERNALDATE "([^"]+)"/', $line, $matches)) {
-                        $result[$id] = rcube_utils::strtotime($matches[1]);
+                        $result[$id] = Utils::strtotime($matches[1]);
                     }
                     else {
                         $result[$id] = 0;
@@ -2493,7 +2493,7 @@ class ImapClient
                     else if ($name == 'INTERNALDATE') {
                         $result[$id]->internaldate = $value;
                         $result[$id]->date         = $value;
-                        $result[$id]->timestamp    = rcube_utils::strtotime($value);
+                        $result[$id]->timestamp    = Utils::strtotime($value);
                     }
                     else if ($name == 'FLAGS') {
                         if (!empty($value)) {
@@ -2559,7 +2559,7 @@ class ImapClient
                             case 'date';
                                 $string                 = substr($string, 0, 128);
                                 $result[$id]->date      = $string;
-                                $result[$id]->timestamp = rcube_utils::strtotime($string);
+                                $result[$id]->timestamp = Utils::strtotime($string);
                                 break;
                             case 'to':
                                 $result[$id]->to = preg_replace('/undisclosed-recipients:[;,]*/', '', $string);
@@ -2705,7 +2705,7 @@ class ImapClient
                 case 'date':
                 case 'internaldate':
                 case 'timestamp':
-                    $value = rcube_utils::strtotime($headers->$field);
+                    $value = Utils::strtotime($headers->$field);
                     if (!$value && $field != 'timestamp') {
                         $value = $headers->timestamp;
                     }

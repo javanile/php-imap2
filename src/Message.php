@@ -219,28 +219,45 @@ class Message
             $client = $imap->getClient();
             $client->setDebug(true);
 
-            $messages = $client->fetch($imap->getMailboxName(), $sequence, false, ['FLAGS']);
+            $messages = $client->fetch($imap->getMailboxName(), $sequence, false, [
+                'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE)]',
+                'UID',
+                'FLAGS',
+                'INTERNALDATE',
+                'RFC822.SIZE',
+                'ENVELOPE',
+                'RFC822.HEADER'
+            ]);
+
+            if ($sequence != '*' && count($messages) < Functions::expectedNumberOfMessages($sequence)) {
+                return [];
+            }
 
             $overview = [];
             foreach ($messages as $message) {
-                $overview[] = (object) [
+                #var_dump($message);
+                #die();
+                $messageEntry = (object) [
                     'subject' => $message->get('subject'),
                     'from' => $message->get('from'),
                     'to' => $message->get('to'),
-                    //"Sat, 14 May 2022 08:42:39 -0700 (PDT)"
-                    'date'=> $message->get('date'),
-                    'message_id'=> $message->get('message_id'),
-                    'size'=> $message->get('size'),
-                    'uid'=> $message->get('uid'),
-                    'msgno'=> $message->get('msgno'),
-                    'recent'=> $message->get('recent'),
-                    'flagged'=> $message->get('flagged'),
-                    'answered'=> $message->get('answered'),
-                    'deleted'=> $message->get('deleted'),
-                    'seen'=> $message->get('seen'),
-                    'draft'=> $message->get('draft'),
-                    'udate'=> $message->get('udate'),
+                    'date' => $message->envelope[0],
+                    'message_id' => $message->envelope[9],
+                    'size' => $message->size,
+                    'uid' => $message->uid,
+                    'msgno' => $message->id,
+                    'recent' => intval($message->flags['RECENT'] ?? 0),
+                    'flagged' => intval($message->flags['FLAGGED'] ?? 0),
+                    'answered' => intval($message->flags['ANSWERED'] ?? 0),
+                    'deleted' => intval($message->flags['DELETED'] ?? 0),
+                    'seen' => intval($message->flags['SEEN'] ?? 0),
+                    'draft' => intval($message->flags['DRAFT'] ?? 0),
+                    'udate' => $message->timestamp,
                 ];
+                if (empty($messageEntry->to)) {
+                    unset($messageEntry->to);
+                }
+                $overview[] = $messageEntry;
             }
 
             return $overview;

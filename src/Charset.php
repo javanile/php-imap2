@@ -280,7 +280,7 @@ class Charset
         static $iconv_options = null;
         static $mbstring_sc   = null;
 
-        $to   = empty($to) ? RCUBE_CHARSET : strtoupper($to);
+        $to   = empty($to) ? IMAP2_CHARSET : strtoupper($to);
         $from = self::parse_charset($from);
 
         // It is a common case when UTF-16 charset is used with US-ASCII content (#1488654)

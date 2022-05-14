@@ -217,7 +217,7 @@ class CompatibilityTest extends ImapTestCase
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
-        $sequence = '1'; //$flags
+        $sequence = '1:2';
         $overview1 = imap_fetch_overview($imap1, $sequence);
         $overview2 = imap2_fetch_overview($imap2, $sequence);
 

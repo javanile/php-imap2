@@ -51,11 +51,11 @@ class Mime
             return self::$default_charset;
         }
 
-        if ($charset = rcube::get_instance()->config->get('default_charset')) {
+        if ($charset = IMAP2_CHARSET) {
             return $charset;
         }
 
-        return RCUBE_CHARSET;
+        return IMAP2_CHARSET;
     }
 
     /**
@@ -190,7 +190,7 @@ class Mime
                 // Append everything that is before the text to be decoded
                 if ($start != $pos) {
                     $substr = substr($input, $start, $pos-$start);
-                    $out   .= rcube_charset::convert($substr, $default_charset);
+                    $out   .= Charset::convert($substr, $default_charset);
                     $start  = $pos;
                 }
                 $start += $length;
@@ -243,13 +243,13 @@ class Mime
                     $text = quoted_printable_decode($text);
                 }
 
-                $out .= rcube_charset::convert($text, $charset);
+                $out .= Charset::convert($text, $charset);
                 $tmp = array();
             }
 
             // add the last part of the input string
             if ($start != strlen($input)) {
-                $out .= rcube_charset::convert(substr($input, $start), $default_charset);
+                $out .= Charset::convert(substr($input, $start), $default_charset);
             }
 
             // return the results
@@ -257,7 +257,7 @@ class Mime
         }
 
         // no encoding information, use fallback
-        return rcube_charset::convert($input, $default_charset);
+        return Charset::convert($input, $default_charset);
     }
 
     /**
@@ -593,7 +593,7 @@ class Mime
         // Note: Never try to use iconv instead of mbstring functions here
         //       Iconv's substr/strlen are 100x slower (#1489113)
 
-        if ($charset && $charset != RCUBE_CHARSET) {
+        if ($charset && $charset != IMAP2_CHARSET) {
             mb_internal_encoding($charset);
         }
 
@@ -687,8 +687,8 @@ class Mime
             }
         }
 
-        if ($charset && $charset != RCUBE_CHARSET) {
-            mb_internal_encoding(RCUBE_CHARSET);
+        if ($charset && $charset != IMAP2_CHARSET) {
+            mb_internal_encoding(IMAP2_CHARSET);
         }
 
         return implode($break, $result);
@@ -885,7 +885,7 @@ class Mime
      */
     public static function fix_email($email)
     {
-        $parts = rcube_utils::explode_quoted_string('@', $email);
+        $parts = Utils::explode_quoted_string('@', $email);
         foreach ($parts as $idx => $part) {
             // remove redundant quoting (#1490040)
             if ($part[0] == '"' && preg_match('/^"([a-zA-Z0-9._+=-]+)"$/', $part, $m)) {
