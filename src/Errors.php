@@ -17,11 +17,11 @@ class Errors
 {
     public static function errors()
     {
-        return [];
+        return false;
     }
 
     public static function alerts()
     {
-        return [];
+        return false;
     }
 }

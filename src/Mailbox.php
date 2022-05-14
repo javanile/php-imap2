@@ -136,4 +136,15 @@ class Mailbox
 
         return imap_deletemailbox($imap, $mailbox);
     }
+
+    public static function append($imap, $mailbox)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+
+            return $client->deleteFolder($mailbox);
+        }
+
+        return imap_deletemailbox($imap, $mailbox);
+    }
 }

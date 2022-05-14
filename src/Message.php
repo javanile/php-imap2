@@ -89,6 +89,24 @@ class Message
         return imap_headerinfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0);
     }
 
+    public static function body($imap, $messageNum, $section, $flags = 0)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $client->setDebug(true);
+
+            $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+
+            if ($section) {
+                return $messages[$messageNum]->bodypart[$section];
+            }
+
+            return $messages[$messageNum]->body;
+        }
+
+        return imap_fetchbody($imap, $messageNum, $section, $flags);
+    }
+
     public static function fetchBody($imap, $messageNum, $section, $flags = 0)
     {
         if (is_a($imap, Connection::class)) {
@@ -124,6 +142,24 @@ class Message
     }
 
     public static function fetchStructure($imap, $messageNum, $flags = 0)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $client->setDebug(true);
+
+            $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+
+            if ($section) {
+                return $messages[$messageNum]->bodypart[$section];
+            }
+
+            return $messages[$messageNum]->body;
+        }
+
+        return imap_fetchstructure($imap, $messageNum, $flags);
+    }
+
+    public static function bodyStruct($imap, $messageNum, $flags = 0)
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
