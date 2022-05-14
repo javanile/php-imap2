@@ -225,6 +225,17 @@ class Mailbox
         return imap_createmailbox($imap, $mailbox);
     }
 
+    public static function renameMailbox($imap, $from, $to)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+
+            return $client->createFolder($mailbox);
+        }
+
+        return imap_createmailbox($imap, $mailbox);
+    }
+
     public static function deleteMailbox($imap, $mailbox)
     {
         if (is_a($imap, Connection::class)) {
@@ -259,6 +270,28 @@ class Mailbox
     }
 
     public static function listSubscribed($imap, $mailbox)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+
+            return $client->deleteFolder($mailbox);
+        }
+
+        return imap_deletemailbox($imap, $mailbox);
+    }
+
+    public static function subscribe($imap, $mailbox)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+
+            return $client->deleteFolder($mailbox);
+        }
+
+        return imap_deletemailbox($imap, $mailbox);
+    }
+
+    public static function unsubscribe($imap, $mailbox)
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();

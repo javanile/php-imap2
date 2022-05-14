@@ -1105,7 +1105,7 @@ if (!function_exists('imap_qprint')) {
 if (!function_exists('imap2_qprint')) {
     function imap2_qprint($string)
     {
-        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string);
+        return imap_qprint($string);
     }
 }
 
@@ -1115,13 +1115,13 @@ if (!function_exists('imap2_qprint')) {
 if (!function_exists('imap_rfc822_parse_adrlist')) {
     function imap_rfc822_parse_adrlist($string, $defaultHostname)
     {
-        return imap_rfc822_parse_adrlist($string, $defaultHostname);
+        return Polyfill::rfc822ParseAdrList($string, $defaultHostname);
     }
 }
 if (!function_exists('imap2_rfc822_parse_adrlist')) {
     function imap2_rfc822_parse_adrlist($string, $defaultHostname)
     {
-        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+        return imap_rfc822_parse_adrlist($string, $defaultHostname);
     }
 }
 
@@ -1131,13 +1131,13 @@ if (!function_exists('imap2_rfc822_parse_adrlist')) {
 if (!function_exists('imap_rfc822_parse_headers')) {
     function imap_rfc822_parse_headers($headers, $defaultHostname = 'UNKNOWN')
     {
-        return imap_rfc822_parse_headers($headers, $defaultHostname);
+        return Polyfill::rfc822ParseHeaders($headers, $defaultHostname);
     }
 }
 if (!function_exists('imap2_rfc822_parse_headers')) {
     function imap2_rfc822_parse_headers($headers, $defaultHostname = 'UNKNOWN')
     {
-        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+        return imap_rfc822_parse_headers($headers, $defaultHostname);
     }
 }
 
@@ -1147,13 +1147,13 @@ if (!function_exists('imap2_rfc822_parse_headers')) {
 if (!function_exists('imap_rfc822_write_address')) {
     function imap_rfc822_write_address($mailbox, $hostname, $personal)
     {
-        return imap_rfc822_write_address($mailbox, $hostname, $personal);
+        return Polyfill::rfc822WriteHeaders($mailbox, $hostname, $personal);
     }
 }
 if (!function_exists('imap2_rfc822_write_address')) {
     function imap2_rfc822_write_address($mailbox, $hostname, $personal)
     {
-        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+        return imap_rfc822_write_address($mailbox, $hostname, $personal);
     }
 }
 
@@ -1163,13 +1163,13 @@ if (!function_exists('imap2_rfc822_write_address')) {
 if (!function_exists('imap_utf7_decode')) {
     function imap_utf7_decode($string)
     {
-        return imap2_utf7_decode($string);
+        return Polyfill::utf7Decode($string);
     }
 }
 if (!function_exists('imap2_utf7_decode')) {
     function imap2_utf7_decode($string)
     {
-        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+        return imap_utf7_decode($string);
     }
 }
 
@@ -1179,13 +1179,13 @@ if (!function_exists('imap2_utf7_decode')) {
 if (!function_exists('imap_utf7_encode')) {
     function imap_utf7_encode($string)
     {
-        return imap2_utf7_encode($string);
+        return Polyfill::utf7Encode($string);
     }
 }
 if (!function_exists('imap2_utf7_encode')) {
     function imap2_utf7_encode($string)
     {
-        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+        return imap_utf7_encode($string);
     }
 }
 
@@ -1195,13 +1195,13 @@ if (!function_exists('imap2_utf7_encode')) {
 if (!function_exists('imap_utf8_to_mutf7')) {
     function imap_utf8_to_mutf7($string)
     {
-        return imap2_utf8_to_mutf7($string);
+        return Polyfill::utf8ToMutf7($string);
     }
 }
 if (!function_exists('imap2_utf8_to_mutf7')) {
     function imap2_utf8_to_mutf7($string)
     {
-        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+        return imap_utf8_to_mutf7($string);
     }
 }
 
@@ -1211,12 +1211,12 @@ if (!function_exists('imap2_utf8_to_mutf7')) {
 if (!function_exists('imap_utf8')) {
     function imap_utf8($string)
     {
-        return imap2_utf8($string);
+        return Polyfill::utf8($string);
     }
 }
 if (!function_exists('imap2_utf8')) {
     function imap2_utf8(string $string)
     {
-        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+        return imap_utf8($string);
     }
 }

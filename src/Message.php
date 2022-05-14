@@ -267,4 +267,15 @@ class Message
 
         return imap_expunge($imap);
     }
+
+    public static function uid($imap)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+
+            return $client->expunge($imap->getMailboxName());
+        }
+
+        return imap_expunge($imap);
+    }
 }

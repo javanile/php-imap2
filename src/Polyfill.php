@@ -33,6 +33,41 @@ class Polyfill
         return $string;
     }
 
+    public static function rfc822ParseAdrList($string)
+    {
+        return $string;
+    }
+
+    public static function rfc822ParseHeaders($headers, $defaultHostname)
+    {
+        return $string;
+    }
+
+    public static function rfc822WriteHeaders($string)
+    {
+        return $string;
+    }
+
+    public static function utf7Decode($string)
+    {
+        return $string;
+    }
+
+    public static function utf7Encode($string)
+    {
+        return $string;
+    }
+
+    public static function utf8ToMutf7($string)
+    {
+        return $string;
+    }
+
+    public static function utf8($string)
+    {
+        return $string;
+    }
+
     public static function mailCompose($envelope, $bodies)
     {
         return false;
