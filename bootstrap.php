@@ -36,6 +36,15 @@ if (!function_exists('imap2_open')) {
     }
 }
 
+/**
+ * imap2_reopen
+ */
+if (!function_exists('imap_reopen')) {
+    function imap_reopen($imap, $mailbox, $flags = 0, $retries = 0)
+    {
+        return Connection::reopen($imap, $mailbox, $flags, $retries);
+    }
+}
 if (!function_exists('imap2_reopen')) {
     function imap2_reopen($imap, $mailbox, $flags = 0, $retries = 0)
     {
@@ -43,6 +52,15 @@ if (!function_exists('imap2_reopen')) {
     }
 }
 
+/**
+ * imap2_ping
+ */
+if (!function_exists('imap_ping')) {
+    function imap_ping($imap)
+    {
+        return Connection::ping($imap);
+    }
+}
 if (!function_exists('imap2_ping')) {
     function imap2_ping($imap)
     {
@@ -50,6 +68,15 @@ if (!function_exists('imap2_ping')) {
     }
 }
 
+/**
+ * imap2_close
+ */
+if (!function_exists('imap_close')) {
+    function imap_close($imap, $flags = 0)
+    {
+        return Connection::close($imap, $flags);
+    }
+}
 if (!function_exists('imap2_close')) {
     function imap2_close($imap, $flags = 0)
     {
@@ -57,6 +84,31 @@ if (!function_exists('imap2_close')) {
     }
 }
 
+/**
+ * imap2_timeout
+ */
+if (!function_exists('imap_timeout')) {
+    function imap_timeout($timeoutType, $timeout = -1)
+    {
+        return Connection::close($timeoutType, $timeout);
+    }
+}
+if (!function_exists('imap_timeout')) {
+    function imap2_timeout($timeoutType, $timeout = -1)
+    {
+        return Connection::close($timeoutType, $timeout);
+    }
+}
+
+/**
+ * imap2_check
+ */
+if (!function_exists('imap_check')) {
+    function imap_check($imap)
+    {
+        return Mailbox::check($imap);
+    }
+}
 if (!function_exists('imap2_check')) {
     function imap2_check($imap)
     {
@@ -64,10 +116,51 @@ if (!function_exists('imap2_check')) {
     }
 }
 
+/**
+ * imap2_status
+ */
+if (!function_exists('imap_status')) {
+    function imap_status($imap, $mailbox, $flags)
+    {
+        return imap2_status($imap, $mailbox, $flags);
+    }
+}
 if (!function_exists('imap2_status')) {
     function imap2_status($imap, $mailbox, $flags)
     {
         return Mailbox::status($imap, $mailbox, $flags);
+    }
+}
+
+/**
+ * imap2_num_msg
+ */
+if (!function_exists('imap_num_msg')) {
+    function imap_num_msg($imap)
+    {
+        return imap2_num_msg($imap);
+    }
+}
+if (!function_exists('imap2_num_msg')) {
+    function imap2_num_msg($imap)
+    {
+        return Mailbox::numMsg($imap);
+    }
+}
+
+/**
+ * imap2_num_recent
+ */
+if (!function_exists('imap_num_recent')) {
+    function imap_num_recent($imap)
+    {
+        return imap2_num_recent($imap);
+    }
+}
+if (!function_exists('imap2_num_recent')) {
+    function imap2_num_recent($imap)
+    {
+        return Mailbox::numRecent($imap);
     }
 }
 
@@ -114,6 +207,38 @@ if (!function_exists('imap_listscan')) {
 }
 if (!function_exists('imap2_listscan')) {
     function imap2_listscan($imap, $reference, $pattern, $content)
+    {
+        return Mailbox::listScan($imap, $reference, $pattern, $content);
+    }
+}
+
+/**
+ * imap2_scan
+ */
+if (!function_exists('imap_scan')) {
+    function imap_scan($imap, $reference, $pattern, $content)
+    {
+        return imap2_scan($imap, $reference, $pattern, $content);
+    }
+}
+if (!function_exists('imap2_scan')) {
+    function imap2_scan($imap, $reference, $pattern, $content)
+    {
+        return Mailbox::listScan($imap, $reference, $pattern, $content);
+    }
+}
+
+/**
+ * imap2_scanmailbox
+ */
+if (!function_exists('imap_scanmailbox')) {
+    function imap_scanmailbox($imap, $reference, $pattern, $content)
+    {
+        return imap2_scanmailbox($imap, $reference, $pattern, $content);
+    }
+}
+if (!function_exists('imap2_scanmailbox')) {
+    function imap2_scanmailbox($imap, $reference, $pattern, $content)
     {
         return Mailbox::listScan($imap, $reference, $pattern, $content);
     }
@@ -184,6 +309,22 @@ if (!function_exists('imap2_getsubscribed')) {
 }
 
 /**
+ * imap2_subscribe
+ */
+if (!function_exists('imap_subscribe')) {
+    function imap_subscribe($imap, $mailbox)
+    {
+        return imap2_subscribe($imap, $mailbox);
+    }
+}
+if (!function_exists('imap2_subscribe')) {
+    function imap2_subscribe($imap, $mailbox)
+    {
+        return Mailbox::subscribe($imap, $mailbox);
+    }
+}
+
+/**
  * imap2_createmailbox
  */
 if (!function_exists('imap_createmailbox')) {
@@ -228,6 +369,54 @@ if (!function_exists('imap2_deletemailbox')) {
     function imap2_deletemailbox($imap, $mailbox)
     {
         return Mailbox::deleteMailbox($imap, $mailbox);
+    }
+}
+
+/**
+ * imap2_renamemailbox
+ */
+if (!function_exists('imap_renamemailbox')) {
+    function imap_renamemailbox($imap, $from, $to)
+    {
+        return imap2_renamemailbox($imap, $from, $to);
+    }
+}
+if (!function_exists('imap2_renamemailbox')) {
+    function imap2_renamemailbox($imap, $from, $to)
+    {
+        return Mailbox::renameMailbox($imap, $from, $to);
+    }
+}
+
+/**
+ * imap2_rename
+ */
+if (!function_exists('imap_rename')) {
+    function imap_rename($imap, $from, $to)
+    {
+        return imap2_rename($imap, $from, $to);
+    }
+}
+if (!function_exists('imap2_rename')) {
+    function imap2_rename($imap, $from, $to)
+    {
+        return Mailbox::renameMailbox($imap, $from, $to);
+    }
+}
+
+/**
+ * imap2_mailboxmsginfo
+ */
+if (!function_exists('imap_mailboxmsginfo')) {
+    function imap_mailboxmsginfo($imap)
+    {
+        return imap2_mailboxmsginfo($imap);
+    }
+}
+if (!function_exists('imap2_mailboxmsginfo')) {
+    function imap2_mailboxmsginfo($imap)
+    {
+        return Mailbox::mailboxMsgInfo($imap);
     }
 }
 
@@ -536,6 +725,22 @@ if (!function_exists('imap2_clearflag_full')) {
 }
 
 /**
+ * imap2_setflag_full
+ */
+if (!function_exists('imap_setflag_full')) {
+    function imap_setflag_full($imap, $sequence, $flag, $options = 0)
+    {
+        return imap2_setflag_full($imap, $sequence, $flag, $options);
+    }
+}
+if (!function_exists('imap2_setflag_full')) {
+    function imap2_setflag_full($imap, $sequence, $flag, $options = 0)
+    {
+        return Message::clearFlagFull($imap, $sequence, $flag, $options);
+    }
+}
+
+/**
  * imap2_mail_compose
  */
 if (!function_exists('imap_mail_compose')) {
@@ -648,6 +853,22 @@ if (!function_exists('imap2_get_quota')) {
 }
 
 /**
+ * imap2_set_quota
+ */
+if (!function_exists('imap_set_quota')) {
+    function imap_set_quota($imap, $quotaRoot, $mailboxSize)
+    {
+        return imap2_set_quota($imap, $quotaRoot, $mailboxSize);
+    }
+}
+if (!function_exists('imap2_set_quota')) {
+    function imap2_set_quota($imap, $quotaRoot, $mailboxSize)
+    {
+        return Message::expunge($imap, $quotaRoot, $mailboxSize);
+    }
+}
+
+/**
  * imap2_get_quotaroot
  */
 if (!function_exists('imap_get_quotaroot')) {
@@ -676,6 +897,22 @@ if (!function_exists('imap2_getacl')) {
     function imap2_getacl($imap, $mailbox)
     {
         return Message::expunge($imap, $mailbox);
+    }
+}
+
+/**
+ * imap2_setacl
+ */
+if (!function_exists('imap_setacl')) {
+    function imap_setacl($imap, $mailbox, $userId, $rights)
+    {
+        return imap2_setacl($imap, $mailbox, $userId, $rights);
+    }
+}
+if (!function_exists('imap2_setacl')) {
+    function imap2_setacl($imap, $mailbox, $userId, $rights)
+    {
+        return Message::expunge($imap, $mailbox, $userId, $rights);
     }
 }
 
@@ -791,4 +1028,98 @@ if (!function_exists('imap2_binary')) {
     }
 }
 
+/**
+ * imap2_mime_header_decode
+ */
+if (!function_exists('imap_mime_header_decode')) {
+    function imap_mime_header_decode($string)
+    {
+        return imap2_mime_header_decode($string);
+    }
+}
+if (!function_exists('imap2_mime_header_decode')) {
+    function imap2_mime_header_decode($string)
+    {
+        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string);
+    }
+}
 
+/**
+ * imap2_mutf7_to_utf8
+ */
+if (!function_exists('imap_mutf7_to_utf8')) {
+    function imap_mutf7_to_utf8($string)
+    {
+        return imap2_mutf7_to_utf8($string);
+    }
+}
+if (!function_exists('imap2_mutf7_to_utf8')) {
+    function imap2_mutf7_to_utf8($string)
+    {
+        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string);
+    }
+}
+
+/**
+ * imap2_qprint
+ */
+if (!function_exists('imap_qprint')) {
+    function imap_qprint($string)
+    {
+        return imap2_qprint($string);
+    }
+}
+if (!function_exists('imap2_qprint')) {
+    function imap2_qprint($string)
+    {
+        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string);
+    }
+}
+
+/**
+ * imap2_rfc822_parse_adrlist
+ */
+if (!function_exists('imap_rfc822_parse_adrlist')) {
+    function imap_rfc822_parse_adrlist($string, $defaultHostname)
+    {
+        return imap_rfc822_parse_adrlist($string, $defaultHostname);
+    }
+}
+if (!function_exists('imap2_rfc822_parse_adrlist')) {
+    function imap2_rfc822_parse_adrlist($string, $defaultHostname)
+    {
+        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+    }
+}
+
+/**
+ * imap2_rfc822_parse_headers
+ */
+if (!function_exists('imap_rfc822_parse_headers')) {
+    function imap_rfc822_parse_headers($headers, $defaultHostname = 'UNKNOWN')
+    {
+        return imap_rfc822_parse_headers($headers, $defaultHostname);
+    }
+}
+if (!function_exists('imap2_rfc822_parse_headers')) {
+    function imap2_rfc822_parse_headers($headers, $defaultHostname = 'UNKNOWN')
+    {
+        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+    }
+}
+
+/**
+ * imap2_rfc822_write_address
+ */
+if (!function_exists('imap_rfc822_write_address')) {
+    function imap_rfc822_write_address($mailbox, $hostname, $personal)
+    {
+        return imap_rfc822_write_address($mailbox, $hostname, $personal);
+    }
+}
+if (!function_exists('imap2_rfc822_write_address')) {
+    function imap2_rfc822_write_address($mailbox, $hostname, $personal)
+    {
+        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string, $defaultHostname);
+    }
+}
