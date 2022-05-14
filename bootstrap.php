@@ -919,7 +919,11 @@ if (!function_exists('imap_setflag_full')) {
 if (!function_exists('imap2_setflag_full')) {
     function imap2_setflag_full($imap, $sequence, $flag, $options = 0)
     {
-        return Message::clearFlagFull($imap, $sequence, $flag, $options);
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_setflag_full($imap, $sequence, $flag, $options);
+        }
+
+        return Message::setFlagFull($imap, $sequence, $flag, $options);
     }
 }
 

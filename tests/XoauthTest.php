@@ -166,6 +166,7 @@ class XoauthTest extends ImapTestCase
     }
     */
 
+    /*
     public function testClearFlagFull()
     {
         $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
@@ -178,6 +179,26 @@ class XoauthTest extends ImapTestCase
         //imap2_search($imap, )
 
 
+
+        imap2_close($imap);
+    }
+    */
+
+    public function testSetFlagFull()
+    {
+        $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $allFlags = ['\\Seen', '\\Answered', '\\Flagged', '\\Deleted', '\\Draft'];
+
+        $sequence = '1:2';
+        foreach ($allFlags as $flag) {
+            imap2_setflag_full($imap, $sequence);
+        }
+
+        $messages = imap2_fetch_overview($imap, $sequence);
+
+        var_dump($messages);
+        die();
 
         imap2_close($imap);
     }

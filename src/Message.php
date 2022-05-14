@@ -277,9 +277,13 @@ class Message
             $client = $imap->getClient();
 
             $messages = $client->fetch($imap->getMailboxName(), $messageNums, false, ['UID']);
+
+            $uid = [];
             foreach ($messages as $message) {
-                $client->flag($imap->getMailboxName(), $message->uid, $client->flags['DELETED']);
+                $uid[] = $message->uid;
             }
+
+            $client->flag($imap->getMailboxName(), implode(',', $uid), $client->flags['DELETED']);
 
             return true;
         }
@@ -313,6 +317,40 @@ class Message
         }
 
         return imap_expunge($imap);
+    }
+
+    /**
+     * Sets flags on messages.
+     *
+     * @param $imap
+     * @param $sequence
+     * @param $flag
+     * @param $options
+     *
+     * @return bool|void
+     */
+    public static function setFlagFull($imap, $sequence, $flag, $options = 0)
+    {
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
+        }
+
+        $client = $imap->getClient();
+
+        if (!($options & ST_UID)) {
+            $messages = $client->fetch($imap->getMailboxName(), $sequence, false, ['UID']);
+
+            $uid = [];
+            foreach ($messages as $message) {
+                $uid[] = $message->uid;
+            }
+
+            $sequence = implode(',', $uid);
+        }
+
+        $client->flag($imap->getMailboxName(), $sequence, strtoupper(substr($flag, 1)));
+
+        return false;
     }
 
     public static function clearFlagFull($imap)
