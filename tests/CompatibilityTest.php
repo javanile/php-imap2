@@ -36,7 +36,7 @@ class CompatibilityTest extends ImapTestCase
 
         $check1 = imap_check($imap1);
         $check2 = imap2_check($imap2);
-        $this->assertEquals($check1, $check2);
+        $this->assertEquals($check1->Nmsgs, $check2->Nmsgs);
 
         $initialCount = $check2->Nmsgs;
 
@@ -45,7 +45,7 @@ class CompatibilityTest extends ImapTestCase
 
         $check1 = imap_check($imap1);
         $check2 = imap2_check($imap2);
-        $this->assertEquals($check1, $check2);
+        $this->assertEquals($check1->Nmsgs, $check2->Nmsgs);
 
         $finalCount = $check2->Nmsgs;
 

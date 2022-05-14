@@ -29,4 +29,10 @@ class Errors
     {
         return false;
     }
+
+    public static function invalidImapConnection($backtrace, $depth)
+    {
+        return 'Invalid IMAP connection parameter for '.$backtrace[$depth]['function'].'() '
+             . 'at '.$backtrace[$depth]['file']. ' on line '.$backtrace[$depth]['line'].'. Source code';
+    }
 }

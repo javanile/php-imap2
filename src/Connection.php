@@ -164,8 +164,13 @@ class Connection
             $client->closeConnection();
 
             return true;
+
+        } elseif (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_close($imap, $flags);
         }
 
-        return imap_close($imap, $flags);
+        trigger_error(Errors::invalidImapConnection(debug_backtrace(), 1), E_USER_WARNING);
+
+        return false;
     }
 }

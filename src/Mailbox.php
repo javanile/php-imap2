@@ -247,7 +247,18 @@ class Mailbox
         return imap_deletemailbox($imap, $mailbox);
     }
 
-    public static function append($imap, $mailbox)
+    /**
+     * Append a string message to a specified mailbox.
+     *
+     * @param $imap
+     * @param $folder
+     * @param $message
+     * @param $options
+     * @param $internalDate
+     *
+     * @return bool
+     */
+    public static function append($imap, $folder, $message, $options = null, $internalDate = null)
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
@@ -255,7 +266,7 @@ class Mailbox
             return $client->deleteFolder($mailbox);
         }
 
-        return imap_deletemailbox($imap, $mailbox);
+        return imap_append($imap, $folder, $message, $options, $internalDate);
     }
 
     public static function getSubscribed($imap, $mailbox)

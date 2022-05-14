@@ -52,3 +52,6 @@ test-signatures:
 
 test-polyfill:
 	@docker-compose run --rm phpunit tests --filter PolyfillTest
+
+test-special:
+	@docker-compose run --rm phpunit tests --filter ErrorsTest::testWrongImapResourceAsInput

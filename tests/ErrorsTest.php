@@ -65,4 +65,14 @@ class ErrorsTest extends ImapTestCase
 
         $this->assertEquals($boxes1, $boxes2);
     }
+
+    public function testWrongImapResourceAsInput()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        var_dump(get_resource_type($imap1));
+        $imap = (object)[];
+        imap_close($imap);
+        imap2_close($imap);
+        die();
+    }
 }
