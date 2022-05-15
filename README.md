@@ -99,7 +99,7 @@
 - [ ] imap_mail_copy
 - [ ] imap_mail_move
 - [x] imap_mime_header_decode
-- [ ] imap_msgno
+- [x] imap_msgno
 - [ ] imap_num_msg
 - [ ] imap_open
 - [ ] imap_ping
