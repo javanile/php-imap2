@@ -227,4 +227,31 @@ class CompatibilityTest extends ImapTestCase
         imap2_close($imap2);
     }
 
+    public function testUid()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $messages = imap_fetch_overview($imap1, '*');
+        $this->assertGreaterThan(0, count($messages));
+
+        foreach ($messages as $message) {
+            $uid1 = imap_uid($imap1, $message->msgno);
+            $msgNo1 = imap_msgno($imap1, $message->uid);
+            $this->assertEquals($message->msgno, $msgNo1);
+            $this->assertEquals($message->uid, $uid1);
+
+            $uid2 = imap2_uid($imap2, $message->msgno);
+            $msgNo2 = imap2_msgno($imap2, $message->uid);
+            $this->assertEquals($message->msgno, $msgNo2);
+            $this->assertEquals($message->uid, $uid2);
+
+            $this->assertEquals($uid1, $uid2);
+            $this->assertEquals($msgNo1, $msgNo2);
+        }
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
 }

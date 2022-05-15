@@ -635,7 +635,11 @@ if (!function_exists('imap_msgno')) {
 if (!function_exists('imap2_msgno')) {
     function imap2_msgno($imap, $messageUid)
     {
-        return Message::msgno($imap, $messageUid);
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_msgno($imap, $messageUid);
+        }
+
+        return Message::msgNo($imap, $messageUid);
     }
 }
 
@@ -651,6 +655,10 @@ if (!function_exists('imap_uid')) {
 if (!function_exists('imap2_uid')) {
     function imap2_uid($imap, $messageNum)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_uid($imap, $messageNum);
+        }
+
         return Message::uid($imap, $messageNum);
     }
 }

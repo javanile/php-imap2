@@ -47,6 +47,9 @@ test-fetch-body:
 test-fetch-overview:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchOverview
 
+test-uid:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testUid
+
 test-xoauth:
 	@docker-compose run --rm phpunit tests --filter XoauthTest
 

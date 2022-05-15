@@ -5,7 +5,7 @@ namespace Javanile\Imap2\Tests;
 use Javanile\Imap2\Connection;
 use PHPUnit\Framework\Error\Warning;
 
-class CompatibilityTest extends ImapTestCase
+class ImapHelpersTest extends ImapTestCase
 {
     public function testIdToUid()
     {

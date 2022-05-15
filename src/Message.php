@@ -59,18 +59,6 @@ class Message
         return imap_sort($imap, $criteria, $reverse, $flags, $searchCriteria, $charset);
     }
 
-    public static function msgno($imap, $messageUid)
-    {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-            $client->setDebug(true);
-
-            return 1;
-        }
-
-        return imap_msgno($imap, $messageUid);
-    }
-
     public static function headerInfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0, $defaultHost = null)
     {
         if (is_a($imap, Connection::class)) {
@@ -387,14 +375,27 @@ class Message
         return false;
     }
 
-    public static function uid($imap)
+    public static function msgno($imap, $messageUid)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-
-            return $client->expunge($imap->getMailboxName());
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_expunge($imap);
+        $client = $imap->getClient();
+
+        $msgNo = ImapHelpers::uidToId($imap, $messageUid);
+
+        return is_numeric($msgNo) ? intval($msgNo) : $msgNo;
+    }
+
+    public static function uid($imap, $messageNum)
+    {
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
+        }
+
+        $uid = ImapHelpers::idToUid($imap, $messageNum);
+
+        return is_numeric($uid) ? intval($uid) : $uid;
     }
 }

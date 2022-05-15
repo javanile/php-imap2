@@ -36,4 +36,26 @@ class ImapHelpers
 
         return implode(',', $uid);
     }
+
+    /**
+     * Convert a string contain a sequence of uid(s) to an equivalent with id(s).
+     *
+     * @param $imap
+     * @param $messageUid
+     *
+     * @return string
+     */
+    public static function uidToId($imap, $messageUid)
+    {
+        $client = $imap->getClient();
+
+        $messages = $client->fetch($imap->getMailboxName(), $messageUid, true, ['UID']);
+
+        $id = [];
+        foreach ($messages as $message) {
+            $id[] = $message->id;
+        }
+
+        return implode(',', $id);
+    }
 }
