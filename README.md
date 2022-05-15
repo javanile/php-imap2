@@ -82,7 +82,7 @@
 - [x] imap_append
 - [x] imap_check
 - [ ] imap_clearflag_full
-- [ ] imap_close
+- [x] imap_close
 - [ ] imap_createmailbox
 - [ ] imap_delete
 - [ ] imap_deletemailbox
