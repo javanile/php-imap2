@@ -284,7 +284,7 @@ if (!function_exists('imap2_status')) {
     function imap2_status($imap, $mailbox, $flags)
     {
         if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
-            return imap_close($imap, $flags);
+            return imap_status($imap, $mailbox, $flags);
         }
 
         return Mailbox::status($imap, $mailbox, $flags);
@@ -511,6 +511,10 @@ if (!function_exists('imap_createmailbox')) {
 if (!function_exists('imap2_createmailbox')) {
     function imap2_createmailbox($imap, $mailbox)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_createmailbox($imap, $mailbox);
+        }
+
         return Mailbox::createMailbox($imap, $mailbox);
     }
 }

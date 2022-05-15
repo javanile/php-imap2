@@ -74,6 +74,6 @@ class Functions
     {
         $mailboxParts = explode('}', $mailbox, 2);
 
-        return $mailboxParts[2] ?? 'INBOX';
+        return $mailboxParts[1] ?? 'INBOX';
     }
 }

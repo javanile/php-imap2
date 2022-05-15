@@ -321,14 +321,56 @@ class CompatibilityTest extends ImapTestCase
         $messageNums2 = '3:4';
         $success1 = imap_mail_copy($imap1, $messageNums1, $randomMailboxName);
         $success2 = imap2_mail_copy($imap2, $messageNums2, $randomMailboxName);
+
         $this->assertEquals($success1, $success2);
         $this->assertTrue($success2);
 
         $status1 = imap_status($imap1, $this->mailbox.$randomMailboxName, SA_ALL);
         $status2 = imap2_status($imap2, $this->mailbox.$randomMailboxName, SA_ALL);
 
-        var_dump($status1);
+        unset($status1->flags);
+
+        $this->assertEquals(4, $status2->messages);
         $this->assertEquals($status1, $status2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
+    public function testMove()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $initialStatus1 = imap_status($imap1, $this->mailbox, SA_ALL);
+        $initialStatus2 = imap2_status($imap2, $this->mailbox, SA_ALL);
+
+        $randomMailboxName = 'Mailbox '.Functions::unique();
+        $this->assertTrue(imap2_createmailbox($imap2, $randomMailboxName));
+
+        $messageNums1 = '1:2';
+        $messageNums2 = '1:2';
+        $success1 = imap_mail_move($imap1, $messageNums1, $randomMailboxName);
+        $success2 = imap2_mail_move($imap2, $messageNums2, $randomMailboxName);
+
+        $this->assertEquals($success1, $success2);
+        $this->assertTrue($success2);
+
+        $status1 = imap_status($imap1, $this->mailbox.$randomMailboxName, SA_ALL);
+        $status2 = imap2_status($imap2, $this->mailbox.$randomMailboxName, SA_ALL);
+
+        $finalStatus1 = imap_status($imap1, $this->mailbox, SA_ALL);
+        $finalStatus2 = imap2_status($imap2, $this->mailbox, SA_ALL);
+
+        unset($status1->flags);
+        unset($initialStatus1->flags);
+        unset($finalStatus1->flags);
+
+        $this->assertEquals(4, $status2->messages);
+        $this->assertEquals($initialStatus2->messages - 4, $finalStatus2->messages);
+        $this->assertEquals($status1, $status2);
+        $this->assertEquals($initialStatus1, $initialStatus2);
+        $this->assertEquals($finalStatus1, $finalStatus2);
 
         imap_close($imap1);
         imap2_close($imap2);

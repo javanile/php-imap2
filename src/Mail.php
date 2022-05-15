@@ -39,7 +39,10 @@ class Mail
             $messageNums = ImapHelpers::idToUid($imap, $messageNums);
         }
 
-        return $client->copy($messageNums, $imap->getMailboxName(), Functions::getMailboxName($mailbox));
+        $from = $imap->getMailboxName();
+        $to = $mailbox;
+
+        return $client->copy($messageNums, $from, $to);
     }
 
     /**
