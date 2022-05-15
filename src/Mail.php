@@ -62,6 +62,7 @@ class Mail
         }
 
         $client = $imap->getClient();
+        $client->setDebug(true);
 
         if (!($flags & CP_UID)) {
             $messageNums = ImapHelpers::idToUid($imap, $messageNums);
