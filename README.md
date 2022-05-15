@@ -96,8 +96,8 @@
 - [ ] imap_get_quotaroot
 - [ ] imap_headerinfo
 - [ ] imap_last_error
-- [ ] imap_mail_copy
-- [ ] imap_mail_move
+- [x] imap_mail_copy
+- [x] imap_mail_move
 - [x] imap_mime_header_decode
 - [x] imap_msgno
 - [ ] imap_num_msg

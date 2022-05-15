@@ -110,6 +110,7 @@ class Mailbox
         }
 
         $status = $client->status($mailboxName, $items);
+
         if (empty($status)) {
             return false;
         }

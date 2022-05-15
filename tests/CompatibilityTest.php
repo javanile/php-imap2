@@ -349,12 +349,12 @@ class CompatibilityTest extends ImapTestCase
         $this->assertTrue(imap2_createmailbox($imap2, $randomMailboxName));
 
         $messageNums1 = '1:2';
-        $messageNums2 = '1:2';
-        $success1 = imap_mail_move($imap1, $messageNums1, $randomMailboxName);
-        #$success2 = imap2_mail_move($imap2, $messageNums2, $randomMailboxName);
+        $messageNums2 = '3:4';
 
-        var_dump($success1, $success1);
-        die();
+        $success1 = imap_mail_move($imap1, $messageNums1, $randomMailboxName);
+        $this->assertTrue(imap_expunge($imap1));
+        $success2 = imap2_mail_move($imap2, $messageNums2, $randomMailboxName);
+        $this->assertTrue(imap2_expunge($imap2));
 
         $this->assertEquals($success1, $success2);
         $this->assertTrue($success2);
