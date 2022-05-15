@@ -955,15 +955,19 @@ if (!function_exists('imap2_mail_compose')) {
  * imap2_mail_copy
  */
 if (!function_exists('imap_mail_copy')) {
-    function imap_mail_copy($imap, $message_nums, $mailbox, $flags = 0)
+    function imap_mail_copy($imap, $messageNums, $mailbox, $flags = 0)
     {
-        return imap2_mail_copy($imap, $message_nums, $mailbox, $flags);
+        return imap2_mail_copy($imap, $messageNums, $mailbox, $flags);
     }
 }
 if (!function_exists('imap2_mail_copy')) {
-    function imap2_mail_copy($imap, $message_nums, $mailbox, $flags = 0)
+    function imap2_mail_copy($imap, $messageNums, $mailbox, $flags = 0)
     {
-        return Mail::copy($imap, $message_nums, $mailbox, $flags);
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_mail_copy($imap, $messageNums, $mailbox, $flags);
+        }
+
+        return Mail::copy($imap, $messageNums, $mailbox, $flags);
     }
 }
 
@@ -979,6 +983,10 @@ if (!function_exists('imap_mail_move')) {
 if (!function_exists('imap2_mail_move')) {
     function imap2_mail_move($imap, $messageNums, $mailbox, $flags = 0)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_mail_move($imap, $messageNums, $mailbox, $flags);
+        }
+
         return Mail::move($imap, $messageNums, $mailbox, $flags);
     }
 }
@@ -995,6 +1003,10 @@ if (!function_exists('imap_mail')) {
 if (!function_exists('imap2_mail')) {
     function imap2_mail($to, $subject, $message, $additionalHeaders = null, $cc = null, $bcc = null, $returnPath = null)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_mail($to, $subject, $message, $additionalHeaders, $cc, $bcc, $returnPath);
+        }
+
         return Mail::send($to, $subject, $message, $additionalHeaders, $cc, $bcc, $returnPath);
     }
 }

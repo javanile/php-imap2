@@ -10,8 +10,8 @@ class XoauthTest extends ImapTestCase
     public function testConnection()
     {
         $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
-
         $this->assertInstanceOf(Connection::class, $imap);
+        imap2_close($imap);
     }
 
     public function testList()
