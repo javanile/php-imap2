@@ -30,9 +30,13 @@ class Errors
         return false;
     }
 
-    public static function invalidImapConnection($backtrace, $depth)
+    public static function invalidImapConnection($backtrace, $depth, $return)
     {
-        return 'Invalid IMAP connection parameter for '.$backtrace[$depth]['function'].'() '
-             . 'at '.$backtrace[$depth]['file']. ' on line '.$backtrace[$depth]['line'].'. Source code';
+        $warning = 'Invalid IMAP connection parameter for '.$backtrace[$depth]['function'].'() '
+                 . 'at '.$backtrace[$depth]['file']. ' on line '.$backtrace[$depth]['line'].'. Source code';
+
+        trigger_error($warning, E_USER_WARNING);
+
+        return $return;
     }
 }

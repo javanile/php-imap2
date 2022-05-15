@@ -184,21 +184,38 @@ class XoauthTest extends ImapTestCase
     }
     */
 
-    public function testSetFlagFull()
+    public function testSetAndClearFlagFull()
     {
         $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
-        $allFlags = ['\\Seen', '\\Answered', '\\Flagged', '\\Deleted', '\\Draft'];
-
         $sequence = '1:2';
+        $allFlags = ['\\Seen', '\\Answered', '\\Flagged', /*'\\Deleted',*/ '\\Draft'];
+
         foreach ($allFlags as $flag) {
-            imap2_setflag_full($imap, $sequence);
+            imap2_setflag_full($imap, $sequence, $flag);
         }
 
         $messages = imap2_fetch_overview($imap, $sequence);
+        foreach ($messages as $message) {
+            foreach ($allFlags as $flag) {
+                $flag = strtolower(substr($flag, 1));
+                $this->assertEquals(1, $message->{$flag});
+            }
+        }
 
-        var_dump($messages);
-        die();
+        /*
+        foreach ($allFlags as $flag) {
+            imap2_clearflag_full($imap, $sequence, $flag);
+        }
+
+        $messages = imap2_fetch_overview($imap, $sequence);
+        foreach ($messages as $message) {
+            foreach ($allFlags as $flag) {
+                $flag = strtolower(substr($flag, 1));
+                $this->assertEquals(0, $message->{$flag});
+            }
+        }
+        */
 
         imap2_close($imap);
     }

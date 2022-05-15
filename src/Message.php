@@ -353,15 +353,38 @@ class Message
         return false;
     }
 
-    public static function clearFlagFull($imap)
+    /**
+     * Clears flags on messages.
+     *
+     * @param $imap
+     * @param $sequence
+     * @param $flag
+     * @param $options
+     *
+     * @return false|string
+     */
+    public static function clearFlagFull($imap, $sequence, $flag, $options = 0)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-
-            return $client->expunge($imap->getMailboxName());
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_expunge($imap);
+        $client = $imap->getClient();
+
+        if (!($options & ST_UID)) {
+            $messages = $client->fetch($imap->getMailboxName(), $sequence, false, ['UID']);
+
+            $uid = [];
+            foreach ($messages as $message) {
+                $uid[] = $message->uid;
+            }
+
+            $sequence = implode(',', $uid);
+        }
+
+        $client->unflag($imap->getMailboxName(), $sequence, strtoupper(substr($flag, 1)));
+
+        return false;
     }
 
     public static function uid($imap)

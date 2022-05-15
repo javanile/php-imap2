@@ -155,22 +155,17 @@ class Connection
      */
     public static function close($imap, $flags = 0)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-            if ($client->close()) {
-                return true;
-            }
-
-            $client->closeConnection();
-
-            return true;
-
-        } elseif (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
-            return imap_close($imap, $flags);
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        trigger_error(Errors::invalidImapConnection(debug_backtrace(), 1), E_USER_WARNING);
+        $client = $imap->getClient();
+        if ($client->close()) {
+            return true;
+        }
 
-        return false;
+        $client->closeConnection();
+
+        return true;
     }
 }

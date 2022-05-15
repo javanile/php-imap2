@@ -231,6 +231,10 @@ if (!function_exists('imap_close')) {
 if (!function_exists('imap2_close')) {
     function imap2_close($imap, $flags = 0)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_close($imap, $flags);
+        }
+
         return Connection::close($imap, $flags);
     }
 }
@@ -903,6 +907,10 @@ if (!function_exists('imap_clearflag_full')) {
 if (!function_exists('imap2_clearflag_full')) {
     function imap2_clearflag_full($imap, $sequence, $flag, $options = 0)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_clearflag_full($imap, $sequence, $flag, $options);
+        }
+
         return Message::clearFlagFull($imap, $sequence, $flag, $options);
     }
 }
