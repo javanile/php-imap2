@@ -283,6 +283,10 @@ if (!function_exists('imap_status')) {
 if (!function_exists('imap2_status')) {
     function imap2_status($imap, $mailbox, $flags)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_close($imap, $flags);
+        }
+
         return Mailbox::status($imap, $mailbox, $flags);
     }
 }

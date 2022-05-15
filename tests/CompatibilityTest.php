@@ -3,6 +3,7 @@
 namespace Javanile\Imap2\Tests;
 
 use Javanile\Imap2\Connection;
+use Javanile\Imap2\Functions;
 use PHPUnit\Framework\Error\Warning;
 
 class CompatibilityTest extends ImapTestCase
@@ -88,7 +89,7 @@ class CompatibilityTest extends ImapTestCase
         $this->assertEquals($check1, $check2);
     }
 
-    public function testCreateMailbox()
+    public function testSearch()
     {
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
@@ -249,6 +250,85 @@ class CompatibilityTest extends ImapTestCase
             $this->assertEquals($uid1, $uid2);
             $this->assertEquals($msgNo1, $msgNo2);
         }
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
+    public function testListScan()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $a = imap_listscan($imap1, $this->mailbox, '*', ' ');
+
+        var_dump($a, IMAP2_RETROFIT_MODE);
+        $randomMailboxName1 = 'Mailbox ' . Functions::unique();
+        $randomMailboxName2 = 'Mailbox ' . Functions::unique();
+
+        $success1 = imap_create($imap1, $randomMailboxName1);
+        var_dump(imap_last_error());
+        var_dump($success1);
+        die();
+        $success2 = imap2_createmailbox($imap2, $randomMailboxName2);
+
+        $this->assertEquals($success1, $success2);
+
+        $success1 = imap_createmailbox($imap1, $randomMailboxName1);
+        $success2 = imap2_createmailbox($imap2, $randomMailboxName2);
+
+        $this->assertEquals($success1, $success2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
+    public function testCreateMailbox()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $randomMailboxName1 = 'Mailbox ' . Functions::unique();
+        $randomMailboxName2 = 'Mailbox ' . Functions::unique();
+
+        $success1 = imap_create($imap1, $randomMailboxName1);
+        var_dump($randomMailboxName1, imap_last_error());
+        var_dump($success1);
+        die();
+        $success2 = imap2_createmailbox($imap2, $randomMailboxName2);
+
+        $this->assertEquals($success1, $success2);
+
+        $success1 = imap_createmailbox($imap1, $randomMailboxName1);
+        $success2 = imap2_createmailbox($imap2, $randomMailboxName2);
+
+        $this->assertEquals($success1, $success2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
+    public function testCopy()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $randomMailboxName = 'Mailbox '.Functions::unique();
+        $this->assertTrue(imap2_createmailbox($imap2, $randomMailboxName));
+
+        $messageNums1 = '1:2';
+        $messageNums2 = '3:4';
+        $success1 = imap_mail_copy($imap1, $messageNums1, $randomMailboxName);
+        $success2 = imap2_mail_copy($imap2, $messageNums2, $randomMailboxName);
+        $this->assertEquals($success1, $success2);
+        $this->assertTrue($success2);
+
+        $status1 = imap_status($imap1, $this->mailbox.$randomMailboxName, SA_ALL);
+        $status2 = imap2_status($imap2, $this->mailbox.$randomMailboxName, SA_ALL);
+
+        var_dump($status1);
+        $this->assertEquals($status1, $status2);
 
         imap_close($imap1);
         imap2_close($imap2);

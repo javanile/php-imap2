@@ -50,6 +50,12 @@ test-fetch-overview:
 test-uid:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testUid
 
+test-create-mailbox:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testCreateMailbox
+
+test-copy:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testCopy
+
 test-xoauth:
 	@docker-compose run --rm phpunit tests --filter XoauthTest
 

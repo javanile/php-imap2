@@ -226,6 +226,7 @@ class Mailbox
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
+            $client->setDebug(true);
 
             return $client->createFolder($mailbox);
         }

@@ -36,12 +36,10 @@ class Mail
         $client = $imap->getClient();
 
         if (!($flags & CP_UID)) {
-            $messageNums = ImapHelpers::idToUid($messageNums);
+            $messageNums = ImapHelpers::idToUid($imap, $messageNums);
         }
 
-        $client->copy($messageNums, $imap->getMailboxName(), $mailbox);
-
-        return false;
+        return $client->copy($messageNums, $imap->getMailboxName(), Functions::getMailboxName($mailbox));
     }
 
     /**
@@ -63,12 +61,10 @@ class Mail
         $client = $imap->getClient();
 
         if (!($flags & CP_UID)) {
-            $messageNums = ImapHelpers::idToUid($messageNums);
+            $messageNums = ImapHelpers::idToUid($imap, $messageNums);
         }
 
-        $client->move($messageNums, $imap->getMailboxName(), $mailbox);
-
-        return false;
+        return $client->move($messageNums, $imap->getMailboxName(), $mailbox);
     }
 
     /**

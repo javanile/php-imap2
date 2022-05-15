@@ -57,4 +57,23 @@ class Functions
             return 1;
         }
     }
+
+    public static function unique()
+    {
+        return md5(microtime(). time() . rand(1000, 9999));
+    }
+
+    /**
+     * Get name from full mailbox string.
+     *
+     * @param $mailbox
+     *
+     * @return mixed|string
+     */
+    public static function getMailboxName($mailbox)
+    {
+        $mailboxParts = explode('}', $mailbox, 2);
+
+        return $mailboxParts[2] ?? 'INBOX';
+    }
 }
