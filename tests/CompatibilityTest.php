@@ -232,8 +232,8 @@ class CompatibilityTest extends ImapTestCase
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
-        $messages = imap_fetch_overview($imap1, '*');
-        $this->assertGreaterThan(0, count($messages));
+        $messages = imap_fetch_overview($imap1, '1:5');
+        $this->assertCount(5, $messages);
 
         foreach ($messages as $message) {
             $uid1 = imap_uid($imap1, $message->msgno);
