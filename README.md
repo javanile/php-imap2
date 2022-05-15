@@ -98,7 +98,7 @@
 - [ ] imap_last_error
 - [ ] imap_mail_copy
 - [ ] imap_mail_move
-- [ ] imap_mime_header_decode
+- [x] imap_mime_header_decode
 - [ ] imap_msgno
 - [ ] imap_num_msg
 - [ ] imap_open
