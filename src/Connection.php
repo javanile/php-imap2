@@ -50,21 +50,22 @@ class Connection
     }
 
     /**
-     * Extract input value using input name from the context otherwise get back a default value.
+     * Open an IMAP stream to a mailbox.
      *
-     * @param $inputName
-     * @param $defaultValue
+     * @param $mailbox
+     * @param $user
+     * @param $password
+     * @param int $flags
+     * @param int $retries
+     * @param array $options
+     *
      * @return void
      */
     public static function open($mailbox, $user, $password, $flags = 0, $retries = 0, $options = [])
     {
-        if ($flags & OP_XOAUTH2 || !function_exists('imap_open')) {
-            $connection = new Connection($mailbox, $user, $password, $flags, $retries, $options);
+        $connection = new Connection($mailbox, $user, $password, $flags, $retries, $options);
 
-            return $connection->connect();
-        }
-
-        return imap_open($mailbox, $user, $password, $flags, $retries, $options);
+        return $connection->connect();
     }
 
     public static function reopen($imap, $mailbox, $flags = 0, $retries = 0)

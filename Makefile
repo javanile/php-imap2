@@ -14,6 +14,9 @@ dump-autoload:
 imap2-coverage:
 	@docker-compose run --rm imap2 ./vendor/bin/phpunit tests --coverage-html docs/coverage
 
+imap2-test:
+	@docker-compose run --rm imap2 ./vendor/bin/phpunit tests --stop-on-failure
+
 coverage:
 	@docker-compose run --rm phpunit tests --coverage-html docs/coverage
 

@@ -21,7 +21,11 @@ class CompatibilityTest extends ImapTestCase
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
-        $this->assertTrue(is_resource($imap1));
+        if (IMAP2_RETROFIT_MODE) {
+            $this->assertTrue(is_resource($imap1));
+        } else {
+            $this->assertInstanceOf(Connection::class, $imap1);
+        }
         $this->assertInstanceOf(Connection::class, $imap2);
 
         $close1 = imap_close($imap1);
