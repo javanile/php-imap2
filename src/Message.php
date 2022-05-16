@@ -251,7 +251,7 @@ class Message
                 #die();
                 $messageEntry = (object) [
                     'subject' => $message->get('subject'),
-                    'from' => $message->get('from'),
+                    'from' => Functions::sanitizeAddress($message->get('from')),
                     'to' => $message->get('to'),
                     'date' => $message->envelope[0],
                     'message_id' => $message->envelope[9],

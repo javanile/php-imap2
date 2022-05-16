@@ -879,6 +879,10 @@ if (!function_exists('imap_fetch_overview')) {
 if (!function_exists('imap2_fetch_overview')) {
     function imap2_fetch_overview($imap, $sequence, $flags = 0)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+           return imap_fetch_overview($imap, $sequence, $flags);
+        }
+
         return Message::fetchOverview($imap, $sequence, $flags);
     }
 }

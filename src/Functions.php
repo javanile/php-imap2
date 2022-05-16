@@ -76,4 +76,23 @@ class Functions
 
         return empty($mailboxParts[1]) ? 'INBOX' : $mailboxParts[1];
     }
+
+    /**
+     *
+     * @param $address
+     * @param $defaultHost
+     *
+     * @return string
+     */
+    public static function sanitizeAddress($address, $defaultHost = 'localhost')
+    {
+        $addressList = imap_rfc822_parse_adrlist($address, $defaultHost);
+
+        $sanitizedAddress = [];
+        foreach ($addressList as $addressEntry) {
+            $sanitizedAddress[] = imap_rfc822_write_address($addressEntry->mailbox, $addressEntry->host, $addressEntry->personal);
+        }
+
+        return implode(', ', $sanitizedAddress);
+    }
 }

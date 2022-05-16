@@ -26,13 +26,13 @@ class HeaderInfo
             'subject' => $message->subject,
             'Subject' => $message->subject,
             'message_id' => $message->envelope[9],
-            'toaddress' => self::sanitizeAddress($message->to, $defaultHost),
+            'toaddress' => Functions::sanitizeAddress($message->to, $defaultHost),
             'to' => self::parseAddressList($message->to, $defaultHost),
-            'fromaddress' => self::sanitizeAddress($message->from, $defaultHost),
+            'fromaddress' => Functions::sanitizeAddress($message->from, $defaultHost),
             'from' => self::parseAddressList($message->from, $defaultHost),
-            'reply_toaddress' => self::sanitizeAddress($replyTo, $defaultHost),
+            'reply_toaddress' => Functions::sanitizeAddress($replyTo, $defaultHost),
             'reply_to' => self::parseAddressList($replyTo, $defaultHost),
-            'senderaddress' => self::sanitizeAddress($message->from, $defaultHost),
+            'senderaddress' => Functions::sanitizeAddress($message->from, $defaultHost),
             'sender' => self::parseAddressList($message->from, $defaultHost),
             'Recent' => ' ',
             'Unseen' => ' ',
@@ -67,18 +67,6 @@ class HeaderInfo
         }
 
         return $customAddressList;
-    }
-
-    public static function sanitizeAddress($address, $defaultHost)
-    {
-        $addressList = imap_rfc822_parse_adrlist($address, $defaultHost);
-
-        $sanitizedAddress = [];
-        foreach ($addressList as $addressEntry) {
-            $sanitizedAddress[] = imap_rfc822_write_address($addressEntry->mailbox, $addressEntry->host, $addressEntry->personal);
-        }
-
-        return implode(', ', $sanitizedAddress);
     }
 }
 
