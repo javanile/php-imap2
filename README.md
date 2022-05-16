@@ -116,3 +116,5 @@
 ## Reference
 
 - <https://www.atmail.com/blog/imap-commands/>
+- <https://developers.google.com/gmail/imap/xoauth2-protocol>
+- 

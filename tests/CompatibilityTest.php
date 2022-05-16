@@ -464,8 +464,9 @@ class CompatibilityTest extends ImapTestCase
         foreach ($messageNums as $messageNum) {
             $headerInfo1 = imap_headerinfo($imap1, $messageNum);
             $headerInfo2 = imap2_headerinfo($imap2, $messageNum);
-            file_put_contents('t1.json', json_encode($headerInfo1, JSON_PRETTY_PRINT));
-            file_put_contents('t2.json', json_encode($headerInfo2, JSON_PRETTY_PRINT));
+            #file_put_contents('t1.json', json_encode($headerInfo1, JSON_PRETTY_PRINT));
+            #file_put_contents('t2.json', json_encode($headerInfo2, JSON_PRETTY_PRINT));
+            #die();
             $this->assertEquals($headerInfo1, $headerInfo2);
         }
 

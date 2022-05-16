@@ -16,7 +16,7 @@ class HeaderInfo
 
     public static function fromMessage($message, $defaultHost)
     {
-        #file_put_contents('t3.json', json_encode($message, JSON_PRETTY_PRINT));
+        file_put_contents('t3.json', json_encode($message, JSON_PRETTY_PRINT));
 
         $replyTo = $message->replyto ?: $message->from;
 
@@ -26,13 +26,13 @@ class HeaderInfo
             'subject' => $message->subject,
             'Subject' => $message->subject,
             'message_id' => $message->envelope[9],
-            'toaddress' => $message->to,
+            'toaddress' => self::sanitizeAddress($message->to, $defaultHost),
             'to' => self::parseAddressList($message->to, $defaultHost),
-            'fromaddress' => $message->from,
+            'fromaddress' => self::sanitizeAddress($message->from, $defaultHost),
             'from' => self::parseAddressList($message->from, $defaultHost),
-            'reply_toaddress' => $replyTo ,
+            'reply_toaddress' => self::sanitizeAddress($replyTo, $defaultHost),
             'reply_to' => self::parseAddressList($replyTo, $defaultHost),
-            'senderaddress' => $message->from,
+            'senderaddress' => self::sanitizeAddress($message->from, $defaultHost),
             'sender' => self::parseAddressList($message->from, $defaultHost),
             'Recent' => ' ',
             'Unseen' => ' ',
@@ -67,6 +67,18 @@ class HeaderInfo
         }
 
         return $customAddressList;
+    }
+
+    public static function sanitizeAddress($address, $defaultHost)
+    {
+        $addressList = imap_rfc822_parse_adrlist($address, $defaultHost);
+
+        $sanitizedAddress = [];
+        foreach ($addressList as $addressEntry) {
+            $sanitizedAddress[] = imap_rfc822_write_address($addressEntry->mailbox, $addressEntry->host, $addressEntry->personal);
+        }
+
+        return implode(', ', $sanitizedAddress);
     }
 }
 
