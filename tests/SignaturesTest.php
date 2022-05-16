@@ -85,7 +85,7 @@ class SignaturesTest extends ImapTestCase
         'utf8',
     ];
 
-    public function testFunctions()
+    public function testFunctionsDeep()
     {
         foreach ($this->functions as $function) {
             $function1 = new \ReflectionFunction('imap_'.$function);
@@ -101,10 +101,9 @@ class SignaturesTest extends ImapTestCase
         }
     }
 
-    public function testInputOutput()
+    public function testInputOutputDeep()
     {
         $inputs = json_decode(file_get_contents('tests/fixtures/inputs.json'), true);
-
         foreach ($this->functions as $function) {
             $parameters = $inputs[$function] ?? array_map(
                 function($parameter) use ($function) { return $parameter->name; },
@@ -112,10 +111,10 @@ class SignaturesTest extends ImapTestCase
             );
 
             #var_dump($function);
-            $output1 = call_user_func_array('imap_'.$function, $parameters);
-            $output2 = call_user_func_array('imap2_'.$function, $parameters);
+            $output1 = @call_user_func_array('imap_'.$function, $parameters);
+            $output2 = @call_user_func_array('imap2_'.$function, $parameters);
 
-            $this->assertEquals($output1, $output2);
+            $this->assertEquals($output1, $output2, 'Problem with function imap_'.$function);
         }
     }
 }

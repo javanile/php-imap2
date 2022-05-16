@@ -1039,7 +1039,7 @@ if (!function_exists('imap_mail')) {
 if (!function_exists('imap2_mail')) {
     function imap2_mail($to, $subject, $message, $additionalHeaders = null, $cc = null, $bcc = null, $returnPath = null)
     {
-        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+        if (IMAP2_RETROFIT_MODE) {
             return imap_mail($to, $subject, $message, $additionalHeaders, $cc, $bcc, $returnPath);
         }
 
