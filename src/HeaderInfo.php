@@ -18,7 +18,7 @@ class HeaderInfo
     {
         file_put_contents('t3.json', json_encode($message, JSON_PRETTY_PRINT));
 
-
+        $replyTo = $message->replyto ?: $message->from;
 
         return [
             'date' => $message->date,
@@ -27,23 +27,23 @@ class HeaderInfo
             'Subject' => $message->subject,
             'message_id' => $message->envelope[9],
             'toaddress' => $message->to,
-            'to' => imap_rfc822_parse_adrlist($message->to, $defaultHost),
+            'to' => self::parseAddressList($message->to, $defaultHost),
             'fromaddress' => $message->from,
-            'from' => imap_rfc822_parse_adrlist($message->from, $defaultHost),
-            'reply_toaddress' => $message->replyto ,
-            'reply_to' => $message->replyto ? imap_rfc822_parse_adrlist($message->replyto, $defaultHost) : null,
+            'from' => self::parseAddressList($message->from, $defaultHost),
+            'reply_toaddress' => $replyTo ,
+            'reply_to' => self::parseAddressList($replyTo, $defaultHost),
             'senderaddress' => $message->from,
-            'sender' => imap_rfc822_parse_adrlist($message->from, $defaultHost),
+            'sender' => self::parseAddressList($message->from, $defaultHost),
             'Recent' => ' ',
             'Unseen' => ' ',
             'Flagged' => ' ',
             'Answered' => ' ',
             'Deleted' => ' ',
             'Draft' => ' ',
-            'Msgno' => '   1',
-            'MailDate' => '26-Feb-2021 16:53:30 +0000',
-            'Size' => '11659',
-            'udate' => 1614358410
+            'Msgno' => str_pad($message->id, 4, ' ', STR_PAD_LEFT),
+            'MailDate' => $message->internaldate,
+            'Size' => strval($message->size),
+            'udate' => strtotime($message->internaldate)
         ];
     }
 
@@ -52,12 +52,18 @@ class HeaderInfo
         $addressList = imap_rfc822_parse_adrlist($address, $defaultHost);
         $customAddressList = [];
 
-        foreach ($addressList as $entry) {
-            $customAddressList[] = (object) [
-                'personal' => $entry->personal,
-                'mailbox' => $entry->mailbox,
-                'host' => $entry->host,
+        foreach ($addressList as $objectEntry) {
+            $addressEntry = (object) [
+                'personal' => $objectEntry->personal,
+                'mailbox' => $objectEntry->mailbox,
+                'host' => $objectEntry->host,
             ];
+
+            if (empty($addressEntry->personal)) {
+                unset($addressEntry->personal);
+            }
+
+            $customAddressList[] = $addressEntry;
         }
 
         return $customAddressList;

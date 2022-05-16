@@ -450,7 +450,7 @@ class CompatibilityTest extends ImapTestCase
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
-        $messageNums = [1, 2, 3, 4, 5];
+        $messageNums = [2, 1, 2, 3, 4, 5];
 
         foreach ($messageNums as $messageNum) {
             $headerInfo1 = imap_headerinfo($imap1, $messageNum);
