@@ -71,6 +71,9 @@ test-header-info:
 test-num-msg:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testNumMsg
 
+test-ping:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testPing
+
 test-xoauth:
 	@docker-compose run --rm phpunit tests --filter XoauthTest
 

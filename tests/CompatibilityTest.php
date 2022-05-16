@@ -472,8 +472,30 @@ class CompatibilityTest extends ImapTestCase
         $numMsg1 = imap_num_msg($imap1);
         $numMsg2 = imap2_num_msg($imap2);
 
-        var_dump($numMsg1);
-        die();
+        $this->assertEquals($numMsg1, $numMsg2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
+    public function testPing()
+    {
+        $wrongPassword = 'wrong-password';
+        $imap1 = imap_open($this->mailbox, $this->username, $wrongPassword);
+        $imap2 = imap2_open($this->mailbox, $this->username, $wrongPassword, OP_XOAUTH2);
+
+        $ping1 = imap_ping($imap1);
+        $ping2 = imap2_ping($imap2);
+
+        $this->assertTrue($ping1 === $ping2);
+
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $ping1 = imap_ping($imap1);
+        $ping2 = imap2_ping($imap2);
+
+        $this->assertEquals($ping1, $ping2);
 
         imap_close($imap1);
         imap2_close($imap2);

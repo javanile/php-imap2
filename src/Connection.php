@@ -80,13 +80,15 @@ class Connection
 
     public static function ping($imap)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-
-            return true;
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, null);
         }
 
-        return imap_ping($imap);
+        $client = $imap->getClient();
+        $client->setDebug(true);
+        $status = $client->status($imap->getMailboxName(), ['UIDNEXT']);
+
+        return isset($status['UIDNEXT']) && $status['UIDNEXT'] > 0;
     }
 
     /**

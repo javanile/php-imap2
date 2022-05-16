@@ -45,9 +45,11 @@ class Mailbox
         }
 
         $imap->openMailbox();
+        $client = $imap->getClient();
 
+        $status = $client->status($imap->getMailboxName(), ['MESSAGES']);
 
-        return 0;
+        return intval($status['MESSAGES']);
     }
 
     public static function numRecent($imap)

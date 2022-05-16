@@ -100,7 +100,7 @@
 - [x] imap_mail_move
 - [x] imap_mime_header_decode
 - [x] imap_msgno
-- [ ] imap_num_msg
+- [x] imap_num_msg
 - [ ] imap_open
 - [ ] imap_ping
 - [ ] imap_reopen

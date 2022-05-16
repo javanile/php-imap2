@@ -215,6 +215,10 @@ if (!function_exists('imap_ping')) {
 if (!function_exists('imap2_ping')) {
     function imap2_ping($imap)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_ping($imap);
+        }
+
         return Connection::ping($imap);
     }
 }
