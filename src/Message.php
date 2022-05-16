@@ -250,7 +250,7 @@ class Message
                 #var_dump($message);
                 #die();
                 $messageEntry = (object) [
-                    'subject' => $message->get('subject'),
+                    'subject' => $message->envelope[1],
                     'from' => Functions::sanitizeAddress($message->get('from')),
                     'to' => $message->get('to'),
                     'date' => $message->envelope[0],

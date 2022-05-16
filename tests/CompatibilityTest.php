@@ -497,8 +497,8 @@ class CompatibilityTest extends ImapTestCase
     public function testPing()
     {
         $wrongPassword = 'wrong-password';
-        $imap1 = imap_open($this->mailbox, $this->username, $wrongPassword);
-        $imap2 = imap2_open($this->mailbox, $this->username, $wrongPassword, OP_XOAUTH2);
+        $imap1 = @imap_open($this->mailbox, $this->username, $wrongPassword);
+        $imap2 = @imap2_open($this->mailbox, $this->username, $wrongPassword, OP_XOAUTH2);
 
         $ping1 = @imap_ping($imap1);
         $ping2 = @imap2_ping($imap2);
