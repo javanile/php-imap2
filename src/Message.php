@@ -69,11 +69,13 @@ class Message
         $client->setDebug(true);
 
         $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, [
-            'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE)]',
+            'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLY-TO DATE SIZE)]',
             'ENVELOPE',
             'INTERNALDATE',
             'UID',
-            'FLAGS'
+            'FLAGS',
+            'RFC822.SIZE',
+            'RFC822.HEADER'
         ]);
 
         if (empty($messages)) {
@@ -81,7 +83,7 @@ class Message
         }
 
         foreach ($messages as $message) {
-            return HeaderInfo::fromMessage($message);
+            return HeaderInfo::fromMessage($message, $defaultHost);
         }
     }
 
