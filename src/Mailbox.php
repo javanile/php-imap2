@@ -40,19 +40,14 @@ class Mailbox
 
     public static function numMsg($imap)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-            $imap->openMailbox();
-
-            return (object) [
-                'Driver' => 'imap',
-                'Mailbox' => $imap->getMailbox(),
-                'Nmsgs' => $client->data['EXISTS'],
-                'Recent' => $client->data['RECENT'],
-            ];
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_check($imap);
+        $imap->openMailbox();
+
+
+        return 0;
     }
 
     public static function numRecent($imap)

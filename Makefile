@@ -68,6 +68,9 @@ test-fetch-structure:
 test-header-info:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testHeaderInfo
 
+test-num-msg:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testNumMsg
+
 test-xoauth:
 	@docker-compose run --rm phpunit tests --filter XoauthTest
 

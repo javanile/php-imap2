@@ -94,7 +94,7 @@
 - [x] imap_fetchstructure
 - [ ] imap_getmailboxes
 - [ ] imap_get_quotaroot
-- [ ] imap_headerinfo
+- [x] imap_headerinfo
 - [ ] imap_last_error
 - [x] imap_mail_copy
 - [x] imap_mail_move

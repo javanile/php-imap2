@@ -303,6 +303,10 @@ if (!function_exists('imap_num_msg')) {
 if (!function_exists('imap2_num_msg')) {
     function imap2_num_msg($imap)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_num_msg($imap);
+        }
+
         return Mailbox::numMsg($imap);
     }
 }
