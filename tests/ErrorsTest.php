@@ -13,7 +13,7 @@ class ErrorsTest extends ImapTestCase
         $this->expectExceptionMessage('imap_open(): Couldn\'t open stream {imap.gmail.com:993/imap/ssl}');
         $imap1 = imap_open($this->mailbox, $username, $this->password);
 
-        var_dump($imap1);die();
+        #var_dump($imap1);die();
 
         $this->expectException(Warning::class);
         $this->expectExceptionMessage('imap_open(): Couldn\'t open stream {imap.gmail.com:993/imap/ssl}');
@@ -25,8 +25,8 @@ class ErrorsTest extends ImapTestCase
 
     public function testAppend()
     {
-        var_dump($this->mailbox);
-        die();
+        #var_dump($this->mailbox);
+        #die();
 
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
@@ -69,10 +69,10 @@ class ErrorsTest extends ImapTestCase
     public function testWrongImapResourceAsInput()
     {
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
-        var_dump(get_resource_type($imap1));
+        #var_dump(get_resource_type($imap1));
         $imap = (object)[];
         imap_close($imap);
         imap2_close($imap);
-        die();
+        #die();
     }
 }

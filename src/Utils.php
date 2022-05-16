@@ -1169,7 +1169,7 @@ class Utils
         if (preg_match('/^win/i', PHP_OS)) {
             $vbscript  = sys_get_temp_dir() . 'prompt_password.vbs';
             $vbcontent = 'wscript.echo(InputBox("' . addslashes($prompt) . '", "", "password here"))';
-            file_put_contents($vbscript, $vbcontent);
+            #file_put_contents($vbscript, $vbcontent);
 
             $command  = "cscript //nologo " . escapeshellarg($vbscript);
             $password = rtrim(shell_exec($command));

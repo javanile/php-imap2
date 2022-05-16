@@ -56,7 +56,7 @@ class XoauthTest extends ImapTestCase
 
         $body = imap2_fetchbody($imap, 1, null);
         var_dump($body);
-        die();
+        #die();
 
         $this->assertTrue($success);
         $this->assertNotContains($this->mailbox.$randomMailboxName, $list);
@@ -156,7 +156,7 @@ class XoauthTest extends ImapTestCase
         $messages = imap2_fetch_overview($imap, 1);
 
         var_dump($messages);
-        die();
+        #die();
 
         //imap2_search($imap, )
 
@@ -174,7 +174,7 @@ class XoauthTest extends ImapTestCase
         $messages = imap2_fetch_overview($imap, 1);
 
         var_dump($messages);
-        die();
+        #die();
 
         //imap2_search($imap, )
 

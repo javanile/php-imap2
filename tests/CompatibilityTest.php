@@ -111,9 +111,9 @@ class CompatibilityTest extends ImapTestCase
         for ($message = 1; $message < 10; $message++) {
             foreach ([null, 1] as $section) {
                 $body1 = imap_fetchbody($imap1, $message, $section);
-                file_put_contents('t1.txt', $body1);
+                #file_put_contents('t1.txt', $body1);
                 $body2 = imap2_fetchbody($imap2, $message, $section);
-                file_put_contents('t2.txt', $body2);
+                #file_put_contents('t2.txt', $body2);
                 $this->assertEquals($body1, $body2);
             }
         }
@@ -200,8 +200,8 @@ class CompatibilityTest extends ImapTestCase
         imap_deletemailbox($imap1, 'wrong-mailbox');
         $errors1 = imap_errors();
 
-        var_dump($errors1);
-        die();
+        #var_dump($errors1);
+        #die();
 
         $status2 = imap2_status($imap2, $this->mailbox, SA_ALL);
 
@@ -268,9 +268,9 @@ class CompatibilityTest extends ImapTestCase
         $randomMailboxName2 = 'Mailbox ' . Functions::unique();
 
         $success1 = imap_create($imap1, $randomMailboxName1);
-        var_dump(imap_last_error());
-        var_dump($success1);
-        die();
+        #var_dump(imap_last_error());
+        #var_dump($success1);
+        #die();
         $success2 = imap2_createmailbox($imap2, $randomMailboxName2);
 
         $this->assertEquals($success1, $success2);
@@ -435,8 +435,8 @@ class CompatibilityTest extends ImapTestCase
             foreach ($messageNums as $messageNum) {
                 $structure1 = imap_fetchstructure($imap1, $messageNum, $flags);
                 $structure2 = imap2_fetchstructure($imap2, $messageNum, $flags);
-                file_put_contents('t1.json', json_encode($structure1, JSON_PRETTY_PRINT));
-                file_put_contents('t2.json', json_encode($structure2, JSON_PRETTY_PRINT));
+                #file_put_contents('t1.json', json_encode($structure1, JSON_PRETTY_PRINT));
+                #file_put_contents('t2.json', json_encode($structure2, JSON_PRETTY_PRINT));
                 $this->assertEquals($structure1, $structure2);
             }
         }
