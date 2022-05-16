@@ -85,7 +85,7 @@ class SignaturesTest extends ImapTestCase
         'utf8',
     ];
 
-    public function testFunctionsDeep()
+    public function testFunctions()
     {
         foreach ($this->functions as $function) {
             $function1 = new \ReflectionFunction('imap_'.$function);
@@ -101,11 +101,11 @@ class SignaturesTest extends ImapTestCase
         }
     }
 
-    public function testInputOutputDeep()
+    public function testInputOutput()
     {
         $inputs = json_decode(file_get_contents('tests/fixtures/inputs.json'), true);
         foreach ($this->functions as $function) {
-            if ($function == 'errors') {
+            if (in_array($function, ['alerts', 'errors', 'last_error'])) {
                 continue;
             }
             $parameters = $inputs[$function] ?? array_map(
