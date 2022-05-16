@@ -13,7 +13,7 @@ dump-autoload:
 
 
 coverage:
-	@docker-compose run --rm phpunit tests --coverage-html dev/coverage
+	@docker-compose run --rm phpunit tests --coverage-html docs/coverage
 
 test:
 	docker-compose run --rm phpunit tests --stop-on-failure
