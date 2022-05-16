@@ -418,22 +418,21 @@ class CompatibilityTest extends ImapTestCase
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
-        $messages = imap_fetch_overview($imap1, '4');
-        //$this->assertCount(5, $messages);
+        $messages = imap_fetch_overview($imap1, '1:5');
+        $this->assertCount(5, $messages);
 
         $inputs = [
             0 => [],
-            //FT_UID => [],
+            FT_UID => [],
         ];
 
         foreach ($messages as $message) {
             $inputs[0][] = $message->msgno;
-            //$inputs[FT_UID][] = $message->uid;
+            $inputs[FT_UID][] = $message->uid;
         }
 
         foreach ($inputs as $flags => $messageNums) {
             foreach ($messageNums as $messageNum) {
-                var_dump($messageNum, $flags);
                 $structure1 = imap_fetchstructure($imap1, $messageNum, $flags);
                 $structure2 = imap2_fetchstructure($imap2, $messageNum, $flags);
                 file_put_contents('t1.json', json_encode($structure1, JSON_PRETTY_PRINT));

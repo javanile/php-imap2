@@ -27,6 +27,23 @@ class BodyStructure
 
         file_put_contents('t3.json', json_encode($message, JSON_PRETTY_PRINT));
 
+        if (isset($message->bodystructure[0]) && $message->bodystructure[0] == 'TEXT') {
+            return (object) [
+                'type' => 0,
+                'encoding' => 0,
+                'ifsubtype' => 1,
+                'subtype' => $message->bodystructure[1],
+                'ifdescription' => 0,
+                'ifid' => 0,
+                'lines' => intval($message->bodystructure[7]),
+                'bytes' => intval($message->bodystructure[6]),
+                'ifdisposition' => 0,
+                'ifdparameters' => 0,
+                'ifparameters' => 0,
+                'parameters' => (object) [],
+            ];
+        }
+
         $section = 'parts';
         $subType = 'ALTERNATIVE';
         foreach ($message->bodystructure as $item) {
