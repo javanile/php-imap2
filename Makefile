@@ -62,6 +62,9 @@ test-move:
 test-fetch-header:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchHeader
 
+test-fetch-structure:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchStructure
+
 test-xoauth:
 	@docker-compose run --rm phpunit tests --filter XoauthTest
 

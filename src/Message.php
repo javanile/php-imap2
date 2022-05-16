@@ -149,20 +149,24 @@ class Message
 
     public static function fetchStructure($imap, $messageNum, $flags = 0)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-            $client->setDebug(true);
-
-            $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
-
-            if ($section) {
-                return $messages[$messageNum]->bodypart[$section];
-            }
-
-            return $messages[$messageNum]->body;
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_fetchstructure($imap, $messageNum, $flags);
+        $client = $imap->getClient();
+        $client->setDebug(true);
+
+        $isUid = boolval($flags & FT_UID);
+
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODYSTRUCTURE']);
+
+        if (empty($messages)) {
+            return false;
+        }
+
+        foreach ($messages as $message) {
+            return BodyStructure::fromMessage($message);
+        }
     }
 
     public static function bodyStruct($imap, $messageNum, $flags = 0)

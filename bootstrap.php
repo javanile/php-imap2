@@ -827,6 +827,10 @@ if (!function_exists('imap_fetchstructure')) {
 if (!function_exists('imap2_fetchstructure')) {
     function imap2_fetchstructure($imap, $messageNum, $flags = 0)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_fetchstructure($imap, $messageNum, $flags);
+        }
+
         return Message::fetchStructure($imap, $messageNum, $flags);
     }
 }

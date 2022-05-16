@@ -89,7 +89,7 @@
 - [ ] imap_errors
 - [ ] imap_expunge
 - [ ] imap_fetchbody
-- [ ] imap_fetchheader
+- [x] imap_fetchheader
 - [ ] imap_fetch_overview
 - [ ] imap_fetchstructure
 - [ ] imap_getmailboxes
