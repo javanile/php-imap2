@@ -253,13 +253,17 @@ if (!function_exists('imap2_close')) {
 if (!function_exists('imap_timeout')) {
     function imap_timeout($timeoutType, $timeout = -1)
     {
-        return Connection::close($timeoutType, $timeout);
+        return imap2_timeout($timeoutType, $timeout);
     }
 }
 if (!function_exists('imap2_timeout')) {
     function imap2_timeout($timeoutType, $timeout = -1)
     {
-        return Connection::close($timeoutType, $timeout);
+        if (IMAP2_RETROFIT_MODE) {
+            imap_timeout($timeoutType, $timeout);
+        }
+
+        return Connection::timeout($timeoutType, $timeout);
     }
 }
 
