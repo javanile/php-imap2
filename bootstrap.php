@@ -1255,7 +1255,11 @@ if (!function_exists('imap_base64')) {
 if (!function_exists('imap2_base64')) {
     function imap2_base64($string)
     {
-        return function_exists('imap_base64') ? imap_base64($string) : Polyfill::base64($string);
+        if (IMAP2_RETROFIT_MODE) {
+            return imap_base64($string);
+        }
+
+        return Polyfill::base64($string);
     }
 }
 
@@ -1263,7 +1267,7 @@ if (!function_exists('imap2_base64')) {
  * imap2_binary
  */
 if (!function_exists('imap_binary')) {
-    function imap_base64($string)
+    function imap_binary($string)
     {
         return imap2_binary($string);
     }
@@ -1271,7 +1275,11 @@ if (!function_exists('imap_binary')) {
 if (!function_exists('imap2_binary')) {
     function imap2_binary($string)
     {
-        return function_exists('imap_binary') ? imap_binary($string) : Polyfill::binary($string);
+        if (IMAP2_RETROFIT_MODE) {
+            return imap_binary($string);
+        }
+
+        return Polyfill::binary($string);
     }
 }
 
@@ -1281,13 +1289,17 @@ if (!function_exists('imap2_binary')) {
 if (!function_exists('imap_mime_header_decode')) {
     function imap_mime_header_decode($string)
     {
-        return Polyfill::mimeHeaderDecode($string);
+        return imap2_mime_header_decode($string);
     }
 }
 if (!function_exists('imap2_mime_header_decode')) {
     function imap2_mime_header_decode($string)
     {
-        return imap_mime_header_decode($string);
+        if (IMAP2_RETROFIT_MODE) {
+            return imap_mime_header_decode($string);
+        }
+
+        return Polyfill::mimeHeaderDecode($string);
     }
 }
 
@@ -1297,13 +1309,17 @@ if (!function_exists('imap2_mime_header_decode')) {
 if (!function_exists('imap_mutf7_to_utf8')) {
     function imap_mutf7_to_utf8($string)
     {
-        return Polyfill::mutf7ToUtf8($string);
+        return imap2_mutf7_to_utf8($string);
     }
 }
 if (!function_exists('imap2_mutf7_to_utf8')) {
     function imap2_mutf7_to_utf8($string)
     {
-        return imap_mutf7_to_utf8($string);
+        if (IMAP2_RETROFIT_MODE) {
+            return imap_mutf7_to_utf8($string);
+        }
+
+        return Polyfill::mutf7ToUtf8($string);
     }
 }
 
