@@ -16,6 +16,7 @@ use Javanile\Imap2\ImapClient;
 class BodyStructure
 {
     protected static $encodingNumber = [
+        '8BIT' => 1,
         'BASE64' => 3,
         'QUOTED-PRINTABLE' => 4,
     ];
@@ -28,9 +29,11 @@ class BodyStructure
         #file_put_contents('t3.json', json_encode($message, JSON_PRETTY_PRINT));
 
         if (isset($message->bodystructure[0]) && $message->bodystructure[0] == 'TEXT') {
+            $parameters = self::extractParameters($message->bodystructure[2], []);
+
             return (object) [
                 'type' => 0,
-                'encoding' => 0,
+                'encoding' => self::$encodingNumber[$message->bodystructure[5]] ?? 0,
                 'ifsubtype' => 1,
                 'subtype' => $message->bodystructure[1],
                 'ifdescription' => 0,
@@ -39,8 +42,8 @@ class BodyStructure
                 'bytes' => intval($message->bodystructure[6]),
                 'ifdisposition' => 0,
                 'ifdparameters' => 0,
-                'ifparameters' => 0,
-                'parameters' => (object) [],
+                'ifparameters' => count($parameters),
+                'parameters' => count($parameters) ? $parameters : (object) [],
             ];
         }
 
@@ -61,19 +64,7 @@ class BodyStructure
             if ($section == 'parts') {
                 $parts[] = self::extractPart($item);
             } elseif (is_array($item)) {
-                $attribute = null;
-                foreach ($item as $value) {
-                    if (empty($attribute)) {
-                        $attribute = [
-                            'attribute' => $value,
-                            'value' => null,
-                        ];
-                    } else {
-                        $attribute['value'] = $value;
-                        $parameters[] = (object) $attribute;
-                        $attribute = null;
-                    }
-                }
+                $parameters = self::extractParameters($item, $parameters);
             }
         }
 
@@ -156,5 +147,29 @@ class BodyStructure
         }
 
         return $part;
+    }
+
+    protected static function extractParameters($attributes, $parameters)
+    {
+        if (empty($attributes)) {
+            return [];
+        }
+
+        $attribute = null;
+
+        foreach ($attributes as $value) {
+            if (empty($attribute)) {
+                $attribute = [
+                    'attribute' => $value,
+                    'value' => null,
+                ];
+            } else {
+                $attribute['value'] = $value;
+                $parameters[] = (object) $attribute;
+                $attribute = null;
+            }
+        }
+
+        return $parameters;
     }
 }

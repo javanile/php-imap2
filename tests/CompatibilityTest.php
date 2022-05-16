@@ -311,7 +311,7 @@ class CompatibilityTest extends ImapTestCase
 
         $this->assertEquals($success1, $success2);
         */
-        $this->assertTrue(1, 1);
+        $this->assertEquals(1, 1);
 
         imap_close($imap1);
         imap2_close($imap2);
@@ -441,6 +441,7 @@ class CompatibilityTest extends ImapTestCase
 
         foreach ($inputs as $flags => $messageNums) {
             foreach ($messageNums as $messageNum) {
+                #var_dump($messageNum, $flags);
                 $structure1 = imap_fetchstructure($imap1, $messageNum, $flags);
                 $structure2 = imap2_fetchstructure($imap2, $messageNum, $flags);
                 #file_put_contents('t1.json', json_encode($structure1, JSON_PRETTY_PRINT));
