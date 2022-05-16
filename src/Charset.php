@@ -313,14 +313,14 @@ class Charset
         ) {
             // throw an exception if iconv reports an illegal character in input
             // it means that input string has been truncated
-            set_error_handler(array('rcube_charset', 'error_handler'), E_NOTICE);
+            #set_error_handler(array('rcube_charset', 'error_handler'), E_NOTICE);
             try {
                 $out = iconv($from, $to . $iconv_options, $str);
             }
             catch (ErrorException $e) {
                 $out = false;
             }
-            restore_error_handler();
+            #restore_error_handler();
 
             if ($out !== false) {
                 return $out;
@@ -347,14 +347,14 @@ class Charset
 
             // throw an exception if mbstring reports an illegal character in input
             // using mb_check_encoding() is much slower
-            set_error_handler(array('rcube_charset', 'error_handler'), E_WARNING);
+            #set_error_handler(array('rcube_charset', 'error_handler'), E_WARNING);
             try {
                 $out = mb_convert_encoding($str, $mb_to, $mb_from);
             }
             catch (ErrorException $e) {
                 $out = false;
             }
-            restore_error_handler();
+            #restore_error_handler();
 
             mb_substitute_character($mbstring_sc);
 
