@@ -351,7 +351,9 @@ class CompatibilityTest extends ImapTestCase
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
         $initialStatus1 = imap_status($imap1, $this->mailbox, SA_ALL);
+        $this->assertTrue(imap_expunge($imap1));
         $initialStatus2 = imap2_status($imap2, $this->mailbox, SA_ALL);
+        $this->assertTrue(imap2_expunge($imap2));
 
         $randomMailboxName = 'Mailbox '.Functions::unique();
         $this->assertTrue(imap2_createmailbox($imap2, $randomMailboxName));
@@ -494,8 +496,8 @@ class CompatibilityTest extends ImapTestCase
         $imap1 = imap_open($this->mailbox, $this->username, $wrongPassword);
         $imap2 = imap2_open($this->mailbox, $this->username, $wrongPassword, OP_XOAUTH2);
 
-        $ping1 = imap_ping($imap1);
-        $ping2 = imap2_ping($imap2);
+        $ping1 = @imap_ping($imap1);
+        $ping2 = @imap2_ping($imap2);
 
         $this->assertTrue($ping1 === $ping2);
 

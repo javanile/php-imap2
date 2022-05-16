@@ -3,7 +3,12 @@ version: '2'
 services:
 
   php:
-    build: .
+    build: ./tests/docker/retrofit
+    volumes: ['./:/app']
+    env_file: ['.env']
+
+  imap2:
+    build: ./tests/docker/imap2
     volumes: ['./:/app']
     env_file: ['.env']
 
