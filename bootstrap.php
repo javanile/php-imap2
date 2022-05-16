@@ -843,6 +843,10 @@ if (!function_exists('imap_fetchheader')) {
 if (!function_exists('imap2_fetchheader')) {
     function imap2_fetchheader($imap, $messageNum, $flags = 0)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_fetchheader($imap, $messageNum, $flags);
+        }
+
         return Message::fetchHeader($imap, $messageNum, $flags);
     }
 }

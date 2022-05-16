@@ -185,20 +185,30 @@ class Message
 
     public static function fetchHeader($imap, $messageNum, $flags = 0)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-            $client->setDebug(true);
-
-            $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
-
-            if ($section) {
-                return $messages[$messageNum]->bodypart[$section];
-            }
-
-            return $messages[$messageNum]->body;
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_fetchheader($imap, $messageNum, $flags);
+        /*
+         * FT_UID - The message_num argument is a UID
+            FT_INTERNAL - The return string is in "internal" format, without any attempt to canonicalize to CRLF newlines
+            FT_PREFETCHTEXT
+         * */
+
+        $client = $imap->getClient();
+        $client->setDebug(true);
+
+        $isUid = boolval($flags & FT_UID);
+
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY[HEADER]']);
+
+        if (empty($messages)) {
+            return false;
+        }
+
+        foreach ($messages as $message) {
+            return $message->bodypart['HEADER'] ?? false;
+        }
     }
 
     public static function fetchOverview($imap, $sequence, $flags = 0)

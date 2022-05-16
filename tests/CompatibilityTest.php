@@ -379,4 +379,37 @@ class CompatibilityTest extends ImapTestCase
         imap2_close($imap2);
     }
 
+    public function testFetchHeader()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $messages = imap_fetch_overview($imap1, '1:5');
+        $this->assertCount(5, $messages);
+
+        $inputs = [
+            0 => [],
+            FT_UID => [],
+            FT_INTERNAL => [],
+            FT_PREFETCHTEXT => [],
+        ];
+
+        foreach ($messages as $message) {
+            $inputs[0][] = $message->msgno;
+            $inputs[FT_UID][] = $message->uid;
+            $inputs[FT_INTERNAL][] = $message->msgno;
+            $inputs[FT_PREFETCHTEXT][] = $message->msgno;
+        }
+
+        foreach ($inputs as $flags => $messageNums) {
+            foreach ($messageNums as $messageNum) {
+                $header1 = imap_fetchheader($imap1, $messageNum, $flags);
+                $header2 = imap2_fetchheader($imap2, $messageNum, $flags);
+                $this->assertEquals($header1, $header2);
+            }
+        }
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
 }

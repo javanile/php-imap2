@@ -59,6 +59,9 @@ test-copy:
 test-move:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testMove
 
+test-fetch-header:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchHeader
+
 test-xoauth:
 	@docker-compose run --rm phpunit tests --filter XoauthTest
 
