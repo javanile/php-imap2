@@ -427,6 +427,10 @@ if (!function_exists('imap_getmailboxes')) {
 if (!function_exists('imap2_getmailboxes')) {
     function imap2_getmailboxes($imap, $reference, $pattern)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_getmailboxes($imap, $reference, $pattern);
+        }
+
         return Mailbox::getMailboxes($imap, $reference, $pattern);
     }
 }

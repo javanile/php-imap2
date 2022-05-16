@@ -161,12 +161,17 @@ class CompatibilityTest extends ImapTestCase
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
-        $status1 = imap_status($imap1, $this->mailbox, SA_ALL);
-        $status2 = imap2_status($imap2, $this->mailbox, SA_ALL);
+        $mailboxes = imap2_getmailboxes($imap2, $this->mailbox, '*');
+        $this->assertGreaterThan(5, count($mailboxes));
 
-        unset($status1->flags);
+        foreach ($mailboxes as $mailbox) {
+            $status1 = imap_status($imap1, $mailbox, SA_ALL);
+            $status2 = imap2_status($imap2, $mailbox, SA_ALL);
 
-        $this->assertEquals($status1, $status2);
+            unset($status1->flags);
+
+            $this->assertEquals($status1, $status2);
+        }
 
         imap_close($imap1);
         imap2_close($imap2);

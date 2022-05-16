@@ -78,8 +78,6 @@ class Mailbox
         $mailboxName = Functions::getMailboxName($mailbox);
 
         $client = $imap->getClient();
-        $client->select($mailboxName);
-        $client->
 
         $items = [];
 
@@ -208,22 +206,22 @@ class Mailbox
 
     public static function getMailboxes($imap, $reference, $pattern)
     {
-        if (is_a($imap, Connection::class)) {
-            $referenceParts = explode('}', $reference);
-            $client = $imap->getClient();
-            $return = [];
-            $mailboxes = $client->listMailboxes($referenceParts[1], $pattern);
-            foreach ($mailboxes as $mailbox) {
-                if (in_array('\\Noselect', $client->data['LIST'][$mailbox])) {
-                    continue;
-                }
-                $return[] = $referenceParts[0].'}'.$mailbox;
-            }
-
-            return $return;
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_getmailboxes($imap, $reference, $pattern);
+        $referenceParts = explode('}', $reference);
+        $client = $imap->getClient();
+        $return = [];
+        $mailboxes = $client->listMailboxes($referenceParts[1], $pattern);
+        foreach ($mailboxes as $mailbox) {
+            if (in_array('\\Noselect', $client->data['LIST'][$mailbox])) {
+                continue;
+            }
+            $return[] = $referenceParts[0].'}'.$mailbox;
+        }
+
+        return $return;
     }
 
     public static function createMailbox($imap, $mailbox)
