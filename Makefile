@@ -12,13 +12,11 @@ dump-autoload:
 	docker-compose run --rm composer dump-autoload
 
 
+coverage:
+	@docker-compose run --rm phpunit tests --coverage-html dev/coverage
+
 test:
-	docker-compose run --rm phpunit tests
-
-test-imap:
-	docker-compose run --rm phpunit tests
-
-
+	docker-compose run --rm phpunit tests --stop-on-failure
 
 test-open:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testOpenAndClose

@@ -264,7 +264,7 @@ class Message
                     'deleted' => intval($message->flags['DELETED'] ?? 0),
                     'seen' => intval($message->flags['SEEN'] ?? 0),
                     'draft' => intval($message->flags['DRAFT'] ?? 0),
-                    'udate' => $message->timestamp,
+                    'udate' => strtotime($message->internaldate),
                 ];
                 if (empty($messageEntry->to)) {
                     unset($messageEntry->to);

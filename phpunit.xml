@@ -5,6 +5,7 @@
     </php>
     <filter>
         <whitelist>
+            <file>./bootstrap.php</file>
             <directory>./src/</directory>
         </whitelist>
     </filter>
