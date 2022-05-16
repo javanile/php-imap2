@@ -111,7 +111,7 @@ class SignaturesTest extends ImapTestCase
                 (new \ReflectionFunction('imap2_'.$function))->getParameters()
             );
 
-            var_dump($function);
+            #var_dump($function);
             $output1 = call_user_func_array('imap_'.$function, $parameters);
             $output2 = call_user_func_array('imap2_'.$function, $parameters);
 
