@@ -68,13 +68,21 @@ class Message
         $client = $imap->getClient();
         $client->setDebug(true);
 
-        $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, [
+            'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE)]',
+            'ENVELOPE',
+            'INTERNALDATE',
+            'UID',
+            'FLAGS'
+        ]);
 
-        if ($section) {
-            return $messages[$messageNum]->bodypart[$section];
+        if (empty($messages)) {
+            return false;
         }
 
-        return $messages[$messageNum]->body;
+        foreach ($messages as $message) {
+            return HeaderInfo::fromMessage($message);
+        }
     }
 
     public static function headers($imap, $messageNum, $fromLength = 0, $subjectLength = 0, $defaultHost = null)
