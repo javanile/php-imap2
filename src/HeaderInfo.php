@@ -18,22 +18,30 @@ class HeaderInfo
     {
         file_put_contents('t3.json', json_encode($message, JSON_PRETTY_PRINT));
 
-        $replyTo = $message->replyto ?: $message->from;
+        $to = Functions::writeAddressFromEnvelope($message->envelope[5]);
+        $from = Functions::writeAddressFromEnvelope($message->envelope[2]);
+        $sender = Functions::writeAddressFromEnvelope($message->envelope[3]);
+
+        if (empty($message->replyto)) {
+            $replyTo = $from;
+        } else {
+            $replyTo = Functions::writeAddressFromEnvelope($message->envelope[4]);
+        }
 
         return (object) [
             'date' => $message->date,
             'Date' => $message->date,
-            'subject' => $message->subject,
-            'Subject' => $message->subject,
+            'subject' => $message->envelope[1],
+            'Subject' => $message->envelope[1],
             'message_id' => $message->envelope[9],
-            'toaddress' => Functions::sanitizeAddress($message->to, $defaultHost),
-            'to' => self::parseAddressList($message->to, $defaultHost),
-            'fromaddress' => Functions::sanitizeAddress($message->from, $defaultHost),
-            'from' => self::parseAddressList($message->from, $defaultHost),
-            'reply_toaddress' => Functions::sanitizeAddress($replyTo, $defaultHost),
+            'toaddress' => $to,
+            'to' => self::parseAddressList($to, $defaultHost),
+            'fromaddress' => $from,
+            'from' => self::parseAddressList($from, $defaultHost),
+            'reply_toaddress' => $replyTo,
             'reply_to' => self::parseAddressList($replyTo, $defaultHost),
-            'senderaddress' => Functions::sanitizeAddress($message->from, $defaultHost),
-            'sender' => self::parseAddressList($message->from, $defaultHost),
+            'senderaddress' => $sender,
+            'sender' => self::parseAddressList($sender, $defaultHost),
             'Recent' => ' ',
             'Unseen' => ' ',
             'Flagged' => ' ',
@@ -41,7 +49,7 @@ class HeaderInfo
             'Deleted' => ' ',
             'Draft' => ' ',
             'Msgno' => str_pad($message->id, 4, ' ', STR_PAD_LEFT),
-            'MailDate' => $message->internaldate,
+            'MailDate' => self::sanitizeMailDate($message->internaldate),
             'Size' => strval($message->size),
             'udate' => strtotime($message->internaldate)
         ];
@@ -67,6 +75,15 @@ class HeaderInfo
         }
 
         return $customAddressList;
+    }
+
+    public static function sanitizeMailDate($mailDate)
+    {
+        if ($mailDate[0] == '0') {
+            $mailDate = ' '.substr($mailDate, 1);
+        }
+
+        return $mailDate;
     }
 }
 

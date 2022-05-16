@@ -84,13 +84,26 @@ class Functions
      *
      * @return string
      */
-    public static function sanitizeAddress($address, $defaultHost = 'localhost')
+    public static function sanitizeAddress($address, $defaultHost = 'UNKNOWN')
     {
         $addressList = imap_rfc822_parse_adrlist($address, $defaultHost);
 
         $sanitizedAddress = [];
         foreach ($addressList as $addressEntry) {
             $sanitizedAddress[] = imap_rfc822_write_address($addressEntry->mailbox, $addressEntry->host, $addressEntry->personal);
+        }
+
+        return implode(', ', $sanitizedAddress);
+    }
+
+    /**
+     *
+     */
+    public static function writeAddressFromEnvelope($addressList)
+    {
+        $sanitizedAddress = [];
+        foreach ($addressList as $addressEntry) {
+            $sanitizedAddress[] = imap_rfc822_write_address($addressEntry[2], $addressEntry[3], $addressEntry[0]);
         }
 
         return implode(', ', $sanitizedAddress);
