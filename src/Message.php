@@ -61,20 +61,20 @@ class Message
 
     public static function headerInfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0, $defaultHost = null)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-            $client->setDebug(true);
-
-            $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
-
-            if ($section) {
-                return $messages[$messageNum]->bodypart[$section];
-            }
-
-            return $messages[$messageNum]->body;
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_headerinfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0);
+        $client = $imap->getClient();
+        $client->setDebug(true);
+
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+
+        if ($section) {
+            return $messages[$messageNum]->bodypart[$section];
+        }
+
+        return $messages[$messageNum]->body;
     }
 
     public static function headers($imap, $messageNum, $fromLength = 0, $subjectLength = 0, $defaultHost = null)

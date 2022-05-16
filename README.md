@@ -91,7 +91,7 @@
 - [ ] imap_fetchbody
 - [x] imap_fetchheader
 - [ ] imap_fetch_overview
-- [ ] imap_fetchstructure
+- [x] imap_fetchstructure
 - [ ] imap_getmailboxes
 - [ ] imap_get_quotaroot
 - [ ] imap_headerinfo

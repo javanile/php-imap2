@@ -25,7 +25,7 @@ class BodyStructure
         $parts = [];
         $parameters = [];
 
-        file_put_contents('t3.json', json_encode($message, JSON_PRETTY_PRINT));
+        #file_put_contents('t3.json', json_encode($message, JSON_PRETTY_PRINT));
 
         if (isset($message->bodystructure[0]) && $message->bodystructure[0] == 'TEXT') {
             return (object) [

@@ -444,4 +444,24 @@ class CompatibilityTest extends ImapTestCase
         imap_close($imap1);
         imap2_close($imap2);
     }
+
+    public function testHeaderInfo()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $messageNums = [1, 2, 3, 4, 5];
+
+        foreach ($messageNums as $messageNum) {
+            $headerInfo1 = imap_headerinfo($imap1, $messageNum, $flags);
+            $headerInfo2 = imap2_headerinfo($imap2, $messageNum, $flags);
+            file_put_contents('t1.json', json_encode($headerInfo1, JSON_PRETTY_PRINT));
+            file_put_contents('t2.json', json_encode($headerInfo2, JSON_PRETTY_PRINT));
+            die();
+            $this->assertEquals($headerInfo1, $headerInfo2);
+        }
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
 }
