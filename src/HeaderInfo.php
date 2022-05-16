@@ -20,7 +20,7 @@ class HeaderInfo
 
         $replyTo = $message->replyto ?: $message->from;
 
-        return [
+        return (object) [
             'date' => $message->date,
             'Date' => $message->date,
             'subject' => $message->subject,
