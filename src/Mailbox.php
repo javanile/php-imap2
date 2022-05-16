@@ -79,6 +79,7 @@ class Mailbox
 
         $client = $imap->getClient();
         $client->select($mailboxName);
+        $client->
 
         $items = [];
 

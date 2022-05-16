@@ -373,6 +373,8 @@ class CompatibilityTest extends ImapTestCase
         $this->assertEquals($success1, $success2);
         $this->assertTrue($success2);
 
+        sleep(2);
+
         $status1 = imap_status($imap1, $this->mailbox.$randomMailboxName, SA_ALL);
         $status2 = imap2_status($imap2, $this->mailbox.$randomMailboxName, SA_ALL);
 
