@@ -102,7 +102,7 @@
 - [x] imap_msgno
 - [x] imap_num_msg
 - [ ] imap_open
-- [ ] imap_ping
+- [x] imap_ping
 - [ ] imap_reopen
 - [ ] imap_savebody
 - [ ] imap_search

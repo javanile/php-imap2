@@ -85,7 +85,7 @@ class Connection
         }
 
         $client = $imap->getClient();
-        $client->setDebug(true);
+        #$client->setDebug(true);
         $status = $client->status($imap->getMailboxName(), ['UIDNEXT']);
 
         return isset($status['UIDNEXT']) && $status['UIDNEXT'] > 0;

@@ -17,7 +17,7 @@ class Message
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
-            $client->setDebug(true);
+            #$client->setDebug(true);
 
             $result = $client->search($imap->getMailboxName(), $criteria, $flags & SE_UID);
 
@@ -40,7 +40,7 @@ class Message
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
-            $client->setDebug(true);
+            #$client->setDebug(true);
 
             $result = $client->search($imap->getMailboxName(), $criteria, $flags & SE_UID);
 
@@ -66,7 +66,7 @@ class Message
         }
 
         $client = $imap->getClient();
-        $client->setDebug(true);
+        #$client->setDebug(true);
 
         $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, [
             'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLY-TO DATE SIZE)]',
@@ -91,7 +91,7 @@ class Message
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
-            $client->setDebug(true);
+            #$client->setDebug(true);
 
             $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
 
@@ -109,7 +109,7 @@ class Message
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
-            $client->setDebug(true);
+            #$client->setDebug(true);
 
             $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
 
@@ -127,7 +127,7 @@ class Message
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
-            $client->setDebug(true);
+            #$client->setDebug(true);
 
             $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
 
@@ -145,7 +145,7 @@ class Message
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
-            $client->setDebug(true);
+           # $client->setDebug(true);
 
             $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
 
@@ -164,7 +164,7 @@ class Message
         }
 
         $client = $imap->getClient();
-        $client->setDebug(true);
+        #$client->setDebug(true);
 
         $isUid = boolval($flags & FT_UID);
 
@@ -183,7 +183,7 @@ class Message
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
-            $client->setDebug(true);
+            #$client->setDebug(true);
 
             $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
 
@@ -210,7 +210,7 @@ class Message
          * */
 
         $client = $imap->getClient();
-        $client->setDebug(true);
+        #$client->setDebug(true);
 
         $isUid = boolval($flags & FT_UID);
 
@@ -229,7 +229,7 @@ class Message
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
-            $client->setDebug(true);
+            #$client->setDebug(true);
 
             $messages = $client->fetch($imap->getMailboxName(), $sequence, false, [
                 'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE)]',
@@ -307,7 +307,7 @@ class Message
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
-            $client->setDebug(true);
+            #$client->setDebug(true);
 
             $messages = $client->fetch($imap->getMailboxName(), $messageNums, false, ['UID']);
             foreach ($messages as $message) {

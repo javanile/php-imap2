@@ -275,7 +275,7 @@ class Mailbox
         if (is_a($imap, Connection::class)) {
             $folderParts = explode('}', $folder);
             $client = $imap->getClient();
-            $client->setDebug(true);
+            #$client->setDebug(true);
             $mailbox = empty($folderParts[1]) ? 'INBOX' : $folderParts[1];
 
             return $client->append($mailbox, $message);
