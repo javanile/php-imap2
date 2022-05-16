@@ -105,6 +105,9 @@ class SignaturesTest extends ImapTestCase
     {
         $inputs = json_decode(file_get_contents('tests/fixtures/inputs.json'), true);
         foreach ($this->functions as $function) {
+            if ($function == 'errors') {
+                continue;
+            }
             $parameters = $inputs[$function] ?? array_map(
                 function($parameter) use ($function) { return $parameter->name; },
                 (new \ReflectionFunction('imap2_'.$function))->getParameters()
