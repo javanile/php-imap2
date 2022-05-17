@@ -22,11 +22,11 @@ class Mailbox
             $status = $client->status($imap->getMailboxName(), ['MESSAGES', 'RECENT']);
 
             return (object) [
-                'Date' => date('Y-m-d H:i:s'),
+                'Date' => date('D, j M Y G:i:s').' +0000 (UTC)',
                 'Driver' => 'imap',
                 'Mailbox' => $imap->getMailbox(),
-                'Nmsgs' => $status['MESSAGES'],
-                'Recent' => $status['RECENT'],
+                'Nmsgs' => intval($status['MESSAGES']),
+                'Recent' => intval($status['RECENT']),
             ];
 
         } elseif (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {

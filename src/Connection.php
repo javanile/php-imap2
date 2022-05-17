@@ -26,6 +26,7 @@ class Connection
     protected $port;
     protected $sslMode;
     protected $currentMailbox;
+    protected $connected;
 
     /**
      *
@@ -84,7 +85,15 @@ class Connection
 
         $success = $imap->connect();
 
-        return boolval($success);
+        if (empty($success)) {
+            trigger_error('imap2_reopen(): Couldn\'t re-open stream', E_USER_WARNING);
+
+            return false;
+        }
+
+        $imap->selectMailbox();
+
+        return true;
     }
 
     public static function ping($imap)
@@ -105,6 +114,7 @@ class Connection
      */
     protected function connect()
     {
+        $this->connected = false;
         //$this->client->setDebug(true);
 
         $success = $this->client->connect($this->host, $this->user, $this->password, [
@@ -127,7 +137,35 @@ class Connection
             }
         }
 
+        $this->rewriteMailbox();
+
+        $this->connected = true;
+
         return $this;
+    }
+
+    /**
+     *
+     */
+    protected function rewriteMailbox($forceMailbox = null)
+    {
+        $mailboxParts = Functions::parseMailboxString($this->mailbox);
+
+        // '{imap.gmail.com:993/imap/notls/ssl/user="javanile.develop@gmail.com"}INBOX'
+        $params = [];
+
+        $params[] = 'imap';
+        if ($this->sslMode == 'ssl') {
+            $params[] = 'notls';
+            $params[] = 'ssl';
+        }
+        $params[] = 'user="'.$this->user.'"';
+
+        $mailboxName = $forceMailbox ? $forceMailbox : $mailboxParts['mailbox'];
+
+        $updatedMailbox = '{'.$mailboxParts['host'].':'.$mailboxParts['port'].'/'.implode('/', $params).'}'.$mailboxName;
+
+        $this->mailbox = $updatedMailbox;
     }
 
     /**
@@ -167,7 +205,11 @@ class Connection
      */
     public function selectMailbox()
     {
-        $this->client->select($this->currentMailbox);
+        $success = $this->client->select($this->currentMailbox);
+
+        if (empty($success)) {
+            $this->rewriteMailbox('<no_mailbox>');
+        }
     }
 
     /**
@@ -195,5 +237,15 @@ class Connection
         $client->closeConnection();
 
         return true;
+    }
+
+    public function isConnected()
+    {
+        return boolval($this->connected);
+    }
+
+    public static function isValid($imap)
+    {
+        return is_a($imap, Connection::class) && $imap->isConnected();
     }
 }

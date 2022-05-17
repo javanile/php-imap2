@@ -144,4 +144,14 @@ class Functions
 
         return $attributesValue;
     }
+
+    public static function isValidImap1Connection($imap)
+    {
+        return is_resource($imap) && get_resource_type($imap) == 'imap';
+    }
+
+    public static function isValidImap2Connection($imap)
+    {
+        return Connection::isValid($imap);
+    }
 }

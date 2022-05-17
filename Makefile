@@ -74,6 +74,9 @@ test-header-info:
 test-num-msg:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testNumMsg
 
+test-reopen:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testReopen
+
 test-ping:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testPing
 
