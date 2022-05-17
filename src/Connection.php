@@ -102,7 +102,8 @@ class Connection
         $success = $this->client->connect($this->host, $this->user, $this->password, [
             'port' => $this->port,
             'ssl_mode' => $this->sslMode,
-            'auth_type' => $this->flags & OP_XOAUTH2 ? 'XOAUTH2' : 'CHECK'
+            'auth_type' => $this->flags & OP_XOAUTH2 ? 'XOAUTH2' : 'CHECK',
+            'timeout' => -1,
         ]);
 
         if (empty($success)) {
@@ -151,6 +152,14 @@ class Connection
     public function openMailbox()
     {
         $this->client->select($this->currentMailbox);
+    }
+
+    /**
+     *
+     */
+    public static function timeout($timeoutType, $timeout = -1)
+    {
+
     }
 
     /**
