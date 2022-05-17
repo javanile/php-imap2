@@ -77,6 +77,9 @@ test-num-msg:
 test-ping:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testPing
 
+test-get-mailboxes:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testGetMailboxes
+
 test-xoauth:
 	@docker-compose run --rm phpunit tests --filter XoauthTest
 

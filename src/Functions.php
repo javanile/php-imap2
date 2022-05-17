@@ -108,4 +108,40 @@ class Functions
 
         return implode(', ', $sanitizedAddress);
     }
+
+    /**
+     *
+     */
+    public static function getListAttributesValue($attributes)
+    {
+        $attributesValue = 0;
+
+        foreach ($attributes as $attribute) {
+            switch ($attribute) {
+                case '\\NoInferiors':
+                    $attributesValue |= LATT_NOINFERIORS;
+                    break;
+                case '\\NoSelect':
+                    $attributesValue |= LATT_NOSELECT;
+                    break;
+                case '\\Marked':
+                    $attributesValue |= LATT_MARKED;
+                    break;
+                case '\\UnMarked':
+                    $attributesValue |= LATT_UNMARKED;
+                    break;
+                case '\\Referral':
+                    $attributesValue |= LATT_REFERRAL;
+                    break;
+                case '\\HasChildren':
+                    $attributesValue |= LATT_HASCHILDREN;
+                    break;
+                case '\\HasNoChildren':
+                    $attributesValue |= LATT_HASNOCHILDREN;
+                    break;
+            }
+        }
+
+        return $attributesValue;
+    }
 }

@@ -104,6 +104,7 @@ class Connection
             'ssl_mode' => $this->sslMode,
             'auth_type' => $this->flags & OP_XOAUTH2 ? 'XOAUTH2' : 'CHECK',
             'timeout' => -1,
+            'force_caps' => false,
         ]);
 
         if (empty($success)) {
@@ -137,13 +138,20 @@ class Connection
         return $this->mailbox;
     }
 
-
     /**
      *
      */
     public function getMailboxName()
     {
         return $this->currentMailbox;
+    }
+
+    /**
+     *
+     */
+    public function getHost()
+    {
+        return $this->host;
     }
 
     /**

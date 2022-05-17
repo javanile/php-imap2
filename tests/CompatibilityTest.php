@@ -177,6 +177,23 @@ class CompatibilityTest extends ImapTestCase
         imap2_close($imap2);
     }
 
+    public function testGetMailboxes()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $mailboxes1 = imap_getmailboxes($imap1, $this->mailbox, '*');
+        $mailboxes2 = imap2_getmailboxes($imap2, $this->mailbox, '*');
+
+        file_put_contents('l1.json', json_encode($mailboxes1, JSON_PRETTY_PRINT));
+        file_put_contents('l2.json', json_encode($mailboxes2, JSON_PRETTY_PRINT));
+
+        $this->assertEquals($mailboxes1, $mailboxes2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
     public function testAlerts()
     {
         @imap_open('wrong-mailbox', $this->username, $this->password);

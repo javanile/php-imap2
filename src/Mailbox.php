@@ -212,13 +212,20 @@ class Mailbox
 
         $referenceParts = explode('}', $reference);
         $client = $imap->getClient();
+        $client->setDebug(true);
         $return = [];
+        $delimiter = $client->getHierarchyDelimiter();
         $mailboxes = $client->listMailboxes($referenceParts[1], $pattern);
         foreach ($mailboxes as $mailbox) {
-            if (in_array('\\Noselect', $client->data['LIST'][$mailbox])) {
-                continue;
+            $attributesValue = Functions::getListAttributesValue($client->data['LIST'][$mailbox]);
+            if ($mailbox == '[Gmail]' && $imap->getHost() == 'imap.gmail.com') {
+                $attributesValue = 34;
             }
-            $return[] = $referenceParts[0].'}'.$mailbox;
+            $return[] = (object) [
+                'name' => $referenceParts[0].'}'.$mailbox,
+                'attributes' => $attributesValue,
+                'delimiter' => $delimiter,
+            ];
         }
 
         return $return;
