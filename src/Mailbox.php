@@ -212,7 +212,7 @@ class Mailbox
 
         $referenceParts = explode('}', $reference);
         $client = $imap->getClient();
-        $client->setDebug(true);
+        #$client->setDebug(true);
         $return = [];
         $delimiter = $client->getHierarchyDelimiter();
         $mailboxes = $client->listMailboxes($referenceParts[1], $pattern);
