@@ -16,7 +16,7 @@ class Mailbox
     public static function check($imap)
     {
         if (is_a($imap, Connection::class)) {
-            $imap->openMailbox();
+            $imap->selectMailbox();
 
             $client = $imap->getClient();
             $status = $client->status($imap->getMailboxName(), ['MESSAGES', 'RECENT']);
@@ -44,7 +44,7 @@ class Mailbox
             return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        $imap->openMailbox();
+        $imap->selectMailbox();
         $client = $imap->getClient();
 
         $status = $client->status($imap->getMailboxName(), ['MESSAGES']);
@@ -56,7 +56,7 @@ class Mailbox
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
-            $imap->openMailbox();
+            $imap->selectMailbox();
 
             return (object) [
                 'Driver' => 'imap',

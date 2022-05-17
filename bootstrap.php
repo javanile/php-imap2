@@ -197,12 +197,16 @@ if (!function_exists('imap2_open')) {
 if (!function_exists('imap_reopen')) {
     function imap_reopen($imap, $mailbox, $flags = 0, $retries = 0)
     {
-        return Connection::reopen($imap, $mailbox, $flags, $retries);
+        return imap2_reopen($imap, $mailbox, $flags, $retries);
     }
 }
 if (!function_exists('imap2_reopen')) {
     function imap2_reopen($imap, $mailbox, $flags = 0, $retries = 0)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_reopen($imap, $mailbox, $flags, $retries);
+        }
+
         return Connection::reopen($imap, $mailbox, $flags, $retries);
     }
 }

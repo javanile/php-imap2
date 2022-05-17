@@ -32,12 +32,20 @@ class Connection
      */
     public function __construct($mailbox, $user, $password, $flags = 0, $retries = 0, $options = [])
     {
-        $this->mailbox = $mailbox;
         $this->user = $user;
         $this->password = $password;
         $this->flags = $flags;
         $this->retries = $retries;
         $this->options = $options;
+
+        $this->openMailbox($mailbox);
+
+        $this->client = new ImapClient();
+    }
+
+    public function openMailbox($mailbox)
+    {
+        $this->mailbox = $mailbox;
 
         $mailboxParts = Functions::parseMailboxString($mailbox);
 
@@ -45,8 +53,6 @@ class Connection
         $this->port = $mailboxParts['port'];
         $this->sslMode = Functions::getSslModeFromMailbox($mailboxParts);
         $this->currentMailbox = $mailboxParts['mailbox'];
-
-        $this->client = new ImapClient();
     }
 
     /**
@@ -70,13 +76,15 @@ class Connection
 
     public static function reopen($imap, $mailbox, $flags = 0, $retries = 0)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-
-            return true;
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, null);
         }
 
-        return imap_reopen($imap, $mailbox, $flags, $retries);
+        $imap->openMailbox($mailbox);
+
+        $success = $imap->connect();
+
+        return boolval($success);
     }
 
     public static function ping($imap)
@@ -157,7 +165,7 @@ class Connection
     /**
      *
      */
-    public function openMailbox()
+    public function selectMailbox()
     {
         $this->client->select($this->currentMailbox);
     }
