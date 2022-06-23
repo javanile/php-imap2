@@ -7,3 +7,4 @@
 /phpunit.xml        export-ignore
 /Makefile           export-ignore
 /docker-compose.yml export-ignore
+/composer.lock      export-ignore
