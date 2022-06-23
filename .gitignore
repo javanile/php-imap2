@@ -23,3 +23,4 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
+coverage.xml
