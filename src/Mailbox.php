@@ -264,7 +264,6 @@ class Mailbox
         }
 
         $client = $imap->getClient();
-        $client->setDebug(true);
 
         if ($mailbox[0] == '{') {
             $mailbox = (string) \preg_replace('/^{.+}/', '', $mailbox);
@@ -274,7 +273,7 @@ class Mailbox
 
         $success = $result[0] == ImapClient::ERROR_OK;
 
-        if (empty($success)) {
+        if (!$success) {
             Errors::appendError("Can't delete mailbox {$mailbox}: no such mailbox");
         }
 
