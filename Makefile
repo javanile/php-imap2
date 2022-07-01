@@ -83,6 +83,9 @@ test-ping:
 test-get-mailboxes:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testGetMailboxes
 
+test-delete-mailbox:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testDeleteMailbox
+
 test-xoauth:
 	@docker-compose run --rm phpunit tests --filter XoauthTest
 

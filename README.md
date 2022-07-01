@@ -113,6 +113,10 @@
 - [ ] imap_timeout
 - [ ] imap_undelete
 
+## Gmail OAuth
+
+Scope: 
+
 ## Reference
 
 - <https://www.atmail.com/blog/imap-commands/>

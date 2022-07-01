@@ -343,6 +343,33 @@ class CompatibilityTest extends ImapTestCase
         imap2_close($imap2);
     }
 
+    public function testDeleteMailbox()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        // Reset error buffers
+        imap_alerts();
+        imap_errors();
+        imap2_alerts();
+        imap2_errors();
+
+        $unknownMailbox = 'the-unknown-mailbox';
+        $deleteMailbox1 = imap_deletemailbox($imap1, $unknownMailbox);
+        $imapAlerts1 = imap_alerts();
+        $imapErrors1 = imap_errors();
+        $deleteMailbox2 = imap2_deletemailbox($imap2, $unknownMailbox);
+        $imapAlerts2 = imap2_alerts();
+        $imapErrors2 = imap2_errors();
+
+        $this->assertEquals($deleteMailbox1, $deleteMailbox2);
+        $this->assertEquals($imapAlerts1, $imapAlerts2);
+        $this->assertEquals($imapErrors1, $imapErrors2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
     public function testCopy()
     {
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);

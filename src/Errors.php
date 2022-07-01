@@ -15,14 +15,44 @@ use Javanile\Imap2\ImapClient;
 
 class Errors
 {
+    protected static $alerts = [];
+
+    protected static $errors = [];
+
+    public static function appendAlert($alert)
+    {
+        self::$alerts[] = $alert;
+    }
+
+    public static function appendError($error)
+    {
+        self::$errors[] = $error;
+    }
+
     public static function alerts()
     {
-        return false;
+        if (empty(self::$alerts)) {
+            return false;
+        }
+
+        $return = self::$alerts;
+
+        self::$alerts = [];
+
+        return $return;
     }
 
     public static function errors()
     {
-        return false;
+        if (empty(self::$errors)) {
+            return false;
+        }
+
+        $return = self::$errors;
+
+        self::$errors = [];
+
+        return $return;
     }
 
     public static function lastError()

@@ -264,8 +264,21 @@ class Mailbox
         }
 
         $client = $imap->getClient();
+        $client->setDebug(true);
 
-        return $client->deleteFolder($mailbox);
+        if ($mailbox[0] == '{') {
+            $mailbox = (string) \preg_replace('/^{.+}/', '', $mailbox);
+        }
+
+        $result = $client->execute('DELETE', array($client->escape($mailbox)), ImapClient::COMMAND_LASTLINE);
+
+        $success = $result[0] == ImapClient::ERROR_OK;
+
+        if (empty($success)) {
+            Errors::appendError("Can't delete mailbox {$mailbox}: no such mailbox");
+        }
+
+        return $success;
     }
 
     /**
