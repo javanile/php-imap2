@@ -238,7 +238,10 @@ class Mailbox
         }
 
         $client = $imap->getClient();
-        #$client->setDebug(true);
+
+        if ($mailbox[0] == '{') {
+            $mailbox = (string) \preg_replace('/^{.+}/', '', $mailbox);
+        }
 
         return $client->createFolder($mailbox);
     }
@@ -256,13 +259,13 @@ class Mailbox
 
     public static function deleteMailbox($imap, $mailbox)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-
-            return $client->deleteFolder($mailbox);
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_deletemailbox($imap, $mailbox);
+        $client = $imap->getClient();
+
+        return $client->deleteFolder($mailbox);
     }
 
     /**
