@@ -117,4 +117,4 @@
 
 - <https://www.atmail.com/blog/imap-commands/>
 - <https://developers.google.com/gmail/imap/xoauth2-protocol>
-- 
+- <https://github.com/ddeboer/imap/issues/443#issuecomment-1172158902>
