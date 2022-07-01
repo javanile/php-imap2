@@ -115,7 +115,7 @@
 
 ## Gmail OAuth
 
-Scope: 
+Scope: https://mail.google.com/
 
 ## Reference
 

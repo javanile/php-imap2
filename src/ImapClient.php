@@ -75,6 +75,7 @@ class ImapClient
     const COMMAND_CAPABILITY = 2;
     const COMMAND_LASTLINE   = 4;
     const COMMAND_ANONYMIZED = 8;
+    const COMMAND_RAW_LASTLINE = 16;
 
     const DEBUG_LINE_LENGTH = 4098; // 4KB + 2B for \r\n
 
@@ -3799,6 +3800,11 @@ class ImapClient
         // return last line only (without command tag, result and response code)
         if ($line && ($options & self::COMMAND_LASTLINE)) {
             $response = preg_replace("/^$tag (OK|NO|BAD|BYE|PREAUTH)?\s*(\[[a-z-]+\])?\s*/i", '', trim($line));
+        }
+
+        // return raw last line only (without command tag, result and response code)
+        if ($line && ($options & self::COMMAND_RAW_LASTLINE)) {
+            $response = preg_replace("/^$tag (OK|NO|BAD|BYE|PREAUTH)?\s*/i", '', trim($line));
         }
 
         return $noresp ? $code : array($code, $response);

@@ -27,6 +27,7 @@ class Connection
     protected $sslMode;
     protected $currentMailbox;
     protected $connected;
+    protected $registry;
 
     /**
      *
@@ -247,5 +248,31 @@ class Connection
     public static function isValid($imap)
     {
         return is_a($imap, Connection::class) && $imap->isConnected();
+    }
+
+    public function setRegistryValue($space, $item, $key, $value)
+    {
+        if (empty($this->registry)) {
+            $this->registry = [];
+        }
+
+        if (empty($this->registry[$space])) {
+            $this->registry[$space] = [];
+        }
+
+        if (empty($this->registry[$space][$item])) {
+            $this->registry[$space][$item] = [];
+        }
+
+        $this->registry[$space][$item][$key] = $value;
+    }
+
+    public function getRegistryValue($space, $item, $key)
+    {
+        if (isset($this->registry[$space][$item][$key])) {
+            return $this->registry[$space][$item][$key];
+        }
+
+        return false;
     }
 }

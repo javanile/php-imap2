@@ -366,6 +366,23 @@ class CompatibilityTest extends ImapTestCase
         $this->assertEquals($imapAlerts1, $imapAlerts2);
         $this->assertEquals($imapErrors1, $imapErrors2);
 
+        $newMailboxName1 = uniqid('new-mailbox-');
+        imap_createmailbox($imap1, $this->mailbox.$newMailboxName1);
+        imap_deletemailbox($imap1, $this->mailbox.$newMailboxName1);
+        imap_deletemailbox($imap1, $this->mailbox.$newMailboxName1);
+        $imapAlerts1 = imap_alerts();
+        $imapErrors1 = imap_errors();
+
+        $newMailboxName2 = uniqid('new-mailbox-');
+        imap2_createmailbox($imap2, $this->mailbox.$newMailboxName2);
+        imap2_deletemailbox($imap2, $this->mailbox.$newMailboxName2);
+        imap2_deletemailbox($imap2, $this->mailbox.$newMailboxName2);
+        $imapAlerts2 = imap2_alerts();
+        $imapErrors2 = imap2_errors();
+
+        $this->assertEquals($imapAlerts1, $imapAlerts2);
+        $this->assertEquals($imapErrors1, $imapErrors2);
+
         imap_close($imap1);
         imap2_close($imap2);
     }

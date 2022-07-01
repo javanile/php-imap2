@@ -269,12 +269,16 @@ class Mailbox
             $mailbox = (string) \preg_replace('/^{.+}/', '', $mailbox);
         }
 
-        $result = $client->execute('DELETE', array($client->escape($mailbox)), ImapClient::COMMAND_LASTLINE);
+        $result = $client->execute('DELETE', array($client->escape($mailbox)), ImapClient::COMMAND_RAW_LASTLINE);
 
         $success = $result[0] == ImapClient::ERROR_OK;
 
-        if (!$success) {
+        if (!$success && $imap->getRegistryValue('mailbox', $mailbox, 'deleted')) {
+            Errors::appendError($result[1]);
+        } elseif (!$success) {
             Errors::appendError("Can't delete mailbox {$mailbox}: no such mailbox");
+        } else {
+            $imap->setRegistryValue('mailbox', $mailbox, 'deleted', true);
         }
 
         return $success;
