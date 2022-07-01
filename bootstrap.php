@@ -71,105 +71,162 @@ if (!defined('FT_INTERNAL')) {
 if (!defined('FT_PREFETCHTEXT')) {
     define('FT_PREFETCHTEXT', 32);
 }
-
-
-/*
-if (!defined('                 ')) {
-    define('            ', 512);
+if (!defined('ST_UID')) {
+    define('ST_UID', 1);
 }
-if (!defined('                 ')) {
-    define('            ', 512);
+if (!defined('ST_SILENT')) {
+    define('ST_SILENT', 2);
 }
-if (!defined('                 ')) {
-    define('            ', 512);
+if (!defined('ST_SET')) {
+    define('ST_SET', 4);
 }
-if (!defined('                 ')) {
-    define('            ', 512);
+if (!defined('CP_UID')) {
+    define('CP_UID', 1);
 }
-if (!defined('                 ')) {
-    define('            ', 512);
+if (!defined('CP_MOVE')) {
+    define('CP_MOVE', 2);
 }
-if (!defined('                 ')) {
-    define('            ', 512);
+if (!defined('SE_UID')) {
+    define('SE_UID', 1);
 }
-if (!defined('                 ')) {
-    define('            ', 512);
+if (!defined('SE_FREE')) {
+    define('SE_FREE', 2);
 }
-
-ST_UID (int)
-ST_SILENT (int)
-ST_SET (int)
-
-
-CP_UID (int)
-CP_MOVE (int)
-
-
-SE_UID (int)
-SE_FREE (int)
-SE_NOPREFETCH (int)
-
-
-SO_FREE (int)
-SO_NOSERVER (int)
-
-
-SA_MESSAGES (int)
-SA_RECENT (int)
-SA_UNSEEN (int)
-SA_UIDNEXT (int)
-SA_UIDVALIDITY (int)
-SA_ALL (int)
-
-
-LATT_NOINFERIORS (int)
-LATT_NOSELECT (int)
-LATT_MARKED (int)
-LATT_UNMARKED (int)
-LATT_REFERRAL (int)
-LATT_HASCHILDREN (int)
-LATT_HASNOCHILDREN (int)
-
-
-SORTDATE (int)
-SORTARRIVAL (int)
-SORTFROM (int)
-SORTSUBJECT (int)
-SORTTO (int)
-SORTCC (int)
-SORTSIZE (int)
-
-
-TYPETEXT (int)
-TYPEMULTIPART (int)
-TYPEMESSAGE (int)
-TYPEAPPLICATION (int)
-TYPEAUDIO (int)
-TYPEIMAGE (int)
-TYPEVIDEO (int)
-TYPEMODEL (int)
-TYPEOTHER (int)
-
-
-ENC7BIT (int)
-ENC8BIT (int)
-ENCBINARY (int)
-ENCBASE64 (int)
-ENCQUOTEDPRINTABLE (int)
-ENCOTHER (int)
-
-
-
-IMAP_OPENTIMEOUT (int)
-IMAP_READTIMEOUT (int)
-IMAP_WRITETIMEOUT (int)
-IMAP_CLOSETIMEOUT (int)
-IMAP_GC_ELT (int)
-IMAP_GC_ENV (int)
-IMAP_GC_TEXTS (int)
-
-*/
-
+if (!defined('SE_NOPREFETCH')) {
+    define('SE_NOPREFETCH', 4);
+}
+if (!defined('SO_FREE')) {
+    define('SO_FREE', 8);
+}
+if (!defined('SO_NOSERVER')) {
+    define('SO_NOSERVER', 16);
+}
+if (!defined('SA_MESSAGES')) {
+    define('SA_MESSAGES', 1);
+}
+if (!defined('SA_RECENT')) {
+    define('SA_RECENT', 2);
+}
+if (!defined('SA_UNSEEN')) {
+    define('SA_UNSEEN', 4);
+}
+if (!defined('SA_UIDNEXT')) {
+    define('SA_UIDNEXT', 8);
+}
+if (!defined('SA_UIDVALIDITY')) {
+    define('SA_UIDVALIDITY', 16);
+}
+if (!defined('SA_ALL')) {
+    define('SA_ALL', 31);
+}
+if (!defined('LATT_NOINFERIORS')) {
+    define('LATT_NOINFERIORS', 1);
+}
+if (!defined('LATT_NOSELECT')) {
+    define('LATT_NOSELECT', 2);
+}
+if (!defined('LATT_MARKED')) {
+    define('LATT_MARKED', 4);
+}
+if (!defined('LATT_UNMARKED')) {
+    define('LATT_UNMARKED', 8);
+}
+if (!defined('LATT_REFERRAL')) {
+    define('LATT_REFERRAL', 16);
+}
+if (!defined('LATT_HASCHILDREN')) {
+    define('LATT_HASCHILDREN', 32);
+}
+if (!defined('LATT_HASNOCHILDREN')) {
+    define('LATT_HASNOCHILDREN', 64);
+}
+if (!defined('SORTDATE')) {
+    define('SORTDATE', 0);
+}
+if (!defined('SORTARRIVAL')) {
+    define('SORTARRIVAL', 1);
+}
+if (!defined('SORTFROM')) {
+    define('SORTFROM', 2);
+}
+if (!defined('SORTSUBJECT')) {
+    define('SORTSUBJECT', 3);
+}
+if (!defined('SORTTO')) {
+    define('SORTTO', 4);
+}
+if (!defined('SORTCC')) {
+    define('SORTCC', 5);
+}
+if (!defined('SORTSIZE')) {
+    define('SORTSIZE', 6);
+}
+if (!defined('TYPETEXT')) {
+    define('TYPETEXT', 0);
+}
+if (!defined('TYPEMULTIPART')) {
+    define('TYPEMULTIPART', 1);
+}
+if (!defined('TYPEMESSAGE')) {
+    define('TYPEMESSAGE', 2);
+}
+if (!defined('TYPEAPPLICATION')) {
+    define('TYPEAPPLICATION', 3);
+}
+if (!defined('TYPEAUDIO')) {
+    define('TYPEAUDIO', 4);
+}
+if (!defined('TYPEIMAGE')) {
+    define('TYPEIMAGE', 5);
+}
+if (!defined('TYPEVIDEO')) {
+    define('TYPEVIDEO', 6);
+}
+if (!defined('TYPEMODEL')) {
+    define('TYPEMODEL', 7);
+}
+if (!defined('TYPEOTHER')) {
+    define('TYPEOTHER', 8);
+}
+if (!defined('ENC7BIT')) {
+    define('ENC7BIT', 0);
+}
+if (!defined('ENC8BIT')) {
+    define('ENC8BIT', 1);
+}
+if (!defined('ENCBINARY')) {
+    define('ENCBINARY', 2);
+}
+if (!defined('ENCBASE64')) {
+    define('ENCBASE64', 3);
+}
+if (!defined('ENCQUOTEDPRINTABLE')) {
+    define('ENCQUOTEDPRINTABLE', 4);
+}
+if (!defined('ENCOTHER')) {
+    define('ENCOTHER', 5);
+}
+if (!defined('IMAP_OPENTIMEOUT')) {
+    define('IMAP_OPENTIMEOUT', 1);
+}
+if (!defined('IMAP_READTIMEOUT')) {
+    define('IMAP_READTIMEOUT', 2);
+}
+if (!defined('IMAP_WRITETIMEOUT')) {
+    define('IMAP_WRITETIMEOUT', 3);
+}
+if (!defined('IMAP_CLOSETIMEOUT')) {
+    define('IMAP_CLOSETIMEOUT', 4);
+}
+if (!defined('IMAP_GC_ELT')) {
+    define('IMAP_GC_ELT', 1);
+}
+if (!defined('IMAP_GC_ENV')) {
+    define('IMAP_GC_ENV', 2);
+}
+if (!defined('IMAP_GC_TEXTS')) {
+    define('IMAP_GC_TEXTS', 4);
+}
 
 /**
  * imap2_open

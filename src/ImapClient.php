@@ -833,7 +833,7 @@ class ImapClient
      */
     public function getHierarchyDelimiter()
     {
-        if ($this->prefs['delimiter']) {
+        if (isset($this->prefs['delimiter']) && $this->prefs['delimiter']) {
             return $this->prefs['delimiter'];
         }
 
