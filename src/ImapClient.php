@@ -3018,7 +3018,7 @@ class ImapClient
         }
 
         $binary       = $binary && $this->getCapability('BINARY');
-        $literal_plus = !$binary && $this->prefs['literal+'];
+        $literal_plus = !$binary && isset($this->prefs['literal+']) && $this->prefs['literal+'];
         $len          = 0;
         $msg          = is_array($message) ? $message : array(&$message);
         $chunk_size   = 512000;
