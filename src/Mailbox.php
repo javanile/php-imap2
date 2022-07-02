@@ -243,7 +243,13 @@ class Mailbox
             $mailbox = (string) \preg_replace('/^{.+}/', '', $mailbox);
         }
 
-        return $client->createFolder($mailbox);
+        $success = $client->createFolder($mailbox);
+
+        if (!$success) {
+            Errors::appendError($client->getRawLastLine());
+        }
+
+        return $success;
     }
 
     public static function renameMailbox($imap, $from, $to)

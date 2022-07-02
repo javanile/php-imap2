@@ -62,6 +62,7 @@ class ImapClient
     protected $capability_readed = false;
     protected $debug             = false;
     protected $debug_handler     = false;
+    protected $rawLastLine;
 
     const ERROR_OK       = 0;
     const ERROR_NO       = -1;
@@ -1448,9 +1449,11 @@ class ImapClient
             $args[] = '(USE (' . implode(' ', $types) . '))';
         }
 
-        $result = $this->execute('CREATE', $args, self::COMMAND_NORESPONSE);
+        $result = $this->execute('CREATE', $args, self::COMMAND_RAW_LASTLINE);
 
-        return $result == self::ERROR_OK;
+        $this->rawLastLine = $result[1];
+
+        return $result[0] == self::ERROR_OK;
     }
 
     /**
@@ -4142,5 +4145,10 @@ class ImapClient
         else {
             echo "DEBUG: $message\n";
         }
+    }
+
+    public function getRawLastLine()
+    {
+        return $this->rawLastLine;
     }
 }

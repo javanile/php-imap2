@@ -320,6 +320,24 @@ class CompatibilityTest extends ImapTestCase
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
+        // Reset error buffers
+        imap_alerts();
+        imap_errors();
+        imap2_alerts();
+        imap2_errors();
+
+        $inbox = 'INBOX';
+        $createMailbox1 = imap_createmailbox($imap1, $this->mailbox . $inbox);
+        $imapAlerts1 = imap_alerts();
+        $imapErrors1 = imap_errors();
+        $createMailbox2 = imap2_createmailbox($imap2, $this->mailbox . $inbox);
+        $imapAlerts2 = imap2_alerts();
+        $imapErrors2 = imap2_errors();
+
+        $this->assertEquals($createMailbox1, $createMailbox2);
+        $this->assertEquals($imapAlerts1, $imapAlerts2);
+        $this->assertEquals($imapErrors1, $imapErrors2);
+
         /*
         $randomMailboxName1 = 'Mailbox ' . Functions::unique();
         $randomMailboxName2 = 'Mailbox ' . Functions::unique();
