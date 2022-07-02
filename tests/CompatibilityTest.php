@@ -355,7 +355,6 @@ class CompatibilityTest extends ImapTestCase
 
         $this->assertEquals($success1, $success2);
         */
-        $this->assertEquals(1, 1);
 
         imap_close($imap1);
         imap2_close($imap2);
