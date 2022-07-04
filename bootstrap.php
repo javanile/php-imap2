@@ -836,6 +836,10 @@ if (!function_exists('imap_body')) {
 if (!function_exists('imap2_body')) {
     function imap2_body($imap, $messageNum, $flags = 0)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_body($imap, $messageNum, $flags);
+        }
+
         return Message::body($imap, $messageNum, $flags);
     }
 }
