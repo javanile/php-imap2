@@ -575,6 +575,11 @@ class CompatibilityTest extends ImapTestCase
 
         $this->assertEquals($numMsg1, $numMsg2);
 
+        $lastMessageBody1 = imap_body($imap1, $numMsg1);
+        $lastMessageBody2 = imap2_body($imap2, $numMsg2);
+
+        $this->assertEquals($lastMessageBody1, $lastMessageBody2);
+
         imap_close($imap1);
         imap2_close($imap2);
     }
@@ -653,4 +658,6 @@ class CompatibilityTest extends ImapTestCase
         imap_close($imap1);
         imap2_close($imap2);
     }
+
+
 }
