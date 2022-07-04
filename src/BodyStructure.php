@@ -207,6 +207,12 @@ class BodyStructure
         ];
 
         foreach ($item[8] as $itemPart) {
+            if (!is_array($itemPart[2])) {
+                continue;
+            }
+
+            $parameters = self::extractParameters($itemPart[2], []);
+
             $part = (object) [
                 'type' => 0,
                 'encoding' => 0,
@@ -219,15 +225,17 @@ class BodyStructure
                 'ifdisposition' => 0,
                 'ifdparameters' => 0,
                 'ifparameters' => 1,
-                'parameters' => []
+                'parameters' => $parameters
             ];
 
-            if (isset($itemPart[][0])) {
+            $dispositionParametersIndex = 9;
+
+            if (isset($itemPart[$dispositionParametersIndex][0])) {
                 $attribute = null;
                 $dispositionParameters = [];
-                $part->disposition = $item[$dispositionIndex][0];
-                if (isset($item[$dispositionIndex][1]) && is_array($item[$dispositionIndex][1])) {
-                    foreach ($item[$dispositionIndex][1] as $value) {
+                $part->disposition = $itemPart[$dispositionParametersIndex][0];
+                if (isset($itemPart[$dispositionParametersIndex][1]) && is_array($itemPart[$dispositionParametersIndex][1])) {
+                    foreach ($itemPart[$dispositionParametersIndex][1] as $value) {
                         if (empty($attribute)) {
                             $attribute = [
                                 'attribute' => $value,
@@ -235,7 +243,7 @@ class BodyStructure
                             ];
                         } else {
                             $attribute['value'] = $value;
-                            $dispositionParameters[] = (object)$attribute;
+                            $dispositionParameters[] = (object) $attribute;
                             $attribute = null;
                         }
                     }
