@@ -780,6 +780,10 @@ if (!function_exists('imap_append')) {
 if (!function_exists('imap2_append')) {
     function imap2_append($imap, $folder, $message, $options = null, $internalDate = null)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_append($imap, $folder, $message, $options, $internalDate);
+        }
+
         return Mailbox::append($imap, $folder, $message, $options, $internalDate);
     }
 }
@@ -788,9 +792,9 @@ if (!function_exists('imap2_append')) {
  * imap2_headerinfo
  */
 if (!function_exists('imap_headerinfo')) {
-    function imap4_headerinfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0, $defaultHost = null)
+    function imap_headerinfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0, $defaultHost = null)
     {
-        return imap_headerinfo($imap, $messageNum, $fromLength, $subjectLength, $defaultHost);
+        return imap2_headerinfo($imap, $messageNum, $fromLength, $subjectLength, $defaultHost);
     }
 }
 if (!function_exists('imap2_headerinfo')) {

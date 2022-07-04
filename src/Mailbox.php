@@ -303,21 +303,18 @@ class Mailbox
      */
     public static function append($imap, $folder, $message, $options = null, $internalDate = null)
     {
-        if (is_a($imap, Connection::class)) {
-            $folderParts = explode('}', $folder);
-            $client = $imap->getClient();
-            #$client->setDebug(true);
-            $mailbox = empty($folderParts[1]) ? 'INBOX' : $folderParts[1];
-
-            return $client->append($mailbox, $message);
-
-        } elseif (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
-            return imap_append($imap, $folder, $message, $options, $internalDate);
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        trigger_error(Errors::invalidImapConnection(debug_backtrace(), 1), E_USER_WARNING);
+        $folderParts = explode('}', $folder);
+        $client = $imap->getClient();
 
-        return false;
+        $mailbox = empty($folderParts[1]) ? 'INBOX' : $folderParts[1];
+
+        $success = $client->append($mailbox, $message);
+
+        return boolval($success);
     }
 
     public static function getSubscribed($imap, $mailbox)

@@ -23,23 +23,28 @@ class BodyStructure
 
     public static function fromMessage($message)
     {
+        return self::fromBodyStructure($message->bodystructure);
+    }
+
+    protected static function fromBodyStructure($structure)
+    {
         $parts = [];
         $parameters = [];
 
         #file_put_contents('t3.json', json_encode($message, JSON_PRETTY_PRINT));
 
-        if (isset($message->bodystructure[0]) && $message->bodystructure[0] == 'TEXT') {
-            $parameters = self::extractParameters($message->bodystructure[2], []);
+        if (isset($structure[0]) && $structure[0] == 'TEXT') {
+            $parameters = self::extractParameters($structure[2], []);
 
             return (object) [
                 'type' => 0,
-                'encoding' => self::$encodingNumber[$message->bodystructure[5]] ?? 0,
+                'encoding' => self::$encodingNumber[$structure[5]] ?? 0,
                 'ifsubtype' => 1,
-                'subtype' => $message->bodystructure[1],
+                'subtype' => $structure[1],
                 'ifdescription' => 0,
                 'ifid' => 0,
-                'lines' => intval($message->bodystructure[7]),
-                'bytes' => intval($message->bodystructure[6]),
+                'lines' => intval($structure[7]),
+                'bytes' => intval($structure[6]),
                 'ifdisposition' => 0,
                 'ifdparameters' => 0,
                 'ifparameters' => count($parameters),
@@ -49,7 +54,7 @@ class BodyStructure
 
         $section = 'parts';
         $subType = 'ALTERNATIVE';
-        foreach ($message->bodystructure as $item) {
+        foreach ($structure as $item) {
             if ($item == 'ALTERNATIVE') {
                 $section = 'parameters';
                 continue;
@@ -85,6 +90,11 @@ class BodyStructure
 
     protected static function extractPart($item)
     {
+        global $countParts;
+
+        $countParts++;
+        file_put_contents('p'.$countParts.'.json', json_encode($item, JSON_PRETTY_PRINT));
+
         $attribute = null;
         $parameters = [];
 
@@ -105,15 +115,23 @@ class BodyStructure
             }
         }
 
+        $type = 0;
+        $linesIndex = 7;
+        $bytesIndex = 6;
+        if ($item[0] == 'MESSAGE') {
+            $type = 2;
+            $linesIndex = 9;
+        }
+
         $part = (object) [
-            'type' => 0,
-            'encoding' => self::$encodingNumber[$item[5]],
+            'type' => $type,
+            'encoding' => is_numeric($item[5]) ? (self::$encodingNumber[$item[5]] ?? 0) : 0,
             'ifsubtype' => 1,
             'subtype' => $item[1],
             'ifdescription' => 0,
             'ifid' => 0,
-            'lines' => intval($item[7]),
-            'bytes' => intval($item[6]),
+            'lines' => intval($item[$linesIndex]),
+            'bytes' => intval($item[$bytesIndex]),
             'ifdisposition' => 0,
             'disposition' => null,
             'ifdparameters' => 0,
@@ -122,29 +140,48 @@ class BodyStructure
             'parameters' => $parameters,
         ];
 
-        if (isset($item[9][0])) {
+        $dispositionIndex = 9;
+        if ($type == 2) {
+            $dispositionIndex = 11;
+        }
+        if (isset($item[$dispositionIndex][0])) {
             $attribute = null;
             $dispositionParameters = [];
-            $part->disposition = $item[9][0];
-            foreach ($item[9][1] as $value) {
-                if (empty($attribute)) {
-                    $attribute = [
-                        'attribute' => $value,
-                        'value' => null,
-                    ];
-                } else {
-                    $attribute['value'] = $value;
-                    $dispositionParameters[] = (object) $attribute;
-                    $attribute = null;
+            $part->disposition = $item[$dispositionIndex][0];
+            if (isset($item[$dispositionIndex][1]) && is_array($item[$dispositionIndex][1])) {
+                foreach ($item[$dispositionIndex][1] as $value) {
+                    if (empty($attribute)) {
+                        $attribute = [
+                            'attribute' => $value,
+                            'value' => null,
+                        ];
+                    } else {
+                        $attribute['value'] = $value;
+                        $dispositionParameters[] = (object)$attribute;
+                        $attribute = null;
+                    }
                 }
             }
             $part->dparameters = $dispositionParameters;
-            $part->ifdparameters = count($dispositionParameters);
+            $part->ifdparameters = 1;
             $part->ifdisposition = 1;
         } else {
             unset($part->disposition);
             unset($part->dparameters);
         }
+
+        return self::processSubParts($item, $part);
+    }
+
+    protected static function processSubParts($item, $part)
+    {
+        if ($item[0] != 'MESSAGE') {
+            return $part;
+        }
+
+        $part->parts = [
+            $item[8]
+        ];
 
         return $part;
     }

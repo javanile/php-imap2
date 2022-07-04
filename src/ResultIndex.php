@@ -157,7 +157,7 @@ class ResultIndex
      */
     public function count()
     {
-        if ($this->meta['count'] !== null)
+        if (isset($this->meta['count']) && $this->meta['count'] !== null)
             return $this->meta['count'];
 
         if (empty($this->raw_data)) {

@@ -517,6 +517,7 @@ class CompatibilityTest extends ImapTestCase
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
+        /* Questo test va riabilitato è funzionante
         $messages = imap_fetch_overview($imap1, '1:5');
         $this->assertCount(5, $messages);
 
@@ -539,6 +540,27 @@ class CompatibilityTest extends ImapTestCase
                 #file_put_contents('t2.json', json_encode($structure2, JSON_PRETTY_PRINT));
                 $this->assertEquals($structure1, $structure2);
             }
+        }
+        */
+
+        $emlFiles = [
+            'embedded_email.eml'
+        ];
+        foreach ($emlFiles as $file) {
+            $message = file_get_contents('tests/fixtures/'.$file);
+            $mailbox1 = uniqid('test_');
+            $mailbox2 = uniqid('test_');
+            imap_createmailbox($imap1, $this->mailbox.$mailbox1);
+            #imap2_createmailbox($imap2, $this->mailbox.$mailbox2);
+            imap_append($imap1, $this->mailbox.$mailbox1, $message);
+            #imap2_append($imap2, $this->mailbox.$mailbox2, $message);
+            imap_reopen($imap1, $this->mailbox.$mailbox1);
+            imap2_reopen($imap2, $this->mailbox.$mailbox1);
+            $structure1 = imap_fetchstructure($imap1, 1);
+            $structure2 = imap2_fetchstructure($imap2, 1);
+            file_put_contents('t1.json', json_encode($structure1, JSON_PRETTY_PRINT));
+            file_put_contents('t2.json', json_encode($structure2, JSON_PRETTY_PRINT));
+            die();
         }
 
         imap_close($imap1);

@@ -2486,7 +2486,7 @@ class ImapClient
                 $ln      = 0;
 
                 // Tokenize response and assign to object properties
-                while (list($name, $value) = $this->tokenizeResponse($line, 2)) {
+                while (@list($name, $value) = $this->tokenizeResponse($line, 2)) {
                     if ($name == 'UID') {
                         $result[$id]->uid = intval($value);
                     }
@@ -3993,7 +3993,7 @@ class ImapClient
 
         foreach ($messages as $idx => $part) {
             $items = explode(':', $part);
-            $max   = max($items[0], $items[1]);
+            $max   = max($items[0], $items[1] ?? $items[0]);
 
             for ($x=$items[0]; $x<=$max; $x++) {
                 $result[] = (int)$x;
