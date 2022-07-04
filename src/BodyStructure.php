@@ -91,10 +91,7 @@ class BodyStructure
     protected static function extractPart($item)
     {
         global $countParts;
-
-        $countParts++;
-        file_put_contents('p'.$countParts.'.json', json_encode($item, JSON_PRETTY_PRINT));
-
+        
         $attribute = null;
         $parameters = [];
 
@@ -180,10 +177,81 @@ class BodyStructure
         }
 
         $part->parts = [
-            $item[8]
+            self::processSubPartAsMessage($item)
         ];
 
         return $part;
+    }
+    
+    protected static function processSubPartAsMessage($item)
+    {
+        $message = (object) [
+            'type' => 1,
+            'encoding' => 0,
+            'ifsubtype' => 1,
+            'subtype' => 'MIXED',
+            'ifdescription' => 0,
+            'ifid' => 0,
+            'ifdisposition' => 0,
+            'ifdparameters' => 0,
+            'ifparameters' => 1,
+            'parameters' => [
+                (object) [
+                    'attribute' => 'BOUNDARY',
+                    'value' => '=_995890bdbf8bd158f2cbae0e8d966000'
+                ]
+            ],
+            'parts' => [
+
+            ]
+        ];
+
+        foreach ($item[8] as $itemPart) {
+            $part = (object) [
+                'type' => 0,
+                'encoding' => 0,
+                'ifsubtype' => 1,
+                'subtype' => 'PLAIN',
+                'ifdescription' => 0,
+                'ifid' => 0,
+                'lines' => 1,
+                'bytes' => 9,
+                'ifdisposition' => 0,
+                'ifdparameters' => 0,
+                'ifparameters' => 1,
+                'parameters' => []
+            ];
+
+            if (isset($itemPart[][0])) {
+                $attribute = null;
+                $dispositionParameters = [];
+                $part->disposition = $item[$dispositionIndex][0];
+                if (isset($item[$dispositionIndex][1]) && is_array($item[$dispositionIndex][1])) {
+                    foreach ($item[$dispositionIndex][1] as $value) {
+                        if (empty($attribute)) {
+                            $attribute = [
+                                'attribute' => $value,
+                                'value' => null,
+                            ];
+                        } else {
+                            $attribute['value'] = $value;
+                            $dispositionParameters[] = (object)$attribute;
+                            $attribute = null;
+                        }
+                    }
+                }
+                $part->dparameters = $dispositionParameters;
+                $part->ifdparameters = 1;
+                $part->ifdisposition = 1;
+            } else {
+                unset($part->disposition);
+                unset($part->dparameters);
+            }
+
+            $message->parts[] = $part;
+        }
+        
+        return $message;
     }
 
     protected static function extractParameters($attributes, $parameters)
