@@ -155,7 +155,7 @@ class Functions
         return Connection::isValid($imap);
     }
 
-    public static function getAddressObjectList($addressList, $defaultHostname = 'UNKNOWN')
+    public static function getAddressObjectList($addressList, $defaultHost = 'UNKNOWN')
     {
         $addressObjectList = [];
         foreach ($addressList as $toAddress) {
@@ -163,7 +163,7 @@ class Functions
 
             $addressObject = (object) [
                 'mailbox' => $email[0],
-                'host' => $email[1] ?? $defaultHostname,
+                'host' => $email[1] ?? $defaultHost,
             ];
 
             $personal = $toAddress->getName();

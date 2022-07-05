@@ -31,25 +31,11 @@ class BodyStructure
         $parts = [];
         $parameters = [];
 
-        #file_put_contents('t3.json', json_encode($message, JSON_PRETTY_PRINT));
+        file_put_contents('t3.json', json_encode($structure, JSON_PRETTY_PRINT));
+        #die();
 
         if (isset($structure[0]) && $structure[0] == 'TEXT') {
-            $parameters = self::extractParameters($structure[2], []);
-
-            return (object) [
-                'type' => 0,
-                'encoding' => self::getEncoding($structure, 5),
-                'ifsubtype' => 1,
-                'subtype' => $structure[1],
-                'ifdescription' => 0,
-                'ifid' => 0,
-                'lines' => intval($structure[7]),
-                'bytes' => intval($structure[6]),
-                'ifdisposition' => 0,
-                'ifdparameters' => 0,
-                'ifparameters' => count($parameters),
-                'parameters' => count($parameters) ? $parameters : (object) [],
-            ];
+            return self::textStructure($structure);
         }
 
         $section = 'parts';
@@ -90,12 +76,20 @@ class BodyStructure
 
     protected static function extractPart($item)
     {
-        global $countParts;
-        
+        if ($item[2] == 'RELATED') {
+            return self::extractPartAsRelated($item);
+        }
+
+        if ($item[2] == 'ALTERNATIVE') {
+            return self::extractPartAsAlternative($item);
+        }
+
         $attribute = null;
         $parameters = [];
 
         if (!is_array($item[2])) {
+            var_dump($item);
+
             return $parameters;
         }
 
@@ -119,6 +113,14 @@ class BodyStructure
             $type = 2;
             $linesIndex = 9;
         }
+        if ($item[0] == 'IMAGE') {
+            $type = 5;
+            $linesIndex = 9;
+        }
+        if ($item[1] == 'JPEG') {
+            #var_dump($item);
+            #die();
+        }
 
         $part = (object) [
             'type' => $type,
@@ -126,7 +128,9 @@ class BodyStructure
             'ifsubtype' => 1,
             'subtype' => $item[1],
             'ifdescription' => 0,
+            'description' => null,
             'ifid' => 0,
+            'id' => null,
             'lines' => intval($item[$linesIndex]),
             'bytes' => intval($item[$bytesIndex]),
             'ifdisposition' => 0,
@@ -137,9 +141,29 @@ class BodyStructure
             'parameters' => $parameters,
         ];
 
+        if ($item[3]) {
+            $part->ifid = 1;
+            $part->id = $item[3];
+        } else {
+            unset($part->id);
+        }
+
+        if ($item[4]) {
+            $part->ifdescription = 1;
+            $part->description = $item[4];
+        } else {
+            unset($part->description);
+        }
+
+        if ($type == 5) {
+            unset($part->lines);
+        }
+
         $dispositionIndex = 9;
         if ($type == 2) {
             $dispositionIndex = 11;
+        } elseif ($type == 5) {
+            $dispositionIndex = 8;
         }
         if (isset($item[$dispositionIndex][0])) {
             $attribute = null;
@@ -168,6 +192,76 @@ class BodyStructure
         }
 
         return self::processSubParts($item, $part);
+    }
+
+    protected static function extractPartAsRelated($item)
+    {
+        $part = (object) [
+            'type' => 1,
+            'encoding' => self::getEncoding($item, 5),
+            'ifsubtype' => 1,
+            'subtype' => 'RELATED',
+            'ifdescription' => 0,
+            'ifid' => 0,
+            'ifdisposition' => 0,
+            'disposition' => null,
+            'ifdparameters' => 0,
+            'dparameters' => null,
+            'ifparameters' => 1,
+            'parameters' => [],
+            'parts' => []
+        ];
+
+        $offsetIndex = 0;
+        foreach ($item as $subPart) {
+            if (!is_array($subPart)) {
+                break;
+            }
+            $offsetIndex++;
+            $part->parts[] = self::extractPart($subPart);
+        }
+
+        $part->parameters = self::extractParameters($item[$offsetIndex+1], []);
+
+        unset($part->disposition);
+        unset($part->dparameters);
+
+        return $part;
+    }
+
+    protected static function extractPartAsAlternative($item)
+    {
+        $part = (object) [
+            'type' => 1,
+            'encoding' => self::getEncoding($item, 5),
+            'ifsubtype' => 1,
+            'subtype' => 'ALTERNATIVE',
+            'ifdescription' => 0,
+            'ifid' => 0,
+            'ifdisposition' => 0,
+            'disposition' => null,
+            'ifdparameters' => 0,
+            'dparameters' => null,
+            'ifparameters' => 1,
+            'parameters' => [],
+            'parts' => []
+        ];
+
+        $offsetIndex = 0;
+        foreach ($item as $subPart) {
+            if (!is_array($subPart)) {
+                break;
+            }
+            $offsetIndex++;
+            $part->parts[] = self::extractPart($subPart);
+        }
+
+        $part->parameters = self::extractParameters($item[$offsetIndex+1], []);
+
+        unset($part->disposition);
+        unset($part->dparameters);
+
+        return $part;
     }
 
     protected static function processSubParts($item, $part)
@@ -291,5 +385,25 @@ class BodyStructure
     protected static function getEncoding($item, $encodingIndex)
     {
         return isset($item[$encodingIndex]) ? (self::$encodingNumber[$item[$encodingIndex]] ?? 0) : 0;
+    }
+
+    protected static function textStructure($structure)
+    {
+        $parameters = self::extractParameters($structure[2], []);
+
+        return (object) [
+            'type' => 0,
+            'encoding' => self::getEncoding($structure, 5),
+            'ifsubtype' => 1,
+            'subtype' => $structure[1],
+            'ifdescription' => 0,
+            'ifid' => 0,
+            'lines' => intval($structure[7]),
+            'bytes' => intval($structure[6]),
+            'ifdisposition' => 0,
+            'ifdparameters' => 0,
+            'ifparameters' => count($parameters),
+            'parameters' => count($parameters) ? $parameters : (object) [],
+        ];
     }
 }

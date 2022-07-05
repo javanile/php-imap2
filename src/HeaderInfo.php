@@ -43,7 +43,7 @@ class HeaderInfo
             'senderaddress' => $sender,
             'sender' => self::parseAddressList($sender, $defaultHost),
             'Recent' => ' ',
-            'Unseen' => ' ',
+            'Unseen' => isset($message->flags['SEEN']) && $message->flags['SEEN'] ? 'U' : ' ',
             'Flagged' => ' ',
             'Answered' => ' ',
             'Deleted' => ' ',
@@ -62,7 +62,7 @@ class HeaderInfo
 
         foreach ($addressList as $objectEntry) {
             $addressEntry = (object) [
-                'personal' => $objectEntry->personal,
+                'personal' => $objectEntry->personal ?? null,
                 'mailbox' => $objectEntry->mailbox,
                 'host' => $objectEntry->host,
             ];

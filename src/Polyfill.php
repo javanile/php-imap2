@@ -36,7 +36,7 @@ class Polyfill
         return $string;
     }
 
-    public static function rfc822ParseAdrList($string, $defaultHostname)
+    public static function rfc822ParseAdrList($string, $defaultHost)
     {
         $message = Message::from('To: '.$string, false);
 
@@ -53,7 +53,7 @@ class Polyfill
      *
      * @return mixed
      */
-    public static function rfc822ParseHeaders($headers, $defaultHostname = 'UNKNOWN')
+    public static function rfc822ParseHeaders($headers, $defaultHost = 'UNKNOWN')
     {
         $message = Message::from($headers, false);
 
