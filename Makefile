@@ -101,5 +101,8 @@ test-polyfill:
 test-parse-headers:
 	@docker-compose run --rm phpunit tests --filter PolyfillTest::testRfc822ParseHeaders
 
+test-parse-adrlist:
+	@docker-compose run --rm phpunit tests --filter PolyfillTest::testRfc822ParseAdrList
+
 test-special:
 	@docker-compose run --rm phpunit tests --filter HeaderInfoTest::testSanitizeAddress

@@ -42,4 +42,25 @@ class PolyfillTest extends ImapTestCase
             $this->assertEquals($headers1, $headers2);
         }
     }
+
+    public function testRfc822ParseAdrList()
+    {
+        $fixtures = [
+            'Sender <sender@test.com>, CC@test.com, root',
+        ];
+
+        $defaultHostname = 'default.host';
+        foreach ($fixtures as $addresses) {
+            $addressObjectList1 = imap_rfc822_parse_adrlist($addresses, $defaultHostname);
+            $addressObjectList2 = Polyfill::rfc822ParseAdrList($addresses, $defaultHostname);
+
+            #file_put_contents('a1.json', json_encode($addressObjectList1, JSON_PRETTY_PRINT));
+            #file_put_contents('a2.json', json_encode($addressObjectList2, JSON_PRETTY_PRINT));
+
+            #var_dump($addressObjectList1);
+            #var_dump($addressObjectList2);
+
+            $this->assertEquals($addressObjectList1, $addressObjectList2);
+        }
+    }
 }

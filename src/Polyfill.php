@@ -36,9 +36,14 @@ class Polyfill
         return $string;
     }
 
-    public static function rfc822ParseAdrList($string)
+    public static function rfc822ParseAdrList($string, $defaultHostname)
     {
-        return $string;
+        $message = Message::from('To: '.$string, false);
+
+        return Functions::getAddressObjectList(
+            $message->getHeader(HeaderConsts::TO)->getAddresses(),
+            $defaultHostname
+        );
     }
 
     /**
