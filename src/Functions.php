@@ -154,4 +154,21 @@ class Functions
     {
         return Connection::isValid($imap);
     }
+
+    public static function getAddressObjectList($addressList)
+    {
+        $addressObjectList = [];
+        foreach ($addressList as $toAddress) {
+            $email = explode('@', $toAddress->getEmail());
+
+            $addressObject = (object) [
+                'mailbox' => $email[0],
+                'host' => $email[1],
+            ];
+
+            $addressObjectList[] = $addressObject;
+        }
+
+        return $addressObjectList;
+    }
 }

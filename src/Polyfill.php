@@ -11,6 +11,9 @@
 
 namespace Javanile\Imap2;
 
+use ZBateson\MailMimeParser\Message;
+use ZBateson\MailMimeParser\Header\HeaderConsts;
+
 class Polyfill
 {
     public static function convert8bit($string)
@@ -38,9 +41,38 @@ class Polyfill
         return $string;
     }
 
-    public static function rfc822ParseHeaders($headers, $defaultHostname)
+    /**
+     *
+     * @param $headers
+     * @param $defaultHostname
+     *
+     * @return mixed
+     */
+    public static function rfc822ParseHeaders($headers, $defaultHostname = 'UNKNOWN')
     {
-        return $string;
+        $message = Message::from($headers, false);
+
+        $date = $message->getHeaderValue(HeaderConsts::DATE);
+        $subject = $message->getHeaderValue(HeaderConsts::SUBJECT);
+
+        $hasReplyTo = $message->getHeader(HeaderConsts::REPLY_TO) !== null;
+        $hasSender = $message->getHeader(HeaderConsts::SENDER) !== null;
+
+        return (object) [
+            'date' => $date,
+            'Date' => $date,
+            'subject' => $subject,
+            'Subject' => $subject,
+            'message_id' => '<'.$message->getHeaderValue(HeaderConsts::MESSAGE_ID).'>',
+            'toaddress' => $message->getHeaderValue(HeaderConsts::TO),
+            'to' => Functions::getAddressObjectList($message->getHeader(HeaderConsts::TO)->getAddresses()),
+            'fromaddress' => $message->getHeaderValue(HeaderConsts::FROM),
+            'from' => Functions::getAddressObjectList($message->getHeader(HeaderConsts::FROM)->getAddresses()),
+            'reply_toaddress' => $message->getHeaderValue($hasReplyTo ? HeaderConsts::REPLY_TO : HeaderConsts::FROM),
+            'reply_to' => Functions::getAddressObjectList($message->getHeader($hasReplyTo ? HeaderConsts::REPLY_TO : HeaderConsts::FROM)->getAddresses()),
+            'senderaddress' => $message->getHeaderValue($hasSender ? HeaderConsts::SENDER : HeaderConsts::FROM),
+            'sender' => Functions::getAddressObjectList($message->getHeader($hasSender ? HeaderConsts::SENDER : HeaderConsts::FROM)->getAddresses()),
+        ];
     }
 
     public static function rfc822WriteHeaders($string)

@@ -1,15 +1,18 @@
 
 bash:
-	docker-compose run --rm php bash
+	@docker-compose run --rm php bash
 
 build:
-	docker-compose build
+	@docker-compose build
 
 install:
-	docker-compose run --rm composer install
+	@docker-compose run --rm composer install
+
+update:
+	@docker-compose run --rm composer update
 
 dump-autoload:
-	docker-compose run --rm composer dump-autoload
+	@docker-compose run --rm composer dump-autoload
 
 imap2-coverage:
 	@docker-compose run --rm imap2 ./vendor/bin/phpunit tests --coverage-html docs/coverage
@@ -94,6 +97,9 @@ test-signatures:
 
 test-polyfill:
 	@docker-compose run --rm phpunit tests --filter PolyfillTest
+
+test-parse-headers:
+	@docker-compose run --rm phpunit tests --filter PolyfillTest::testRfc822ParseHeaders
 
 test-special:
 	@docker-compose run --rm phpunit tests --filter HeaderInfoTest::testSanitizeAddress

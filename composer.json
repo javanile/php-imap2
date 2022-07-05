@@ -40,6 +40,9 @@
       "url": "https://github.com/javanile/webrequest"
     }
   },
+  "require": {
+    "zbateson/mail-mime-parser": "^2.2"
+  },
   "require-dev": {
     "phpunit/phpunit": "^6.5"
   }
