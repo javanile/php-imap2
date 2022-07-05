@@ -38,7 +38,7 @@ class BodyStructure
 
             return (object) [
                 'type' => 0,
-                'encoding' => self::$encodingNumber[$structure[5]] ?? 0,
+                'encoding' => self::getEncoding($structure, 5),
                 'ifsubtype' => 1,
                 'subtype' => $structure[1],
                 'ifdescription' => 0,
@@ -122,7 +122,7 @@ class BodyStructure
 
         $part = (object) [
             'type' => $type,
-            'encoding' => is_numeric($item[5]) ? (self::$encodingNumber[$item[5]] ?? 0) : 0,
+            'encoding' => self::getEncoding($item, 5),
             'ifsubtype' => 1,
             'subtype' => $item[1],
             'ifdescription' => 0,
@@ -215,15 +215,17 @@ class BodyStructure
 
             $part = (object) [
                 'type' => 0,
-                'encoding' => 0,
+                'encoding' => self::getEncoding($itemPart, 5),
                 'ifsubtype' => 1,
                 'subtype' => 'PLAIN',
                 'ifdescription' => 0,
                 'ifid' => 0,
-                'lines' => 1,
-                'bytes' => 9,
+                'lines' => intval($itemPart[7]),
+                'bytes' => intval($itemPart[6]),
                 'ifdisposition' => 0,
+                'disposition' => [],
                 'ifdparameters' => 0,
+                'dparameters' => [],
                 'ifparameters' => 1,
                 'parameters' => $parameters
             ];
@@ -284,5 +286,10 @@ class BodyStructure
         }
 
         return $parameters;
+    }
+
+    protected static function getEncoding($item, $encodingIndex)
+    {
+        return isset($item[$encodingIndex]) ? (self::$encodingNumber[$item[$encodingIndex]] ?? 0) : 0;
     }
 }
