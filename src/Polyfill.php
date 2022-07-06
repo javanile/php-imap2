@@ -42,7 +42,7 @@ class Polyfill
 
         return Functions::getAddressObjectList(
             $message->getHeader(HeaderConsts::TO)->getAddresses(),
-            $defaultHostname
+            $defaultHost
         );
     }
 

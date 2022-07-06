@@ -117,6 +117,11 @@
 
 Scope: https://mail.google.com/
 
+
+## Sandbox
+
+- Demo #1 - <https://phpsandbox.io/e/x/zwauf>
+
 ## Reference
 
 - <https://www.atmail.com/blog/imap-commands/>
