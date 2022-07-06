@@ -544,8 +544,9 @@ class CompatibilityTest extends ImapTestCase
         */
 
         $emlFiles = [
-            'embedded_email.eml',
-            'embedded_email_without_content_disposition.eml'
+            #'embedded_email.eml',
+            #'embedded_email_without_content_disposition.eml',
+            'four_nested_emails.eml'
         ];
         foreach ($emlFiles as $file) {
             $message = file_get_contents('tests/fixtures/'.$file);
