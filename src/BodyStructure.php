@@ -84,6 +84,10 @@ class BodyStructure
             return self::extractPartAsAlternative($item);
         }
 
+        if ($item[1] == 'RFC822') {
+            return self::extractPartAsRfc822($item);
+        }
+
         $attribute = null;
         $parameters = [];
 
@@ -109,6 +113,10 @@ class BodyStructure
         $type = 0;
         $linesIndex = 7;
         $bytesIndex = 6;
+        if ($item[0] == 'APPLICATION') {
+            $type = 3;
+            $linesIndex = 9;
+        }
         if ($item[0] == 'MESSAGE') {
             $type = 2;
             $linesIndex = 9;
@@ -117,7 +125,7 @@ class BodyStructure
             $type = 5;
             $linesIndex = 9;
         }
-        if ($item[1] == 'JPEG') {
+        if ($item[1] == 'X-ZIP-COMPRESSED') {
             #var_dump($item);
             #die();
         }
@@ -155,14 +163,14 @@ class BodyStructure
             unset($part->description);
         }
 
-        if ($type == 5) {
+        if ($type == 5 || $type == 3) {
             unset($part->lines);
         }
 
         $dispositionIndex = 9;
         if ($type == 2) {
             $dispositionIndex = 11;
-        } elseif ($type == 5) {
+        } elseif ($type == 5 || $type == 3) {
             $dispositionIndex = 8;
         }
         if (isset($item[$dispositionIndex][0])) {
@@ -279,6 +287,14 @@ class BodyStructure
     
     protected static function processSubPartAsMessage($item)
     {
+        #file_put_contents('a3.json', json_encode($item, JSON_PRETTY_PRINT));
+
+        if (isset($item[8][3]) && is_array($item[8][3])) {
+            $parameters = self::extractParameters($item[8][3], []);
+        } else {
+            $parameters = self::extractParameters($item[8][4], []);
+        }
+
         $message = (object) [
             'type' => 1,
             'encoding' => 0,
@@ -289,73 +305,203 @@ class BodyStructure
             'ifdisposition' => 0,
             'ifdparameters' => 0,
             'ifparameters' => 1,
-            'parameters' => [
-                (object) [
-                    'attribute' => 'BOUNDARY',
-                    'value' => '=_995890bdbf8bd158f2cbae0e8d966000'
-                ]
-            ],
-            'parts' => [
-
-            ]
+            'parameters' => $parameters,
+            'parts' => []
         ];
 
         foreach ($item[8] as $itemPart) {
+            if ($itemPart[2] == 'ALTERNATIVE') {
+                $message->parts[] = self::extractPartAsAlternative($itemPart);
+                continue;
+            }
+
             if (!is_array($itemPart[2])) {
                 continue;
             }
 
-            $parameters = self::extractParameters($itemPart[2], []);
+            $message->parts[] = self::extractSubPartFromMessage($itemPart);
+        }
 
-            $part = (object) [
-                'type' => 0,
-                'encoding' => self::getEncoding($itemPart, 5),
-                'ifsubtype' => 1,
-                'subtype' => 'PLAIN',
-                'ifdescription' => 0,
-                'ifid' => 0,
-                'lines' => intval($itemPart[7]),
-                'bytes' => intval($itemPart[6]),
-                'ifdisposition' => 0,
-                'disposition' => [],
-                'ifdparameters' => 0,
-                'dparameters' => [],
-                'ifparameters' => 1,
-                'parameters' => $parameters
-            ];
+        return $message;
+    }
 
-            $dispositionParametersIndex = 9;
+    protected static function extractSubPartFromMessage($itemPart)
+    {
+        $parameters = self::extractParameters($itemPart[2], []);
 
-            if (isset($itemPart[$dispositionParametersIndex][0])) {
-                $attribute = null;
-                $dispositionParameters = [];
-                $part->disposition = $itemPart[$dispositionParametersIndex][0];
-                if (isset($itemPart[$dispositionParametersIndex][1]) && is_array($itemPart[$dispositionParametersIndex][1])) {
-                    foreach ($itemPart[$dispositionParametersIndex][1] as $value) {
-                        if (empty($attribute)) {
-                            $attribute = [
-                                'attribute' => $value,
-                                'value' => null,
-                            ];
-                        } else {
-                            $attribute['value'] = $value;
-                            $dispositionParameters[] = (object) $attribute;
-                            $attribute = null;
-                        }
+        $type = 0;
+        if ($itemPart[0] == 'APPLICATION') {
+            $type = 3;
+        }
+
+        $part = (object) [
+            'type' => $type,
+            'encoding' => self::getEncoding($itemPart, 5),
+            'ifsubtype' => 1,
+            'subtype' => is_string($itemPart[1]) ? $itemPart[1] : 'PLAIN',
+            'ifdescription' => 0,
+            'description' => null,
+            'ifid' => 0,
+            'lines' => intval($itemPart[7]),
+            'bytes' => intval($itemPart[6]),
+            'ifdisposition' => 0,
+            'disposition' => [],
+            'ifdparameters' => 0,
+            'dparameters' => [],
+            'ifparameters' => 1,
+            'parameters' => $parameters
+        ];
+
+        if ($itemPart[4]) {
+            $part->ifdescription = 1;
+            $part->description = $itemPart[4];
+        } else {
+            unset($part->description);
+        }
+
+        if ($type == 3) {
+            unset($part->lines);
+        }
+
+        $dispositionParametersIndex = 9;
+        if ($type == 3) {
+            $dispositionParametersIndex = 8;
+        }
+
+        if (isset($itemPart[$dispositionParametersIndex][0])) {
+            $attribute = null;
+            $dispositionParameters = [];
+            $part->disposition = $itemPart[$dispositionParametersIndex][0];
+            if (isset($itemPart[$dispositionParametersIndex][1]) && is_array($itemPart[$dispositionParametersIndex][1])) {
+                foreach ($itemPart[$dispositionParametersIndex][1] as $value) {
+                    if (empty($attribute)) {
+                        $attribute = [
+                            'attribute' => $value,
+                            'value' => null,
+                        ];
+                    } else {
+                        $attribute['value'] = $value;
+                        $dispositionParameters[] = (object) $attribute;
+                        $attribute = null;
                     }
                 }
-                $part->dparameters = $dispositionParameters;
-                $part->ifdparameters = 1;
-                $part->ifdisposition = 1;
-            } else {
-                unset($part->disposition);
-                unset($part->dparameters);
             }
-
-            $message->parts[] = $part;
+            $part->dparameters = $dispositionParameters;
+            $part->ifdparameters = 1;
+            $part->ifdisposition = 1;
+        } else {
+            unset($part->disposition);
+            unset($part->dparameters);
         }
-        
-        return $message;
+
+        return $part;
+    }
+
+    protected static function extractPartAsRfc822($item)
+    {
+        $parameters = self::extractParameters($item[2], []);
+
+        $part = (object) [
+            'type' => 2,
+            'encoding' => self::getEncoding($item, 5),
+            'ifsubtype' => 1,
+            'subtype' => 'RFC822',
+            'ifdescription' => 0,
+            'ifid' => 0,
+            'lines' => intval($item[9]),
+            'bytes' => intval($item[6]),
+            'ifdisposition' => 0,
+            'disposition' => null,
+            'ifdparameters' => 0,
+            'dparameters' => null,
+            'ifparameters' => $parameters ? 1 : 0,
+            'parameters' => $parameters ?: (object) [] ,
+            'parts' => [
+                self::processSubPartAsMessage($item)
+            ]
+        ];
+
+        $dispositionParametersIndex = 11;
+
+        if (isset($item[$dispositionParametersIndex][0])) {
+            $attribute = null;
+            $dispositionParameters = [];
+            $part->disposition = $item[$dispositionParametersIndex][0];
+            if (isset($item[$dispositionParametersIndex][1]) && is_array($item[$dispositionParametersIndex][1])) {
+                foreach ($item[$dispositionParametersIndex][1] as $value) {
+                    if (empty($attribute)) {
+                        $attribute = [
+                            'attribute' => $value,
+                            'value' => null,
+                        ];
+                    } else {
+                        $attribute['value'] = $value;
+                        $dispositionParameters[] = (object) $attribute;
+                        $attribute = null;
+                    }
+                }
+            }
+            $part->dparameters = $dispositionParameters;
+            $part->ifdparameters = 1;
+            $part->ifdisposition = 1;
+        } else {
+            unset($part->disposition);
+            unset($part->dparameters);
+        }
+
+        return $part;
+    }
+
+    protected static function extractPartAsPlain($itemPart)
+    {
+        $parameters = self::extractParameters($itemPart[2], []);
+
+        $part = (object) [
+            'type' => 0,
+            'encoding' => self::getEncoding($itemPart, 5),
+            'ifsubtype' => 1,
+            'subtype' => 'PLAIN',
+            'ifdescription' => 0,
+            'ifid' => 0,
+            'lines' => intval($itemPart[7]),
+            'bytes' => intval($itemPart[6]),
+            'ifdisposition' => 0,
+            'disposition' => [],
+            'ifdparameters' => 0,
+            'dparameters' => [],
+            'ifparameters' => 1,
+            'parameters' => $parameters
+        ];
+
+        $dispositionParametersIndex = 9;
+
+        if (isset($itemPart[$dispositionParametersIndex][0])) {
+            $attribute = null;
+            $dispositionParameters = [];
+            $part->disposition = $itemPart[$dispositionParametersIndex][0];
+            if (isset($itemPart[$dispositionParametersIndex][1]) && is_array($itemPart[$dispositionParametersIndex][1])) {
+                foreach ($itemPart[$dispositionParametersIndex][1] as $value) {
+                    if (empty($attribute)) {
+                        $attribute = [
+                            'attribute' => $value,
+                            'value' => null,
+                        ];
+                    } else {
+                        $attribute['value'] = $value;
+                        $dispositionParameters[] = (object) $attribute;
+                        $attribute = null;
+                    }
+                }
+            }
+            $part->dparameters = $dispositionParameters;
+            $part->ifdparameters = 1;
+            $part->ifdisposition = 1;
+        } else {
+            unset($part->disposition);
+            unset($part->dparameters);
+        }
+
+        return $part;
     }
 
     protected static function extractParameters($attributes, $parameters)

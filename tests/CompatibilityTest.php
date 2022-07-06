@@ -544,7 +544,7 @@ class CompatibilityTest extends ImapTestCase
         */
 
         $emlFiles = [
-            #'embedded_email.eml',
+            'embedded_email.eml',
             'embedded_email_without_content_disposition.eml'
         ];
         foreach ($emlFiles as $file) {
@@ -561,12 +561,11 @@ class CompatibilityTest extends ImapTestCase
             $structure2 = imap2_fetchstructure($imap2, 1);
             $headerInfo1 = imap_headerinfo($imap1, 1);
             $headerInfo2 = imap2_headerinfo($imap2, 1);
-            file_put_contents('t1.json', json_encode($structure1, JSON_PRETTY_PRINT));
-            file_put_contents('t2.json', json_encode($structure2, JSON_PRETTY_PRINT));
-            die();
+            #file_put_contents('t1.json', json_encode($structure1, JSON_PRETTY_PRINT));
+            #file_put_contents('t2.json', json_encode($structure2, JSON_PRETTY_PRINT));
+            #die();
             $this->assertEquals($structure1, $structure2);
             $this->assertEquals($headerInfo1, $headerInfo2);
-
         }
 
         imap_close($imap1);
