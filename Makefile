@@ -23,6 +23,9 @@ imap2-test:
 coverage:
 	@docker-compose run --rm phpunit tests --coverage-html docs/coverage
 
+## =====
+## Tests
+## =====
 test:
 	docker-compose run --rm phpunit tests --stop-on-failure
 
@@ -31,6 +34,9 @@ test-open:
 
 test-alerts:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testAlerts
+
+test-last-error:
+	@docker-compose run --rm phpunit tests --filter ErrorsTest::testLastError
 
 test-check:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testCheck
@@ -106,3 +112,9 @@ test-parse-adrlist:
 
 test-special:
 	@docker-compose run --rm phpunit tests --filter HeaderInfoTest::testSanitizeAddress
+
+## ======
+## Legacy
+## ======
+legacy-last-error:
+	@docker-compose run --rm php -f tests/legacy/last-error.php

@@ -19,6 +19,8 @@ class Errors
 
     protected static $errors = [];
 
+    protected static $lastError;
+
     public static function appendAlert($alert)
     {
         self::$alerts[] = $alert;
@@ -26,6 +28,8 @@ class Errors
 
     public static function appendError($error)
     {
+        self::$lastError = $error;
+
         self::$errors[] = $error;
     }
 
@@ -57,7 +61,16 @@ class Errors
 
     public static function lastError()
     {
-        return false;
+        if (empty(self::$lastError)) {
+            return false;
+        }
+
+        return self::$lastError;
+    }
+
+    public static function raiseWarning($warning)
+    {
+        trigger_error($warning, E_USER_WARNING);
     }
 
     public static function invalidImapConnection($backtrace, $depth, $return)

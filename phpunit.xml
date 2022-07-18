@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="./vendor/autoload.php" colors="true" convertWarningsToExceptions="false">
+<phpunit bootstrap="./vendor/autoload.php" colors="true" convertWarningsToExceptions="true">
     <php>
         <const name="PHPUNIT_MYSQL_IMPORT" value="true"/>
     </php>

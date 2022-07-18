@@ -116,9 +116,10 @@ class Connection
     protected function connect()
     {
         $this->connected = false;
-        //$this->client->setDebug(true);
+        $client = $this->getClient();
+        $client->setDebug(true);
 
-        $success = $this->client->connect($this->host, $this->user, $this->password, [
+        $success = $client->connect($this->host, $this->user, $this->password, [
             'port' => $this->port,
             'ssl_mode' => $this->sslMode,
             'auth_type' => $this->flags & OP_XOAUTH2 ? 'XOAUTH2' : 'CHECK',
@@ -127,6 +128,15 @@ class Connection
         ]);
 
         if (empty($success)) {
+            if ($this->mailbox[0] == '{') {
+                $message = 'Can not authenticate to IMAP server: '
+                         . preg_replace("/^AUTHENTICATE [A-Z]+\d?: [A-Z]+\d+ (OK|NO|BAD|BYE|PREAUTH)?\s*/i", '', $client->error);
+            } else {
+                $message = "Can't open mailbox {$this->mailbox}: no such mailbox";
+            }
+            Errors::raiseWarning('Test');
+            Errors::appendError($message);
+
             return false;
         }
 
