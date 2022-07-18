@@ -1,5 +1,6 @@
 <?php
 
+/*
 $mailbox = '...';
 $username = '...';
 $password = '...';
@@ -7,8 +8,8 @@ $password = '...';
 $imap = imap_open($mailbox, $username, $password);
 
 var_dump(imap_last_error());
+*/
 
-/*
 $mailbox = '{imap.gmail.com:993/imap/ssl}';
 $username = 'wrong-username';
 $password = 'wrong-password';
@@ -16,4 +17,3 @@ $password = 'wrong-password';
 $imap = imap_open($mailbox, $username, $password);
 
 var_dump(imap_last_error());
-*/

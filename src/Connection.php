@@ -129,13 +129,15 @@ class Connection
 
         if (empty($success)) {
             if ($this->mailbox[0] == '{') {
-                $message = 'Can not authenticate to IMAP server: '
+                $errorMessage = 'Can not authenticate to IMAP server: '
                          . preg_replace("/^AUTHENTICATE [A-Z]+\d?: [A-Z]+\d+ (OK|NO|BAD|BYE|PREAUTH)?\s*/i", '', $client->error);
             } else {
-                $message = "Can't open mailbox {$this->mailbox}: no such mailbox";
+                $errorMessage = "Can't open mailbox {$this->mailbox}: no such mailbox";
             }
-            Errors::raiseWarning('Test');
-            Errors::appendError($message);
+            $backtrace = debug_backtrace();
+            $warningMessage = 'Warning: imap2_open(): Couldn\'t open stream '.$this->mailbox;
+            Errors::raiseWarning($warningMessage, $backtrace, 2);
+            Errors::appendError($errorMessage);
 
             return false;
         }

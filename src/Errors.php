@@ -68,9 +68,11 @@ class Errors
         return self::$lastError;
     }
 
-    public static function raiseWarning($warning)
+    public static function raiseWarning($warning, $backtrace, $depth)
     {
-        trigger_error($warning, E_USER_WARNING);
+        $message = $warning . ' in '.$backtrace[$depth]['file']. ' on line '.$backtrace[$depth]['line'];
+
+        trigger_error($message, E_USER_WARNING);
     }
 
     public static function invalidImapConnection($backtrace, $depth, $return)

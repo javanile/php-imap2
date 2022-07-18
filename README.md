@@ -95,7 +95,7 @@
 - [ ] imap_getmailboxes
 - [ ] imap_get_quotaroot
 - [x] imap_headerinfo
-- [ ] imap_last_error
+- [x] imap_last_error
 - [x] imap_mail_copy
 - [x] imap_mail_move
 - [x] imap_mime_header_decode
