@@ -1,0 +1,9 @@
+
+Warning: imap_open(): Couldn't open stream {imap.gmail.com:993/imap/ssl} in /app/tests/legacy/last-error.php on line 22
+
+Call Stack:
+    0.0001     354808   1. {main}() /app/tests/legacy/last-error.php:0
+    0.0001     354808   2. imap_open() /app/tests/legacy/last-error.php:22
+
+/app/tests/legacy/last-error.php:24:
+string(89) "Can not authenticate to IMAP server: [AUTHENTICATIONFAILED] Invalid credentials (Failure)"

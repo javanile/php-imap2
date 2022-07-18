@@ -118,3 +118,11 @@ test-special:
 ## ======
 legacy-last-error:
 	@docker-compose run --rm php -f tests/legacy/last-error.php
+
+## ====
+## Diff
+## ====
+diff-last-error:
+	@docker-compose run --rm php bash -c "php -f tests/legacy/last-error.php > tests/legacy/last-error.1.txt 2>&1"
+	@docker-compose run --rm imap2 bash -c "php -f tests/legacy/last-error.php > tests/legacy/last-error.2.txt 2>&1"
+	@docker-compose run --rm imap2 bash -c "chmod 777 -R tests/legacy"

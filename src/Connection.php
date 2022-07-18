@@ -117,7 +117,7 @@ class Connection
     {
         $this->connected = false;
         $client = $this->getClient();
-        $client->setDebug(true);
+        #$client->setDebug(true);
 
         $success = $client->connect($this->host, $this->user, $this->password, [
             'port' => $this->port,
@@ -135,8 +135,8 @@ class Connection
                 $errorMessage = "Can't open mailbox {$this->mailbox}: no such mailbox";
             }
             $backtrace = debug_backtrace();
-            $warningMessage = 'Warning: imap2_open(): Couldn\'t open stream '.$this->mailbox;
-            Errors::raiseWarning($warningMessage, $backtrace, 2);
+            $warningMessage = 'imap2_open(): Couldn\'t open stream '.$this->mailbox;
+            Errors::raiseWarning($warningMessage, $backtrace, 3);
             Errors::appendError($errorMessage);
 
             return false;
