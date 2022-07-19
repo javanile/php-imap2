@@ -19,7 +19,15 @@
 +-----------------------------------------------------------------------+
  */
 
-namespace Javanile\Imap2;
+namespace Javanile\Imap2\Roundcube;
+
+use Javanile\Imap2\rcube;
+use Javanile\Imap2\rcube_mime_decode;
+use function Javanile\Imap2\mb_internal_encoding;
+use function Javanile\Imap2\mb_strlen;
+use function Javanile\Imap2\mb_strpos;
+use function Javanile\Imap2\mb_strrpos;
+use function Javanile\Imap2\mb_substr;
 
 /**
  * Class for parsing MIME messages

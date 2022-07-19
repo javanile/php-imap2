@@ -1,6 +1,7 @@
 <?php
 
 
+namespace Javanile\Imap2\Roundcube;
 /**
  * Class for sorting an array of rcube_message_header objects in a predetermined order.
  *

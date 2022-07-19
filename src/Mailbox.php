@@ -11,6 +11,8 @@
 
 namespace Javanile\Imap2;
 
+use Javanile\Imap2\Roundcube\ImapClient;
+
 class Mailbox
 {
     public static function check($imap)

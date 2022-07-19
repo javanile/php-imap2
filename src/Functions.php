@@ -11,8 +11,6 @@
 
 namespace Javanile\Imap2;
 
-use Javanile\Imap2\ImapClient;
-
 class Functions
 {
     public static function parseMailboxString($mailbox)

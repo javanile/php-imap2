@@ -19,7 +19,22 @@
 +-----------------------------------------------------------------------+
  */
 
-namespace Javanile\Imap2;
+namespace Javanile\Imap2\Roundcube;
+
+use Javanile\Imap2\DateTime;
+use Javanile\Imap2\DateTimeZone;
+use Javanile\Imap2\Exception;
+use Javanile\Imap2\rcube;
+use Javanile\Imap2\rcube_charset;
+use Javanile\Imap2\rcube_string_replacer;
+use function Javanile\Imap2\asciiwords;
+use function Javanile\Imap2\in_array_nocase;
+use function Javanile\Imap2\mb_strtolower;
+use function Javanile\Imap2\parse_bytes;
+use function Javanile\Imap2\setcookie;
+use function Javanile\Imap2\strtr;
+use function Javanile\Imap2\unslashify;
+use const Javanile\Imap2\RCUBE_TEMP_FILE_PREFIX;
 
 /**
  * Utility class providing common functions

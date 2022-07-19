@@ -11,8 +11,6 @@
 
 namespace Javanile\Imap2;
 
-use Javanile\Imap2\ImapClient;
-
 class Acl
 {
 

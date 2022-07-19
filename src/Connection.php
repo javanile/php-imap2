@@ -11,7 +11,7 @@
 
 namespace Javanile\Imap2;
 
-use Javanile\Imap2\ImapClient;
+use Javanile\Imap2\Roundcube\ImapClient;
 
 class Connection
 {

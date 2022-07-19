@@ -18,7 +18,7 @@
 +-----------------------------------------------------------------------+
  */
 
-namespace Javanile\Imap2;
+namespace Javanile\Imap2\Roundcube;
 
 /**
  * Struct representing an e-mail message header

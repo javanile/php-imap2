@@ -24,7 +24,15 @@
 +-----------------------------------------------------------------------+
  */
 
-namespace Javanile\Imap2;
+namespace Javanile\Imap2\Roundcube;
+
+use Javanile\Imap2\Auth_SASL;
+use Javanile\Imap2\Exception;
+use Javanile\Imap2\GSSAPIContext;
+use Javanile\Imap2\KRB5CCache;
+use Javanile\Imap2\rcube_message_header;
+use Javanile\Imap2\rcube_result_index;
+use Javanile\Imap2\rcube_result_thread;
 
 /**
  * PHP based wrapper class to connect to an IMAP server

@@ -19,7 +19,10 @@
 +-----------------------------------------------------------------------+
  */
 
-namespace Javanile\Imap2;
+namespace Javanile\Imap2\Roundcube;
+
+use Javanile\Imap2\Offset;
+use Javanile\Imap2\rcube_imap_generic;
 
 /**
  * Class for accessing IMAP's SORT/SEARCH/ESEARCH result
