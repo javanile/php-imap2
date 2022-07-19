@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Input package.
+ * This file is part of the PHP IMAP2 package.
  *
  * (c) Francesco Bianco <bianco@javanile.org>
  *
@@ -220,14 +220,6 @@ class Connection
         if (empty($success)) {
             $this->rewriteMailbox('<no_mailbox>');
         }
-    }
-
-    /**
-     *
-     */
-    public static function timeout($timeoutType, $timeout = -1)
-    {
-
     }
 
     /**

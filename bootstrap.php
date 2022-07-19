@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Input package.
+ * This file is part of the PHP IMAP2 package.
  *
  * (c) Francesco Bianco <bianco@javanile.org>
  *
@@ -16,6 +16,7 @@ use Javanile\Imap2\Mailbox;
 use Javanile\Imap2\Message;
 use Javanile\Imap2\Thread;
 use Javanile\Imap2\Polyfill;
+use Javanile\Imap2\Timeout;
 
 define('IMAP2_CHARSET', 'UTF-8');
 define('IMAP2_RETROFIT_MODE', function_exists('imap_open'));
@@ -324,7 +325,7 @@ if (!function_exists('imap2_timeout')) {
             imap_timeout($timeoutType, $timeout);
         }
 
-        return Connection::timeout($timeoutType, $timeout);
+        return Timeout::set($timeoutType, $timeout);
     }
 }
 
