@@ -1,13 +1,16 @@
 {
   "name": "javanile/php-imap2",
   "type": "library",
-  "description": "Implement no-code input function for PHP",
+  "description": "PHP IMAP with OAUTH2",
   "keywords": [
-    "input",
-    "webrequest",
-    "nocode",
-    "lowcode",
-    "web3"
+    "imap",
+    "oauth",
+    "oauth2",
+    "google",
+    "microsoft",
+    "gmail",
+    "outlook",
+    "exchange"
   ],
   "homepage": "https://github.com/javanile/php-imap2",
   "license": "MIT",
@@ -41,8 +44,8 @@
   "minimum-stability": "dev",
   "extra": {
     "thanks": {
-      "name": "javanile/webrequest",
-      "url": "https://github.com/javanile/webrequest"
+      "name": "Roundcube",
+      "url": "https://github.com/roundcube"
     }
   }
 }
