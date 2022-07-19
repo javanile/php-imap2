@@ -84,4 +84,26 @@ class Errors
 
         return $return;
     }
+
+    public static function couldNotOpenStream($mailbox, $backtrace, $depth)
+    {
+        if (isset($backtrace[$depth + 1]['function']) && $backtrace[$depth + 1]['function'] == 'imap_open') {
+            $depth++;
+        }
+
+        return $backtrace[$depth]['function'].'(): Couldn\'t open stream '.$mailbox
+             . ' in '.$backtrace[$depth]['file']. ' on line '.$backtrace[$depth]['line'].'. Source code';
+    }
+
+    public static function appendErrorCanNotOpen($mailbox, $error)
+    {
+        if ($mailbox[0] == '{') {
+            $error = 'Can not authenticate to IMAP server: '
+                . preg_replace("/^AUTHENTICATE [A-Z]+\d*: [A-Z]+\d+ (OK|NO|BAD|BYE|PREAUTH)?\s*/i", '', $error);
+        } else {
+            $error = "Can't open mailbox {$mailbox}: no such mailbox";
+        }
+
+        self::appendError($error);
+    }
 }

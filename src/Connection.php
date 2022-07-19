@@ -73,7 +73,15 @@ class Connection
     {
         $connection = new Connection($mailbox, $user, $password, $flags, $retries, $options);
 
-        return $connection->connect();
+        $success = $connection->connect();
+
+        if (empty($success)) {
+            Errors::appendErrorCanNotOpen($mailbox, $connection->getLastError());
+
+            trigger_error(Errors::couldNotOpenStream($mailbox, debug_backtrace(), 1), E_USER_WARNING);
+        }
+
+        return $connection;
     }
 
     public static function reopen($imap, $mailbox, $flags = 0, $retries = 0)
@@ -128,17 +136,6 @@ class Connection
         ]);
 
         if (empty($success)) {
-            if ($this->mailbox[0] == '{') {
-                $errorMessage = 'Can not authenticate to IMAP server: '
-                         . preg_replace("/^AUTHENTICATE [A-Z]+\d?: [A-Z]+\d+ (OK|NO|BAD|BYE|PREAUTH)?\s*/i", '', $client->error);
-            } else {
-                $errorMessage = "Can't open mailbox {$this->mailbox}: no such mailbox";
-            }
-            $backtrace = debug_backtrace();
-            $warningMessage = 'imap2_open(): Couldn\'t open stream '.$this->mailbox;
-            Errors::raiseWarning($warningMessage, $backtrace, 3);
-            Errors::appendError($errorMessage);
-
             return false;
         }
 
@@ -286,5 +283,12 @@ class Connection
         }
 
         return false;
+    }
+
+    public function getLastError()
+    {
+        $client = $this->getClient();
+
+        return $client->error;
     }
 }

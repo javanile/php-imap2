@@ -4,7 +4,6 @@ if (!function_exists('imap_open')) {
     include_once __DIR__.'/../../vendor/autoload.php';
 }
 
-
 /*
 $mailbox = '...';
 $username = '...';
