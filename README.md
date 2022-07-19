@@ -122,6 +122,10 @@ Scope: https://mail.google.com/
 
 - Demo #1 - <https://phpsandbox.io/e/x/zwauf>
 
+## Other links 
+
+- <https://php.libhunt.com/php-imap2-alternatives>
+
 ## Reference
 
 - <https://www.atmail.com/blog/imap-commands/>
