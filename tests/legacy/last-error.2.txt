@@ -3,10 +3,10 @@ Warning: imap_open(): Couldn't open stream {imap.gmail.com:993/imap/ssl} in /app
 
 Call Stack:
     0.0001     354744   1. {main}() /app/tests/legacy/last-error.php:0
-    0.0037     921080   2. imap_open() /app/tests/legacy/last-error.php:21
-    0.0037     921136   3. imap2_open() /app/bootstrap.php:237
-    0.0040     956504   4. Javanile\Imap2\Connection::open() /app/bootstrap.php:247
-    0.2710    1682368   5. trigger_error() /app/src/Connection.php:81
+    0.0033     921080   2. imap_open() /app/tests/legacy/last-error.php:21
+    0.0033     921136   3. imap2_open() /app/bootstrap.php:237
+    0.0035     956504   4. Javanile\Imap2\Connection::open() /app/bootstrap.php:247
+    0.3101    1682632   5. trigger_error() /app/src/Connection.php:81
 
 /app/tests/legacy/last-error.php:23:
-string(86) "Can not authenticate to IMAP server: AUTHENTICATE PLAIN: Invalid credentials (Failure)"
+string(89) "Can not authenticate to IMAP server: [AUTHENTICATIONFAILED] Invalid credentials (Failure)"

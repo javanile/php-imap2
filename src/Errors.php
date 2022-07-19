@@ -98,8 +98,9 @@ class Errors
     public static function appendErrorCanNotOpen($mailbox, $error)
     {
         if ($mailbox[0] == '{') {
-            $error = 'Can not authenticate to IMAP server: '
-                . preg_replace("/^AUTHENTICATE [A-Z]+\d*: [A-Z]+\d+ (OK|NO|BAD|BYE|PREAUTH)?\s*/i", '', $error);
+            $error = preg_replace("/^AUTHENTICATE [A-Z]+\d*:\s/i", '', $error);
+            //$error = preg_replace("/^([A-Z]+\d+ )(OK|NO|BAD|BYE|PREAUTH)?\s/i", '', $error);
+            $error = 'Can not authenticate to IMAP server: '.$error;
         } else {
             $error = "Can't open mailbox {$mailbox}: no such mailbox";
         }

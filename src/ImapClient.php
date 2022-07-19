@@ -735,7 +735,7 @@ class ImapClient
             // RFC 4959 (SASL-IR): save one round trip
             if ($this->getCapability('SASL-IR')) {
                 list($result, $line) = $this->execute("AUTHENTICATE PLAIN", array($reply),
-                    self::COMMAND_LASTLINE | self::COMMAND_CAPABILITY | self::COMMAND_ANONYMIZED);
+                    self::COMMAND_RAW_LASTLINE | self::COMMAND_CAPABILITY | self::COMMAND_ANONYMIZED);
             }
             else {
                 $this->putLine($this->nextTag() . " AUTHENTICATE PLAIN");
