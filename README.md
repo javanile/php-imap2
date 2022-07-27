@@ -1,4 +1,18 @@
-# php-imap2
+<div align="center">
+
+![PHP IMAP2](docs/logo.png)
+
+# PHP IMAP2
+
+</div>
+
+```php
+$mbh = imap2_open($server, $username, $token, OP_XOAUTH2);
+if (! $mbh) {
+    error_log(imap_last_error());
+    throw new \RuntimeException('Unable to open Google INBOX');
+}
+```
 
 - imap2_8bit — Convert an 8bit string to a quoted-printable string
 - imap2_alerts — Returns all IMAP alert messages that have occurred
