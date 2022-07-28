@@ -113,6 +113,9 @@ test-parse-adrlist:
 test-special:
 	@docker-compose run --rm phpunit tests --filter HeaderInfoTest::testSanitizeAddress
 
+test-minimal:
+	@docker-compose run --rm phpunit tests --filter MinimalTest
+
 ## ======
 ## Legacy
 ## ======

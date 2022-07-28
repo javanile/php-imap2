@@ -16,6 +16,9 @@ class CompatibilityTest extends ImapTestCase
         $imap2 = @imap2_open($this->mailbox, $username, $this->accessToken, OP_XOAUTH2);
         $error2 = @imap2_errors();
 
+        $this->assertNotCount(0, $error1);
+        $this->assertNotCount(0, $error2);
+
         $this->assertEquals($imap1, $imap2);
 
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);

@@ -79,6 +79,8 @@ class Connection
             Errors::appendErrorCanNotOpen($mailbox, $connection->getLastError());
 
             trigger_error(Errors::couldNotOpenStream($mailbox, debug_backtrace(), 1), E_USER_WARNING);
+
+            return false;
         }
 
         return $connection;
