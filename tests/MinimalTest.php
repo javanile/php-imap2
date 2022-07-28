@@ -14,5 +14,4 @@ class MinimalTest extends ImapTestCase
         $this->assertInstanceOf(Connection::class, $imap);
         imap2_close($imap);
     }
-
 }

@@ -116,6 +116,9 @@ test-special:
 test-minimal:
 	@docker-compose run --rm phpunit tests --filter MinimalTest
 
+test-cleaning:
+	@docker-compose run --rm phpunit tests --filter CleaningTest
+
 test-errors:
 	@docker-compose run --rm phpunit tests --filter ErrorsTest
 
