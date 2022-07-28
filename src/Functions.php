@@ -99,9 +99,17 @@ class Functions
      */
     public static function writeAddressFromEnvelope($addressList)
     {
+        if (empty($addressList)) {
+            return null;
+        }
+
         $sanitizedAddress = [];
         foreach ($addressList as $addressEntry) {
-            $sanitizedAddress[] = imap_rfc822_write_address($addressEntry[2], $addressEntry[3], $addressEntry[0]);
+            $parsedAddressEntry = imap_rfc822_write_address($addressEntry[2], $addressEntry[3], $addressEntry[0]);
+            if (substr($parsedAddressEntry, -3) == '@""') {
+                $parsedAddressEntry = substr($parsedAddressEntry, 0, strlen($parsedAddressEntry) - 3).': ';
+            }
+            $sanitizedAddress[] = $parsedAddressEntry;
         }
 
         return implode(', ', $sanitizedAddress);
