@@ -212,4 +212,10 @@ class XoauthTest extends ImapTestCase
 
         imap2_close($imap);
     }
+
+    public function testTimeout()
+    {
+        $this->assertTrue(imap2_timeout(IMAP_OPENTIMEOUT, 5));
+        $this->assertEquals(5, imap2_timeout(IMAP_OPENTIMEOUT, -1));
+    }
 }

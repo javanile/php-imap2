@@ -21,7 +21,7 @@ imap2-test:
 	@docker-compose run --rm imap2 ./vendor/bin/phpunit tests --stop-on-failure
 
 coverage:
-	@docker-compose run --rm phpunit tests --coverage-html docs/coverage
+	@docker-compose run --rm imap2 ./vendor/bin/phpunit tests --coverage-html docs/coverage
 
 ## =====
 ## Tests
@@ -94,6 +94,9 @@ test-get-mailboxes:
 
 test-delete-mailbox:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testDeleteMailbox
+
+test-timeout:
+	@docker-compose run --rm phpunit tests --filter XoauthTest::testTimeout
 
 test-xoauth:
 	@docker-compose run --rm phpunit tests --filter XoauthTest
