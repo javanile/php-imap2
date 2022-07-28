@@ -10,7 +10,7 @@ class CleaningTest extends ImapTestCase
     {
         $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
-        $deleteRule = '/^(\d+|test_|mailbox_|Mailbox )/';
+        $deleteRule = '/^(\d+|test_|mailbox_|Mailbox |Mailbox-)/';
 
         $mailboxes = imap2_getmailboxes($imap, $this->mailbox, '*');
         foreach ($mailboxes as $mailbox) {
