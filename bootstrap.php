@@ -233,6 +233,7 @@ if (!defined('IMAP_GC_TEXTS')) {
  * imap2_open
  */
 if (!function_exists('imap_open')) {
+    /** @codeCoverageIgnore */
     function imap_open($mailbox, $user, $password, $flags = 0, $retries = 0, $options = [])
     {
         return imap2_open($mailbox, $user, $password, $flags, $retries, $options);
@@ -253,6 +254,7 @@ if (!function_exists('imap2_open')) {
  * imap2_reopen
  */
 if (!function_exists('imap_reopen')) {
+    /** @codeCoverageIgnore */
     function imap_reopen($imap, $mailbox, $flags = 0, $retries = 0)
     {
         return imap2_reopen($imap, $mailbox, $flags, $retries);
@@ -273,6 +275,7 @@ if (!function_exists('imap2_reopen')) {
  * imap2_ping
  */
 if (!function_exists('imap_ping')) {
+    /** @codeCoverageIgnore */
     function imap_ping($imap)
     {
         return Connection::ping($imap);
@@ -293,6 +296,7 @@ if (!function_exists('imap2_ping')) {
  * imap2_close
  */
 if (!function_exists('imap_close')) {
+    /** @codeCoverageIgnore */
     function imap_close($imap, $flags = 0)
     {
         return Connection::close($imap, $flags);
@@ -313,6 +317,7 @@ if (!function_exists('imap2_close')) {
  * imap2_timeout
  */
 if (!function_exists('imap_timeout')) {
+    /** @codeCoverageIgnore */
     function imap_timeout($timeoutType, $timeout = -1)
     {
         return imap2_timeout($timeoutType, $timeout);
@@ -349,6 +354,7 @@ if (!function_exists('imap2_check')) {
  * imap2_status
  */
 if (!function_exists('imap_status')) {
+    /** @codeCoverageIgnore */
     function imap_status($imap, $mailbox, $flags)
     {
         return imap2_status($imap, $mailbox, $flags);
@@ -369,6 +375,7 @@ if (!function_exists('imap2_status')) {
  * imap2_num_msg
  */
 if (!function_exists('imap_num_msg')) {
+    /** @codeCoverageIgnore */
     function imap_num_msg($imap)
     {
         return imap2_num_msg($imap);
@@ -389,6 +396,7 @@ if (!function_exists('imap2_num_msg')) {
  * imap2_num_recent
  */
 if (!function_exists('imap_num_recent')) {
+    /** @codeCoverageIgnore */
     function imap_num_recent($imap)
     {
         return imap2_num_recent($imap);
@@ -405,6 +413,7 @@ if (!function_exists('imap2_num_recent')) {
  * imap2_list
  */
 if (!function_exists('imap_list')) {
+    /** @codeCoverageIgnore */
     function imap_list($imap, $reference, $pattern)
     {
         return imap2_list($imap, $reference, $pattern);
@@ -421,6 +430,7 @@ if (!function_exists('imap2_list')) {
  * imap2_listmailbox
  */
 if (!function_exists('imap_listmailbox')) {
+    /** @codeCoverageIgnore */
     function imap_listmailbox($imap, $reference, $pattern)
     {
         return imap2_listmailbox($imap, $reference, $pattern);
@@ -437,6 +447,7 @@ if (!function_exists('imap2_listmailbox')) {
  * imap2_listscan
  */
 if (!function_exists('imap_listscan')) {
+    /** @codeCoverageIgnore */
     function imap_listscan($imap, $reference, $pattern, $content)
     {
         return imap2_listscan($imap, $reference, $pattern, $content);
@@ -453,6 +464,7 @@ if (!function_exists('imap2_listscan')) {
  * imap2_scan
  */
 if (!function_exists('imap_scan')) {
+    /** @codeCoverageIgnore */
     function imap_scan($imap, $reference, $pattern, $content)
     {
         return imap2_scan($imap, $reference, $pattern, $content);
@@ -469,6 +481,7 @@ if (!function_exists('imap2_scan')) {
  * imap2_scanmailbox
  */
 if (!function_exists('imap_scanmailbox')) {
+    /** @codeCoverageIgnore */
     function imap_scanmailbox($imap, $reference, $pattern, $content)
     {
         return imap2_scanmailbox($imap, $reference, $pattern, $content);
@@ -485,6 +498,7 @@ if (!function_exists('imap2_scanmailbox')) {
  * imap2_getmailboxes
  */
 if (!function_exists('imap_getmailboxes')) {
+    /** @codeCoverageIgnore */
     function imap_getmailboxes($imap, $reference, $pattern)
     {
         return imap2_getmailboxes($imap, $reference, $pattern);
@@ -505,6 +519,7 @@ if (!function_exists('imap2_getmailboxes')) {
  * imap2_listsubscribed
  */
 if (!function_exists('imap_listsubscribed')) {
+    /** @codeCoverageIgnore */
     function imap_listsubscribed($imap, $reference, $pattern)
     {
         return imap2_listsubscribed($imap, $reference, $pattern);
@@ -521,6 +536,7 @@ if (!function_exists('imap2_listsubscribed')) {
  * imap2_lsub
  */
 if (!function_exists('imap_lsub')) {
+    /** @codeCoverageIgnore */
     function imap_lsub($imap, $reference, $pattern)
     {
         return imap2_lsub($imap, $reference, $pattern);
@@ -537,6 +553,7 @@ if (!function_exists('imap2_lsub')) {
  * imap2_getsubscribed
  */
 if (!function_exists('imap_getsubscribed')) {
+    /** @codeCoverageIgnore */
     function imap_getsubscribed($imap, $reference, $pattern)
     {
         return imap2_getsubscribed($imap, $reference, $pattern);
@@ -553,6 +570,7 @@ if (!function_exists('imap2_getsubscribed')) {
  * imap2_subscribe
  */
 if (!function_exists('imap_subscribe')) {
+    /** @codeCoverageIgnore */
     function imap_subscribe($imap, $mailbox)
     {
         return imap2_subscribe($imap, $mailbox);
