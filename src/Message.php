@@ -236,7 +236,7 @@ class Message
             #$client->setDebug(true);
 
             $messages = $client->fetch($imap->getMailboxName(), $sequence, false, [
-                'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE)]',
+                'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE REFERENCES)]',
                 'UID',
                 'FLAGS',
                 'INTERNALDATE',
@@ -255,10 +255,12 @@ class Message
                 #die();
                 $messageEntry = (object) [
                     'subject' => $message->envelope[1],
-                    'from' => Functions::sanitizeAddress($message->get('from')),
+                    'from' => Functions::writeAddressFromEnvelope($message->envelope[2]),
                     'to' => $message->get('to'),
                     'date' => $message->envelope[0],
                     'message_id' => $message->envelope[9],
+                    'references' => $message->references,
+                    'in_reply_to' => $message->envelope[8],
                     'size' => $message->size,
                     'uid' => $message->uid,
                     'msgno' => $message->id,
@@ -270,6 +272,15 @@ class Message
                     'draft' => intval($message->flags['DRAFT'] ?? 0),
                     'udate' => strtotime($message->internaldate),
                 ];
+                if (empty($messageEntry->subject)) {
+                    unset($messageEntry->subject);
+                }
+                if (empty($messageEntry->references)) {
+                    unset($messageEntry->references);
+                }
+                if (empty($messageEntry->in_reply_to)) {
+                    unset($messageEntry->in_reply_to);
+                }
                 if (empty($messageEntry->to)) {
                     unset($messageEntry->to);
                 }
