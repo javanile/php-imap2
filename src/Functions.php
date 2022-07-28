@@ -190,4 +190,9 @@ class Functions
             && preg_match('/^imap2_/', $backtrace[$depth]['function'])
             && substr($backtrace[$depth + 1]['function'], 4) == substr($backtrace[$depth]['function'], 5);
     }
+
+    public static function isRetrofitResource($imap)
+    {
+        return is_resource($imap) && get_resource_type($imap) == 'imap';
+    }
 }

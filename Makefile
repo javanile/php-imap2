@@ -122,6 +122,9 @@ test-minimal:
 test-cleaning:
 	@docker-compose run --rm phpunit tests --filter CleaningTest
 
+test-retrofit:
+	@docker-compose run --rm phpunit tests --filter RetrofitTest
+
 test-errors:
 	@docker-compose run --rm phpunit tests --filter ErrorsTest
 

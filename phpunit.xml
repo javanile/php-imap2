@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="./vendor/autoload.php" colors="true" convertWarningsToExceptions="true">
-    <php>
-        <const name="PHPUNIT_MYSQL_IMPORT" value="true"/>
-    </php>
+<phpunit
+    bootstrap="./vendor/autoload.php"
+    colors="true"
+    convertWarningsToExceptions="true"
+>
     <filter>
         <whitelist>
-            <file>./bootstrap.php</file>
             <directory>./src/</directory>
         </whitelist>
     </filter>

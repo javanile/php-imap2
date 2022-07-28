@@ -17,6 +17,7 @@ use Javanile\Imap2\Message;
 use Javanile\Imap2\Thread;
 use Javanile\Imap2\Polyfill;
 use Javanile\Imap2\Timeout;
+use Javanile\Imap2\Functions;
 
 define('IMAP2_CHARSET', 'UTF-8');
 define('IMAP2_RETROFIT_MODE', function_exists('imap_open'));
@@ -354,7 +355,6 @@ if (!function_exists('imap2_check')) {
  * imap2_status
  */
 if (!function_exists('imap_status')) {
-    /** @codeCoverageIgnore */
     function imap_status($imap, $mailbox, $flags)
     {
         return imap2_status($imap, $mailbox, $flags);
@@ -363,7 +363,7 @@ if (!function_exists('imap_status')) {
 if (!function_exists('imap2_status')) {
     function imap2_status($imap, $mailbox, $flags)
     {
-        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+        if (IMAP2_RETROFIT_MODE && Functions::isRetrofitResource($imap)) {
             return imap_status($imap, $mailbox, $flags);
         }
 
@@ -384,7 +384,7 @@ if (!function_exists('imap_num_msg')) {
 if (!function_exists('imap2_num_msg')) {
     function imap2_num_msg($imap)
     {
-        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+        if (IMAP2_RETROFIT_MODE && Functions::isRetrofitResource($imap)) {
             return imap_num_msg($imap);
         }
 
@@ -396,7 +396,6 @@ if (!function_exists('imap2_num_msg')) {
  * imap2_num_recent
  */
 if (!function_exists('imap_num_recent')) {
-    /** @codeCoverageIgnore */
     function imap_num_recent($imap)
     {
         return imap2_num_recent($imap);
@@ -405,6 +404,10 @@ if (!function_exists('imap_num_recent')) {
 if (!function_exists('imap2_num_recent')) {
     function imap2_num_recent($imap)
     {
+        if (IMAP2_RETROFIT_MODE && Functions::isRetrofitResource($imap)) {
+            return imap_num_recent($imap);
+        }
+
         return Mailbox::numRecent($imap);
     }
 }
