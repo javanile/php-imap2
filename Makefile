@@ -116,6 +116,9 @@ test-special:
 test-minimal:
 	@docker-compose run --rm phpunit tests --filter MinimalTest
 
+test-errors:
+	@docker-compose run --rm phpunit tests --filter ErrorsTest
+
 ## ======
 ## Legacy
 ## ======
@@ -128,4 +131,9 @@ legacy-last-error:
 diff-last-error:
 	@docker-compose run --rm php bash -c "php -f tests/legacy/last-error.php > tests/legacy/last-error.1.txt 2>&1"
 	@docker-compose run --rm imap2 bash -c "php -f tests/legacy/last-error.php > tests/legacy/last-error.2.txt 2>&1"
+	@docker-compose run --rm imap2 bash -c "chmod 777 -R tests/legacy"
+
+diff-fetch-body-error:
+	@docker-compose run --rm php bash -c "php -f tests/legacy/fetch-body-error.php > tests/legacy/fetch-body-error.1.txt 2>&1"
+	@docker-compose run --rm imap2 bash -c "php -f tests/legacy/fetch-body-error.php > tests/legacy/fetch-body-error.2.txt 2>&1"
 	@docker-compose run --rm imap2 bash -c "chmod 777 -R tests/legacy"

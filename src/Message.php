@@ -123,20 +123,26 @@ class Message
 
     public static function fetchBody($imap, $messageNum, $section, $flags = 0)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-            #$client->setDebug(true);
-
-            $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
-
-            if ($section) {
-                return $messages[$messageNum]->bodypart[$section];
-            }
-
-            return $messages[$messageNum]->body;
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_fetchbody($imap, $messageNum, $section, $flags);
+        $client = $imap->getClient();
+        #$client->setDebug(true);
+
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+
+        if (empty($messages)) {
+            trigger_error(Errors::badMessageNumber(debug_backtrace(), 1), E_USER_WARNING);
+
+            return false;
+        }
+
+        if ($section) {
+            return $messages[$messageNum]->bodypart[$section];
+        }
+
+        return $messages[$messageNum]->body;
     }
 
     public static function saveBody($imap, $file, $messageNum, $section = "", $flags = 0)

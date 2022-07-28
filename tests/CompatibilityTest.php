@@ -115,7 +115,9 @@ class CompatibilityTest extends ImapTestCase
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
-        for ($message = 1; $message < 10; $message++) {
+        $countMessage = imap_num_msg($imap1);
+
+        for ($message = 1; $message <= $countMessage; $message++) {
             foreach ([null, 1] as $section) {
                 $body1 = imap_fetchbody($imap1, $message, $section);
                 #file_put_contents('t1.txt', $body1);
@@ -124,7 +126,7 @@ class CompatibilityTest extends ImapTestCase
                 $this->assertEquals($body1, $body2);
             }
         }
-
+        
         imap_close($imap1);
         imap2_close($imap2);
     }

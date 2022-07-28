@@ -93,6 +93,16 @@ class Errors
              . ' in '.$backtrace[$depth]['file']. ' on line '.$backtrace[$depth]['line'].'. Source code';
     }
 
+    public static function badMessageNumber($backtrace, $depth)
+    {
+        if (Functions::isBackportCall($backtrace, $depth)) {
+            $depth++;
+        }
+
+        return $backtrace[$depth]['function'].'(): Bad message number in '
+             . $backtrace[$depth]['file']. ' on line '.$backtrace[$depth]['line'].'. Source code';
+    }
+
     public static function appendErrorCanNotOpen($mailbox, $error)
     {
         if ($mailbox[0] == '{') {

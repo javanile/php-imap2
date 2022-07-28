@@ -174,4 +174,12 @@ class Functions
 
         return $addressObjectList;
     }
+
+    public static function isBackportCall($backtrace, $depth)
+    {
+        return isset($backtrace[$depth + 1]['function'])
+            && preg_match('/^imap_/', $backtrace[$depth + 1]['function'])
+            && preg_match('/^imap2_/', $backtrace[$depth]['function'])
+            && substr($backtrace[$depth + 1]['function'], 4) == substr($backtrace[$depth]['function'], 5);
+    }
 }

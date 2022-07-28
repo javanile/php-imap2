@@ -21,4 +21,14 @@ class ErrorsTest extends ImapTestCase
         imap2_open('{imap.gmail.com:993/imap/ssl}', 'wrong-username', 'wrong-password', OP_XOAUTH2);
         $this->assertEquals('Can not authenticate to IMAP server: [AUTHENTICATIONFAILED] Invalid credentials (Failure)', imap2_last_error());
     }
+
+    public function testFetchBodyBadMessageNumber()
+    {
+        $this->expectException(Warning::class);
+        $this->expectExceptionMessage('imap2_fetchbody(): Bad message number in '.__FILE__.' on line '.(__LINE__ + 2));
+        $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+        $body = imap2_fetchbody($imap, 9999, null);
+        $this->assertFalse(imap2_last_error());
+        $this->assertFalse($body);
+    }
 }
