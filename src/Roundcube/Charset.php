@@ -25,11 +25,6 @@ namespace Javanile\Imap2\Roundcube;
 
 use Javanile\Imap2\ErrorException;
 use Javanile\Imap2\rcube;
-use function Javanile\Imap2\iconv;
-use function Javanile\Imap2\mb_check_encoding;
-use function Javanile\Imap2\mb_convert_encoding;
-use function Javanile\Imap2\mb_detect_encoding;
-use function Javanile\Imap2\mb_substitute_character;
 
 /**
  * Character sets conversion functionality
