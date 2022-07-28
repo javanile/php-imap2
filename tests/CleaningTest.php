@@ -28,4 +28,21 @@ class CleaningTest extends ImapTestCase
 
         imap2_close($imap);
     }
+
+    public function testFillInboxWithTestingMessages()
+    {
+        $imap = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $emlFiles = [
+            'plain_only.eml',
+            'embedded_email.eml',
+            'references.eml',
+            'embedded_email_without_content_disposition.eml',
+            'four_nested_emails.eml'
+        ];
+
+        foreach ($emlFiles as $file) {
+            $this->assertTrue(imap2_append($imap, $this->mailbox, file_get_contents('tests/fixtures/' . $file)));
+        }
+    }
 }
