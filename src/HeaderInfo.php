@@ -16,7 +16,7 @@ class HeaderInfo
 
     public static function fromMessage($message, $defaultHost)
     {
-        file_put_contents('t3.json', json_encode($message, JSON_PRETTY_PRINT));
+        #file_put_contents('t3.json', json_encode($message, JSON_PRETTY_PRINT));
 
         $to = Functions::writeAddressFromEnvelope($message->envelope[5]);
         $from = Functions::writeAddressFromEnvelope($message->envelope[2]);

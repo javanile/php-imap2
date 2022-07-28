@@ -29,7 +29,7 @@ class BodyStructure
         $parts = [];
         $parameters = [];
 
-        file_put_contents('t3.json', json_encode($structure, JSON_PRETTY_PRINT));
+        #file_put_contents('t3.json', json_encode($structure, JSON_PRETTY_PRINT));
         #die();
 
         if (isset($structure[0]) && $structure[0] == 'TEXT') {
