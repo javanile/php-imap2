@@ -231,71 +231,71 @@ class Message
 
     public static function fetchOverview($imap, $sequence, $flags = 0)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-            #$client->setDebug(true);
-
-            $messages = $client->fetch($imap->getMailboxName(), $sequence, false, [
-                'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE REFERENCES)]',
-                'UID',
-                'FLAGS',
-                'INTERNALDATE',
-                'RFC822.SIZE',
-                'ENVELOPE',
-                'RFC822.HEADER'
-            ]);
-
-            if ($sequence != '*' && count($messages) < Functions::expectedNumberOfMessages($sequence)) {
-                return [];
-            }
-
-            $overview = [];
-            foreach ($messages as $message) {
-                #var_dump($message);
-                #die();
-                $messageEntry = (object) [
-                    'subject' => $message->envelope[1],
-                    'from' => Functions::writeAddressFromEnvelope($message->envelope[2]),
-                    'to' => $message->get('to'),
-                    'date' => $message->envelope[0],
-                    'message_id' => $message->envelope[9],
-                    'references' => $message->references,
-                    'in_reply_to' => $message->envelope[8],
-                    'size' => $message->size,
-                    'uid' => $message->uid,
-                    'msgno' => $message->id,
-                    'recent' => intval($message->flags['RECENT'] ?? 0),
-                    'flagged' => intval($message->flags['FLAGGED'] ?? 0),
-                    'answered' => intval($message->flags['ANSWERED'] ?? 0),
-                    'deleted' => intval($message->flags['DELETED'] ?? 0),
-                    'seen' => intval($message->flags['SEEN'] ?? 0),
-                    'draft' => intval($message->flags['DRAFT'] ?? 0),
-                    'udate' => strtotime($message->internaldate),
-                ];
-                if (empty($messageEntry->subject)) {
-                    unset($messageEntry->subject);
-                }
-                if (empty($messageEntry->references)) {
-                    unset($messageEntry->references);
-                }
-                if (empty($messageEntry->in_reply_to)) {
-                    unset($messageEntry->in_reply_to);
-                }
-                if (empty($messageEntry->to)) {
-                    unset($messageEntry->to);
-                }
-                $overview[] = $messageEntry;
-            }
-
-            return $overview;
-
-        } elseif (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
-            return imap_fetch_overview($imap, $sequence, $flags);
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        trigger_error(Errors::invalidImapConnection(debug_backtrace(), 1), E_USER_WARNING);
+        $client = $imap->getClient();
+        #$client->setDebug(true);
 
-        return false;
+        $messages = $client->fetch($imap->getMailboxName(), $sequence, false, [
+            'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE REFERENCES)]',
+            'UID',
+            'FLAGS',
+            'INTERNALDATE',
+            'RFC822.SIZE',
+            'ENVELOPE',
+            'RFC822.HEADER'
+        ]);
+
+        if ($sequence != '*' && count($messages) < Functions::expectedNumberOfMessages($sequence)) {
+            return [];
+        }
+
+        $overview = [];
+        foreach ($messages as $message) {
+            #var_dump($message);
+            #die();
+            $messageEntry = (object) [
+                'subject' => $message->envelope[1],
+                'from' => Functions::writeAddressFromEnvelope($message->envelope[2]),
+                'to' => $message->get('to'),
+                'date' => $message->envelope[0],
+                'message_id' => $message->envelope[9],
+                'references' => $message->references,
+                'in_reply_to' => $message->envelope[8],
+                'size' => $message->size,
+                'uid' => $message->uid,
+                'msgno' => $message->id,
+                'recent' => intval($message->flags['RECENT'] ?? 0),
+                'flagged' => intval($message->flags['FLAGGED'] ?? 0),
+                'answered' => intval($message->flags['ANSWERED'] ?? 0),
+                'deleted' => intval($message->flags['DELETED'] ?? 0),
+                'seen' => intval($message->flags['SEEN'] ?? 0),
+                'draft' => intval($message->flags['DRAFT'] ?? 0),
+                'udate' => strtotime($message->internaldate),
+            ];
+
+            if (empty($messageEntry->subject)) {
+                unset($messageEntry->subject);
+            }
+
+            if (empty($messageEntry->references)) {
+                unset($messageEntry->references);
+            }
+
+            if (empty($messageEntry->in_reply_to)) {
+                unset($messageEntry->in_reply_to);
+            }
+
+            if (empty($messageEntry->to)) {
+                unset($messageEntry->to);
+            }
+
+            $overview[] = $messageEntry;
+        }
+
+        return $overview;
     }
 
     public static function delete($imap, $messageNums, $flags = 0)
