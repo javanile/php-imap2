@@ -27,7 +27,7 @@ coverage:
 ## Tests
 ## =====
 test:
-	docker-compose run --rm phpunit tests --stop-on-failure
+	@docker-compose run --rm phpunit tests --stop-on-failure
 
 test-open:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testOpenAndClose
