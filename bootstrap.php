@@ -634,6 +634,10 @@ if (!function_exists('imap_create')) {
 if (!function_exists('imap2_create')) {
     function imap2_create($imap, $mailbox)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_create($imap, $mailbox);
+        }
+
         return Mailbox::createMailbox($imap, $mailbox);
     }
 }
@@ -650,6 +654,10 @@ if (!function_exists('imap_deletemailbox')) {
 if (!function_exists('imap2_deletemailbox')) {
     function imap2_deletemailbox($imap, $mailbox)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_deletemailbox($imap, $mailbox);
+        }
+
         return Mailbox::deleteMailbox($imap, $mailbox);
     }
 }
@@ -858,7 +866,7 @@ if (!function_exists('imap_body')) {
 if (!function_exists('imap2_body')) {
     function imap2_body($imap, $messageNum, $flags = 0)
     {
-        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+        if (IMAP2_RETROFIT_MODE && Functions::isRetrofitResource($imap)) {
             return imap_body($imap, $messageNum, $flags);
         }
 
@@ -878,6 +886,10 @@ if (!function_exists('imap_fetchtext')) {
 if (!function_exists('imap2_fetchtext')) {
     function imap2_fetchtext($imap, $messageNum, $flags = 0)
     {
+        if (IMAP2_RETROFIT_MODE && Functions::isRetrofitResource($imap)) {
+            return imap_fetchtext($imap, $messageNum, $flags);
+        }
+
         return Message::body($imap, $messageNum, $flags);
     }
 }
@@ -894,6 +906,10 @@ if (!function_exists('imap_fetchbody')) {
 if (!function_exists('imap2_fetchbody')) {
     function imap2_fetchbody($imap, $messageNum, $section, $flags = 0)
     {
+        if (IMAP2_RETROFIT_MODE && Functions::isRetrofitResource($imap)) {
+            return imap_fetchbody($imap, $messageNum, $section, $flags);
+        }
+
         return Message::fetchBody($imap, $messageNum, $section, $flags);
     }
 }
@@ -910,6 +926,10 @@ if (!function_exists('imap_bodystruct')) {
 if (!function_exists('imap2_bodystruct')) {
     function imap2_bodystruct($imap, $messageNum, $section)
     {
+        if (IMAP2_RETROFIT_MODE && Functions::isRetrofitResource($imap)) {
+            return imap_bodystruct($imap, $messageNum, $section);
+        }
+
         return Message::bodyStruct($imap, $messageNum, $section);
     }
 }
@@ -926,6 +946,10 @@ if (!function_exists('imap_savebody')) {
 if (!function_exists('imap2_savebody')) {
     function imap2_savebody($imap, $file, $messageNum, $section = "", $flags = 0)
     {
+        if (IMAP2_RETROFIT_MODE && Functions::isRetrofitResource($imap)) {
+            return imap_savebody($imap, $file, $messageNum, $section, $flags);
+        }
+
         return Message::saveBody($imap, $file, $messageNum, $section, $flags);
     }
 }
@@ -1018,6 +1042,10 @@ if (!function_exists('imap_delete')) {
 if (!function_exists('imap2_delete')) {
     function imap2_delete($imap, $messageNums, $flags = 0)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_delete($imap, $messageNums, $flags);
+        }
+
         return Message::delete($imap, $messageNums, $flags);
     }
 }

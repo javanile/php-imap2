@@ -300,22 +300,22 @@ class Message
 
     public static function delete($imap, $messageNums, $flags = 0)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-
-            $messages = $client->fetch($imap->getMailboxName(), $messageNums, false, ['UID']);
-
-            $uid = [];
-            foreach ($messages as $message) {
-                $uid[] = $message->uid;
-            }
-
-            $client->flag($imap->getMailboxName(), implode(',', $uid), $client->flags['DELETED']);
-
-            return true;
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_undelete($imap, $messageNums, $flags);
+        $client = $imap->getClient();
+
+        $messages = $client->fetch($imap->getMailboxName(), $messageNums, false, ['UID']);
+
+        $uid = [];
+        foreach ($messages as $message) {
+            $uid[] = $message->uid;
+        }
+
+        $client->flag($imap->getMailboxName(), implode(',', $uid), $client->flags['DELETED']);
+
+        return true;
     }
 
     public static function undelete($imap, $messageNums, $flags = 0)
