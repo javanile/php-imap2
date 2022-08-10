@@ -8,6 +8,22 @@
 
 </div>
 
+## Requirements
+
+- PHP >= 7.0
+
+## Install
+
+```shell
+composer require javanile/php-imap2
+```
+
+or
+
+Download latest release 
+
+## Usage
+
 ```php
 $mbh = imap2_open($server, $username, $token, OP_XOAUTH2);
 if (! $mbh) {
@@ -16,11 +32,9 @@ if (! $mbh) {
 }
 ```
 
-
 ## Gmail OAuth2
 
 Scope: https://mail.google.com/
-
 
 ## Sandbox
 
