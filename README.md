@@ -15,7 +15,7 @@ if (! $mbh) {
 ```
 
 
-## Gmail OAuth
+## Gmail OAuth2
 
 Scope: https://mail.google.com/
 
