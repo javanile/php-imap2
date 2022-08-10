@@ -1,0 +1,22 @@
+---
+name: Linter
+on:
+  push:
+    branches-ignore: [main]    
+
+jobs:
+  build:
+    name: Linter
+    runs-on: ubuntu-latest
+
+    steps:
+      
+      - uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0
+      
+      - uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
