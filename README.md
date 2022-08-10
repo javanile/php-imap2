@@ -4,6 +4,8 @@
 
 # PHP IMAP2
 
+[![Linter](https://github.com/javanile/php-imap2/actions/workflows/linter.yml/badge.svg)](https://github.com/javanile/php-imap2/actions/workflows/linter.yml)
+
 </div>
 
 ```php
