@@ -44,6 +44,9 @@ test-check:
 test-status:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testStatus
 
+test-mailbox-msg-info:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testMailboxMsgInfo
+
 test-append:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testAppend
 

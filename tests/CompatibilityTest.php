@@ -603,6 +603,24 @@ class CompatibilityTest extends ImapTestCase
         imap2_close($imap2);
     }
 
+    public function testMailboxMsgInfo()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $mailboxInfo1 = imap_mailboxmsginfo($imap1);
+        $mailboxInfo2 = imap2_mailboxmsginfo($imap2);
+
+        file_put_contents('t1.json', json_encode($mailboxInfo1, JSON_PRETTY_PRINT));
+        file_put_contents('t2.json', json_encode($mailboxInfo2, JSON_PRETTY_PRINT));
+        die();
+
+        $this->assertEquals($mailboxInfo1, $mailboxInfo2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
     public function testNumMsg()
     {
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
