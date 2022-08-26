@@ -1,0 +1,28 @@
+---
+name: Refresh Access Token
+on:
+  push:
+    branches: [test]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+permissions:
+  actions: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  build:
+    name: Linter
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - run: |
+          curl \
+            -X PUT \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            https://api.github.com/repos/javanile/php-imap2/actions/secrets '
+
