@@ -2,7 +2,7 @@
 name: Linter
 on:
   push:
-    branches: [test]
+    branches: [test2]
 
 jobs:
   build:
