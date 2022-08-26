@@ -706,6 +706,10 @@ if (!function_exists('imap_mailboxmsginfo')) {
 if (!function_exists('imap2_mailboxmsginfo')) {
     function imap2_mailboxmsginfo($imap)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_mailboxmsginfo($imap);
+        }
+
         return Mailbox::mailboxMsgInfo($imap);
     }
 }

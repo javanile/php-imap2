@@ -611,9 +611,13 @@ class CompatibilityTest extends ImapTestCase
         $mailboxInfo1 = imap_mailboxmsginfo($imap1);
         $mailboxInfo2 = imap2_mailboxmsginfo($imap2);
 
-        file_put_contents('t1.json', json_encode($mailboxInfo1, JSON_PRETTY_PRINT));
-        file_put_contents('t2.json', json_encode($mailboxInfo2, JSON_PRETTY_PRINT));
-        die();
+        unset($mailboxInfo1->Mailbox);
+        unset($mailboxInfo2->Mailbox);
+        unset($mailboxInfo1->Size);
+        unset($mailboxInfo2->Size);
+        #file_put_contents('t1.json', json_encode($mailboxInfo1, JSON_PRETTY_PRINT));
+        #file_put_contents('t2.json', json_encode($mailboxInfo2, JSON_PRETTY_PRINT));
+        #die();
 
         $this->assertEquals($mailboxInfo1, $mailboxInfo2);
 
