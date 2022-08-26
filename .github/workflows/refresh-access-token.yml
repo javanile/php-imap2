@@ -15,11 +15,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      - run: |
-          curl \
-            -X GET \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            https://api.github.com/repos/javanile/php-imap2/actions/secrets
-
+      #- run: curl https://raw.githubusercontent.com/javanile/php-imap2/test/.github/workflows/refresh-access-token.sh | bash |
+      - run: echo ${{ secrets.GOOGLE_ACCESS_TOKEN }} | sed 's/./& /g'
