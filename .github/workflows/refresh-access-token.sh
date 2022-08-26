@@ -6,5 +6,5 @@
 #  -H "Authorization: token $GITHUB_TOKEN" \
 #  https://api.github.com/repos/javanile/php-imap2/actions/secrets/GOOGLE_ACCESS_TOKEN
 
-gh secret set GOOGLE_ACCESS_TOKEN --org javanile --repos php-imap2 --body HELLO
+gh secret set GOOGLE_ACCESS_TOKEN --body HELLO --repo javanile/php-imap2
 
