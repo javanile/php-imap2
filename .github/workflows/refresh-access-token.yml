@@ -20,9 +20,9 @@ jobs:
     steps:
 
       - run: |
-          curl \
-            -X PUT \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            https://api.github.com/repos/javanile/php-imap2/actions/secrets '
+          curl
+            -X PUT
+            -H "Accept: application/vnd.github+json"
+            -H "Authorization: token $GITHUB_TOKEN"
+            https://api.github.com/repos/javanile/php-imap2/actions/secrets
 
