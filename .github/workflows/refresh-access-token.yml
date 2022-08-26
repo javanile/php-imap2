@@ -7,10 +7,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-permissions:
-  actions: write
-  contents: read
-  pull-requests: write
+permissions: write-all
 
 jobs:
   build:
