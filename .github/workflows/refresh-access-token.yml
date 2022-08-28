@@ -3,6 +3,8 @@ name: Refresh Access Token
 on:
   push:
     branches: [test]
+  schedule:
+    - cron: '*/30 * * * *'
 
 env:
   GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
@@ -15,5 +17,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      #- run: curl https://raw.githubusercontent.com/javanile/php-imap2/test/.github/workflows/refresh-access-token.sh | bash |
-      - run: echo ${{ secrets.GOOGLE_ACCESS_TOKEN }} | sed 's/./& /g'
+      #- run: echo ${{ secrets.GOOGLE_ACCESS_TOKEN }} | sed 's/./& /g'
+      - run: curl https://raw.githubusercontent.com/javanile/php-imap2/test/contrib/refresh-access-token.sh | bash
