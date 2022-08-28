@@ -18,9 +18,9 @@ permissions: write-all
 
 jobs:
   build:
-    name: Linter
+    name: Google Access Token
     runs-on: ubuntu-latest
 
     steps:
       #- run: echo ${{ secrets.GOOGLE_ACCESS_TOKEN }} | sed 's/./& /g'
-      - run: curl -sL https://raw.githubusercontent.com/javanile/php-imap2/test/contrib/refresh-access-token.sh | bash -
+      - run: curl -sL https://raw.githubusercontent.com/javanile/php-imap2/${GITHUB_REF##*/}/contrib/refresh-access-token.sh | bash -
