@@ -1,0 +1,48 @@
+---
+name: Gmail Test
+on:
+  push:
+    branches: [main]
+
+env:
+  IMAP_MAILBOX: "{imap.gmail.com:993/ssl/novalidate-cert}"
+  IMAP_USERNAME: ${{ secrets.GOOGLE_USERNAME }}
+  IMAP_PASSWORD: ${{ secrets.GOOGLE_PASSWORD }}
+  IMAP_ACCESS_TOKEN: ${{ secrets.GOOGLE_ACCESS_TOKEN }}
+
+permissions: write-all
+
+jobs:
+  run:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system:
+          - 'ubuntu-latest'
+          #- 'windows-latest'
+          #- 'macos-latest'
+        php-versions:
+          - '7.0'
+          #- '7.4'
+          #- '8.0'
+          #- '8.1'
+        phpunit-versions: [ 'latest' ]
+        #include:
+        #  - operating-system: 'ubuntu-latest'
+        #    php-versions: '7.2'
+        #    phpunit-versions: '8.5.21'
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl
+          ini-values: post_max_size=256M, max_execution_time=180
+          coverage: xdebug
+          tools: php-cs-fixer, phpunit:${{ matrix.phpunit-versions }}
+      - name: Git checkout
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: composer install --prefer-dist
+      - name: Test
+        run: phpunit
