@@ -8,6 +8,7 @@
 ## ======
 
 ## Refresh the access token
+echo "Refresh the access token"
 refresh_request=$(curl -s \
   -X POST \
   -d "client_id=$GOOGLE_CLIENT_ID" \
@@ -19,6 +20,7 @@ access_token=$(echo "$refresh_request" | grep "access_token" | cut -d'"' -f4)
 
 ## Store newly access token
 if [ -n "$access_token" ]; then
+  echo "Update access token secret"
   gh secret set GOOGLE_ACCESS_TOKEN --body $access_token --repo javanile/php-imap2
 else
   echo "Problem on refresh access token: $refresh_request"
