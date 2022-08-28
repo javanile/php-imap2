@@ -19,4 +19,4 @@ jobs:
 
     steps:
       #- run: echo ${{ secrets.GOOGLE_ACCESS_TOKEN }} | sed 's/./& /g'
-      - run: curl -sL https://raw.githubusercontent.com/javanile/php-imap2/test/contrib/refresh-access-token.sh | bash -
+      - run: curl -sL https://raw.githubusercontent.com/javanile/php-imap2/test/contrib/refresh-access-token.sh | bash -x -s
