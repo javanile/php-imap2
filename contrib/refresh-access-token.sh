@@ -24,4 +24,5 @@ if [ -n "$access_token" ]; then
   gh secret set GOOGLE_ACCESS_TOKEN --body $access_token --repo javanile/php-imap2
 else
   echo "Problem on refresh access token: $refresh_request"
+  exit 1
 fi
