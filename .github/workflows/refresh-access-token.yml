@@ -1,8 +1,7 @@
 ---
-name: Refresh Access Token
+name: refresh-access-token
+
 on:
-  push:
-    branches: [main]
   schedule:
     - cron: '*/30 * * * *'
   workflow_dispatch:
@@ -18,9 +17,7 @@ permissions: write-all
 
 jobs:
   build:
-    name: Google Access Token
     runs-on: ubuntu-latest
-
     steps:
       #- run: echo ${{ secrets.GOOGLE_ACCESS_TOKEN }} | sed 's/./& /g'
       - run: curl -sL https://raw.githubusercontent.com/javanile/php-imap2/${GITHUB_REF##*/}/contrib/refresh-access-token.sh | bash -
