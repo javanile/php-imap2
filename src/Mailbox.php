@@ -128,7 +128,7 @@ class Mailbox
         }
 
         $client = $imap->getClient();
-        $client->setDebug(true);
+        #$client->setDebug(true);
 
         $imap->selectMailbox();
         $mailboxName = $imap->getMailboxName();
