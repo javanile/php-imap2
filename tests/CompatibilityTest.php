@@ -616,6 +616,8 @@ class CompatibilityTest extends ImapTestCase
         unset($mailboxInfo2->Mailbox);
         unset($mailboxInfo1->Size);
         unset($mailboxInfo2->Size);
+        unset($mailboxInfo1->Date);
+        unset($mailboxInfo2->Date);
         #file_put_contents('t1.json', json_encode($mailboxInfo1, JSON_PRETTY_PRINT));
         #file_put_contents('t2.json', json_encode($mailboxInfo2, JSON_PRETTY_PRINT));
         #die();
