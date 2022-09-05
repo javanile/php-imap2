@@ -45,7 +45,7 @@ refresh-access-token:
 ## Tests
 ## =====
 test:
-	@docker-compose run --rm phpunit tests --stop-on-failure
+	@docker-compose run --rm phpunit tests --stop-on-failure --verbose
 
 test-open:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testOpenAndClose

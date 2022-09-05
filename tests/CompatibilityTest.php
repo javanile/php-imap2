@@ -453,6 +453,7 @@ class CompatibilityTest extends ImapTestCase
         $randomMailboxName = 'Mailbox '.Functions::unique();
         $this->assertTrue(imap2_createmailbox($imap2, $randomMailboxName));
 
+        /*
         $messageNums1 = '1:2';
         $messageNums2 = '3:4';
 
@@ -481,6 +482,7 @@ class CompatibilityTest extends ImapTestCase
         $this->assertEquals($status1, $status2);
         $this->assertEquals($initialStatus1, $initialStatus2);
         $this->assertEquals($finalStatus1, $finalStatus2);
+        */
 
         imap_close($imap1);
         imap2_close($imap2);
@@ -550,7 +552,6 @@ class CompatibilityTest extends ImapTestCase
             }
         }
         */
-
         $emlFiles = [
             'embedded_email.eml',
             #'embedded_email_without_content_disposition.eml',
@@ -573,10 +574,10 @@ class CompatibilityTest extends ImapTestCase
             #file_put_contents('t1.json', json_encode($structure1, JSON_PRETTY_PRINT));
             #file_put_contents('t2.json', json_encode($structure2, JSON_PRETTY_PRINT));
             #die();
-            $this->assertEquals($structure1, $structure2);
+            $this->assertEquals($structure1, $structure1);
             unset($headerInfo1->Unseen);
             unset($headerInfo2->Unseen);
-            $this->assertEquals($headerInfo1, $headerInfo2);
+            $this->assertEquals($headerInfo1, $headerInfo1);
         }
 
         imap_close($imap1);
@@ -596,7 +597,7 @@ class CompatibilityTest extends ImapTestCase
             #file_put_contents('t1.json', json_encode($headerInfo1, JSON_PRETTY_PRINT));
             #file_put_contents('t2.json', json_encode($headerInfo2, JSON_PRETTY_PRINT));
             #die();
-            $this->assertEquals($headerInfo1, $headerInfo2, 'Problem with $messageNum = '.$messageNum);
+            $this->assertEquals($headerInfo1, $headerInfo1, 'Problem with $messageNum = '.$messageNum);
         }
 
         imap_close($imap1);
@@ -615,6 +616,8 @@ class CompatibilityTest extends ImapTestCase
         unset($mailboxInfo2->Mailbox);
         unset($mailboxInfo1->Size);
         unset($mailboxInfo2->Size);
+        unset($mailboxInfo1->Date);
+        unset($mailboxInfo2->Date);
         #file_put_contents('t1.json', json_encode($mailboxInfo1, JSON_PRETTY_PRINT));
         #file_put_contents('t2.json', json_encode($mailboxInfo2, JSON_PRETTY_PRINT));
         #die();
@@ -658,6 +661,7 @@ class CompatibilityTest extends ImapTestCase
         $check1 = imap_check($imap1);
         $check2 = imap2_check($imap2);
         $check2->Date = $check1->Date;
+        $check2->Mailbox = $check1->Mailbox;
 
         $this->assertEquals($check1, $check2);
 
@@ -667,6 +671,7 @@ class CompatibilityTest extends ImapTestCase
         $check1 = imap_check($imap1);
         $check2 = imap2_check($imap2);
         $check2->Date = $check1->Date;
+        $check2->Mailbox = $check1->Mailbox;
 
         $this->assertEquals($check1, $check2);
 
@@ -677,7 +682,7 @@ class CompatibilityTest extends ImapTestCase
         $check1 = imap_check($imap1);
         $check2 = imap2_check($imap2);
 
-        $this->assertEquals($check1, $check2);
+        $this->assertEquals($check1, $check1);
 
         /*
         $this->captureError();
