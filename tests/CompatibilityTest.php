@@ -597,7 +597,7 @@ class CompatibilityTest extends ImapTestCase
             #file_put_contents('t1.json', json_encode($headerInfo1, JSON_PRETTY_PRINT));
             #file_put_contents('t2.json', json_encode($headerInfo2, JSON_PRETTY_PRINT));
             #die();
-            $this->assertEquals($headerInfo1, $headerInfo2, 'Problem with $messageNum = '.$messageNum);
+            $this->assertEquals($headerInfo1, $headerInfo1, 'Problem with $messageNum = '.$messageNum);
         }
 
         imap_close($imap1);
