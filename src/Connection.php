@@ -52,7 +52,7 @@ class Connection
         $mailboxParts = Functions::parseMailboxString($mailbox);
 
         $this->host = Functions::getHostFromMailbox($mailboxParts);
-        $this->port = $mailboxParts['port'];
+        $this->port = @$mailboxParts['port'];
         $this->sslMode = Functions::getSslModeFromMailbox($mailboxParts);
         $this->currentMailbox = $mailboxParts['mailbox'];
     }

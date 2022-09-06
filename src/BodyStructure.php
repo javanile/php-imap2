@@ -313,7 +313,7 @@ class BodyStructure
                 continue;
             }
 
-            if (!is_array($itemPart[2])) {
+            if (empty($itemPart[2]) || !is_array($itemPart[2])) {
                 continue;
             }
 
