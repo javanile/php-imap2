@@ -2319,7 +2319,7 @@ class ImapClient
             return false;
         }
 
-        if ($this->flags[strtoupper($flag)]) {
+        if (isset($this->flags[strtoupper($flag)]) && $this->flags[strtoupper($flag)]) {
             $flag = $this->flags[strtoupper($flag)];
         }
 

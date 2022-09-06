@@ -328,7 +328,7 @@ class BodyStructure
         $parameters = self::extractParameters($itemPart[2], []);
 
         $type = 0;
-        if ($itemPart[0] == 'APPLICATION') {
+        if (isset($itemPart[0]) && $itemPart[0] == 'APPLICATION') {
             $type = 3;
         }
 

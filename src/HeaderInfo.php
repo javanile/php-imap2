@@ -94,7 +94,7 @@ class HeaderInfo
             $addressEntry = (object) [
                 'personal' => $objectEntry->personal ?? null,
                 'mailbox' => $objectEntry->mailbox,
-                'host' => $objectEntry->host,
+                'host' => @$objectEntry->host,
             ];
 
             if (empty($addressEntry->personal)) {
