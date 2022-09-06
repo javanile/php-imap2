@@ -308,7 +308,7 @@ class BodyStructure
         ];
 
         foreach ($item[8] as $itemPart) {
-            if ($itemPart[2] == 'ALTERNATIVE') {
+            if (isset($itemPart[2]) && $itemPart[2] == 'ALTERNATIVE') {
                 $message->parts[] = self::extractPartAsAlternative($itemPart);
                 continue;
             }

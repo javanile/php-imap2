@@ -93,7 +93,7 @@ class HeaderInfo
         foreach ($addressList as $objectEntry) {
             $addressEntry = (object) [
                 'personal' => $objectEntry->personal ?? null,
-                'mailbox' => $objectEntry->mailbox,
+                'mailbox' => @$objectEntry->mailbox,
                 'host' => @$objectEntry->host,
             ];
 

@@ -30,7 +30,7 @@ class Functions
     {
         $mailboxParts = is_array($mailbox) ? $mailbox : self::parseMailboxString($mailbox);
 
-        return $mailboxParts['host'];
+        return @$mailboxParts['host'];
     }
 
     public static function getSslModeFromMailbox($mailbox)
