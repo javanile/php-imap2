@@ -1,3 +1,9 @@
+---
+layout: default
+title: Compatibility
+nav_order: 3
+---
+
 ## Compatibility
 
 - [x] imap_alerts

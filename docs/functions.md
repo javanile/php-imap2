@@ -1,3 +1,9 @@
+---
+layout: default
+title: Functions
+nav_order: 2
+---
+
 # Functions
 
 - imap2_8bit — Convert an 8bit string to a quoted-printable string
