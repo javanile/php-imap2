@@ -107,6 +107,9 @@ test-num-msg:
 test-reopen:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testReopen
 
+test-fetch-mime:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchMime
+
 test-ping:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testPing
 
@@ -115,6 +118,9 @@ test-get-mailboxes:
 
 test-delete-mailbox:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testDeleteMailbox
+
+test-body-structure:
+	@docker-compose run --rm phpunit tests --filter BodyStructureTest::testFetchStructure
 
 test-timeout:
 	@docker-compose run --rm phpunit tests --filter XoauthTest::testTimeout

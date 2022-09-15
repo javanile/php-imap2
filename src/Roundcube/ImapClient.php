@@ -4124,7 +4124,7 @@ class ImapClient
      */
     public function setDebug($debug, $handler = null)
     {
-        $this->debug         = $debug;
+        $this->debug = $debug;
         $this->debug_handler = $handler;
     }
 

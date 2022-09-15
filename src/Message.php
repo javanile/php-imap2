@@ -66,7 +66,7 @@ class Message
         }
 
         $client = $imap->getClient();
-        #$client->setDebug(true);
+        $client->setDebug(true);
 
         $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, [
             'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLY-TO DATE SIZE REFERENCES)]',
@@ -140,6 +140,37 @@ class Message
 
         if ($section) {
             return $messages[$messageNum]->bodypart[$section];
+        }
+
+        return $messages[$messageNum]->body;
+    }
+
+    public static function fetchMime($imap, $messageNum, $section, $flags = 0)
+    {
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
+        }
+
+        if ($messageNum <= 0) {
+            trigger_error(Errors::badMessageNumber(debug_backtrace(), 1), E_USER_WARNING);
+
+            return false;
+        }
+
+        $client = $imap->getClient();
+        $client->setDebug(true);
+
+        $isUid = boolval($flags & FT_UID);
+
+        $sectionKey = $section.'.MIME';
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY['.$sectionKey.']']);
+
+        if (empty($messages)) {
+            return "";
+        }
+
+        if ($section && isset($messages[$messageNum]->bodypart[$sectionKey])) {
+            return $messages[$messageNum]->bodypart[$sectionKey];
         }
 
         return $messages[$messageNum]->body;
