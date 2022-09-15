@@ -66,7 +66,7 @@ class Message
         }
 
         $client = $imap->getClient();
-        $client->setDebug(true);
+        #$client->setDebug(true);
 
         $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, [
             'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLY-TO DATE SIZE REFERENCES)]',
@@ -158,7 +158,7 @@ class Message
         }
 
         $client = $imap->getClient();
-        $client->setDebug(true);
+        #$client->setDebug(true);
 
         $isUid = boolval($flags & FT_UID);
 
