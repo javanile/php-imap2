@@ -90,8 +90,6 @@ class BodyStructure
         $parameters = [];
 
         if (!is_array($item[2])) {
-            var_dump($item);
-
             return $parameters;
         }
 
