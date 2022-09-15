@@ -1030,7 +1030,11 @@ if (!function_exists('imap_fetchmime')) {
 if (!function_exists('imap2_fetchmime')) {
     function imap2_fetchmime($imap, $messageNum, $section, $flags = 0)
     {
-        return Message::fetchBody($imap, $messageNum, $section, $flags);
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_fetchmime($imap, $messageNum, $section, $flags);
+        }
+
+        return Message::fetchMime($imap, $messageNum, $section, $flags);
     }
 }
 

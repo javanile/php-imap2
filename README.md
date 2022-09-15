@@ -38,7 +38,8 @@ Scope: https://mail.google.com/
 
 ## Sandbox
 
-- Demo #1 - <https://phpsandbox.io/e/x/zwauf>
+- Gmail Demo - <https://phpsandbox.io/e/x/zwauf?layout=EditorPreview&defaultPath=%2F&theme=dark&showExplorer=no&openedFiles=>
+- Outlook Demo - **COMING SOON**
 
 ## Other links 
 

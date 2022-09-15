@@ -647,6 +647,34 @@ class CompatibilityTest extends ImapTestCase
         imap2_close($imap2);
     }
 
+    public function testFetchMime()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $messageNums = [1];
+        $sections = [null, '', 0, 1, '1', 9999];
+
+        $flags = [
+            0,
+            #FT_UID,
+            #FT_PEEK,
+            FT_INTERNAL,
+        ];
+        foreach ($flags as $flag) {
+            foreach ($sections as $section) {
+                foreach ($messageNums as $messageNum) {
+                    $fetchMime1 = imap_fetchmime($imap1, $messageNum, $section, $flag);
+                    $fetchMime2 = imap2_fetchmime($imap2, $messageNum, $section, $flag);
+                    $this->assertEquals($fetchMime1, $fetchMime2);
+                }
+            }
+        }
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
     public function testReopen()
     {
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
