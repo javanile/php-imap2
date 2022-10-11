@@ -14,6 +14,7 @@ namespace Javanile\Imap2;
 class BodyStructure
 {
     protected static $encodingNumber = [
+        '7BIT' => 0,
         '8BIT' => 1,
         'BASE64' => 3,
         'QUOTED-PRINTABLE' => 4,
@@ -32,20 +33,31 @@ class BodyStructure
         #file_put_contents('t3.json', json_encode($structure, JSON_PRETTY_PRINT));
         #die();
 
-        if (isset($structure[0]) && $structure[0] == 'TEXT') {
+        if (isset($structure[0]) && is_scalar($structure[0]) && strtolower($structure[0]) == 'text') {
             return self::textStructure($structure);
         }
-
+        
+        if (isset($structure[1]) && is_scalar($structure[1]) && strtolower($structure[1]) == 'json') {
+            return self::textStructure($structure);
+        }
+        
         $section = 'parts';
         $subType = 'ALTERNATIVE';
+
         foreach ($structure as $item) {
-            if ($item == 'ALTERNATIVE') {
+            if (is_scalar($item) && strtolower($item) == 'alternative') {
                 $section = 'parameters';
                 continue;
             }
 
-            if ($item == 'MIXED') {
+            if (is_scalar($item) && strtolower($item) == 'mixed') {
                 $subType = 'MIXED';
+                $section = 'parameters';
+                continue;
+            }
+
+            if (is_scalar($item) && strtolower($item) == 'related') {
+                $subType = 'RELATED';
                 $section = 'parameters';
                 continue;
             }
@@ -61,7 +73,7 @@ class BodyStructure
             'type' => 1,
             'encoding' => 0,
             'ifsubtype' => 1,
-            'subtype' => $subType,
+            'subtype' => strtoupper($subType),
             'ifdescription' => 0,
             'ifid' => 0,
             'ifdisposition' => 0,
@@ -74,54 +86,84 @@ class BodyStructure
 
     protected static function extractPart($item)
     {
-        if ($item[2] == 'RELATED') {
+        if (is_scalar($item[2]) && strtolower($item[2]) == 'related') {
             return self::extractPartAsRelated($item);
         }
 
-        if ($item[2] == 'ALTERNATIVE') {
+        if (is_scalar($item[2]) && strtolower($item[2]) == 'alternative') {
             return self::extractPartAsAlternative($item);
         }
 
-        if ($item[1] == 'RFC822') {
+        if (is_scalar($item[1]) && strtolower($item[1]) == 'rfc822') {
             return self::extractPartAsRfc822($item);
+        }
+        
+        if ( is_scalar($item) ) {
+        	$ex = new \Exception("trace");
+        	print $ex->getTraceAsString();
+        	var_dump($item);
+        	exit;
+        	
+        }
+        if ( in_array("related", $item) ) {
+        	return self::extractPartAsRelated($item);
         }
 
         $attribute = null;
         $parameters = [];
 
-        if (!is_array($item[2])) {
-            return $parameters;
+        
+        if (! is_scalar($item[0]) && !is_array($item[2])) {
+
+	        if (isset($item[0]) && is_scalar($item[0]) && strtolower($item[0]) == 'text') {
+	            return self::textStructure($item);
+	        }
+	        
+            return (object) [
+	            'type' => 8,
+	            'encoding' => self::getEncoding($item, 5),
+	            'ifsubtype' => 1,
+	            'subtype' => 'UNKNOWN',
+	            'ifdescription' => 0,
+	            'ifid' => 0,
+	            'ifdisposition' => 0,
+	            'ifdparameters' => 0,
+	            'ifparameters' => 0,
+	            'parameters' => (object)$parameters,
+	        ];
         }
 
-        foreach ($item[2] as $value) {
-            if (empty($attribute)) {
-                $attribute = [
-                    'attribute' => $value,
-                    'value' => null,
-                ];
-            } else {
-                $attribute['value'] = $value;
-                $parameters[] = (object) $attribute;
-                $attribute = null;
-            }
-        }
+		if ( is_array($item[2]) )
+	        foreach ($item[2] as $value) {
+	            if (empty($attribute)) {
+	                $attribute = [
+	                    'attribute' => $value,
+	                    'value' => null,
+	                ];
+	            } else {
+	                $attribute['value'] = $value;
+	                $parameters[] = (object) $attribute;
+	                $attribute = null;
+	            }
+	        }
 
         $type = 0;
         $linesIndex = 7;
         $bytesIndex = 6;
-        if ($item[0] == 'APPLICATION') {
+        
+        if (is_scalar($item[0]) && strtolower($item[0]) == 'application') {
             $type = 3;
             $linesIndex = 9;
         }
-        if ($item[0] == 'MESSAGE') {
+        if (is_scalar($item[0]) && strtolower($item[0]) == 'message') {
             $type = 2;
             $linesIndex = 9;
         }
-        if ($item[0] == 'IMAGE') {
+        if (is_scalar($item[0]) && strtolower($item[0]) == 'image') {
             $type = 5;
             $linesIndex = 9;
         }
-        if ($item[1] == 'X-ZIP-COMPRESSED') {
+        if (is_scalar($item[0]) && strtolower($item[0]) == 'x-zip-compressed') {
             #var_dump($item);
             #die();
         }
@@ -130,7 +172,7 @@ class BodyStructure
             'type' => $type,
             'encoding' => self::getEncoding($item, 5),
             'ifsubtype' => 1,
-            'subtype' => $item[1],
+            'subtype' => strtoupper($item[1]),
             'ifdescription' => 0,
             'description' => null,
             'ifid' => 0,
@@ -141,9 +183,12 @@ class BodyStructure
             'disposition' => null,
             'ifdparameters' => 0,
             'dparameters' => null,
-            'ifparameters' => 1,
-            'parameters' => $parameters,
+            'ifparameters' => count($parameters) ? 1 : 0,
+            'parameters' => $parameters ?: (object)[],
         ];
+
+        if ( ! $part->lines ) unset($part->lines);
+        if ( ! $part->bytes ) unset($part->bytes);
 
         if ($item[3]) {
             $part->ifid = 1;
@@ -187,8 +232,13 @@ class BodyStructure
                     }
                 }
             }
-            $part->dparameters = $dispositionParameters;
-            $part->ifdparameters = 1;
+            if ( count($dispositionParameters) ) {
+            	$part->dparameters = $dispositionParameters;
+            	$part->ifdparameters = 1;
+            }
+            else {
+	            unset($part->dparameters);
+            }
             $part->ifdisposition = 1;
         } else {
             unset($part->disposition);
@@ -270,7 +320,7 @@ class BodyStructure
 
     protected static function processSubParts($item, $part)
     {
-        if ($item[0] != 'MESSAGE') {
+        if (strtolower($item[0]) != 'message') {
             return $part;
         }
 
@@ -306,7 +356,7 @@ class BodyStructure
         ];
 
         foreach ($item[8] as $itemPart) {
-            if (isset($itemPart[2]) && $itemPart[2] == 'ALTERNATIVE') {
+            if (isset($itemPart[2]) && strtolower($itemPart[2]) == 'alternative') {
                 $message->parts[] = self::extractPartAsAlternative($itemPart);
                 continue;
             }
@@ -326,7 +376,7 @@ class BodyStructure
         $parameters = self::extractParameters($itemPart[2], []);
 
         $type = 0;
-        if (isset($itemPart[0]) && $itemPart[0] == 'APPLICATION') {
+        if (isset($itemPart[0]) && strtolower($itemPart[0]) == 'application') {
             $type = 3;
         }
 
@@ -334,7 +384,7 @@ class BodyStructure
             'type' => $type,
             'encoding' => self::getEncoding($itemPart, 5),
             'ifsubtype' => 1,
-            'subtype' => is_string($itemPart[1]) ? $itemPart[1] : 'PLAIN',
+            'subtype' => is_string($itemPart[1]) ? strtoupper($itemPart[1]) : 'PLAIN',
             'ifdescription' => 0,
             'description' => null,
             'ifid' => 0,
@@ -347,6 +397,9 @@ class BodyStructure
             'ifparameters' => 1,
             'parameters' => $parameters
         ];
+
+        if ( ! $part->lines ) unset($part->lines);
+        if ( ! $part->bytes ) unset($part->bytes);
 
         if ($itemPart[4]) {
             $part->ifdescription = 1;
@@ -468,6 +521,9 @@ class BodyStructure
             'ifparameters' => 1,
             'parameters' => $parameters
         ];
+        
+        if ( ! $part->lines ) unset($part->lines);
+        if ( ! $part->bytes ) unset($part->bytes);
 
         $dispositionParametersIndex = 9;
 
@@ -526,18 +582,22 @@ class BodyStructure
 
     protected static function getEncoding($item, $encodingIndex)
     {
-        return isset($item[$encodingIndex]) ? (self::$encodingNumber[$item[$encodingIndex]] ?? 0) : 0;
+        return isset($item[$encodingIndex]) ? (self::$encodingNumber[strtoupper($item[$encodingIndex])] ?? 1) : 0;
     }
 
     protected static function textStructure($structure)
     {
         $parameters = self::extractParameters($structure[2], []);
 
-        return (object) [
-            'type' => 0,
+        $type = 0;
+        if (is_scalar($structure[0]) && strtolower($structure[0]) == 'application')
+            $type = 3;
+
+        $part = (object) [
+            'type' => $type,
             'encoding' => self::getEncoding($structure, 5),
             'ifsubtype' => 1,
-            'subtype' => $structure[1],
+            'subtype' => strtoupper($structure[1]),
             'ifdescription' => 0,
             'ifid' => 0,
             'lines' => intval($structure[7]),
@@ -547,5 +607,11 @@ class BodyStructure
             'ifparameters' => count($parameters),
             'parameters' => count($parameters) ? $parameters : (object) [],
         ];
+        
+        if ( $type == 3 ) {
+        	unset($part->lines);
+        }
+        
+        return $part;
     }
 }
