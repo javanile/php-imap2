@@ -97,16 +97,9 @@ class BodyStructure
         if (is_scalar($item[1]) && strtolower($item[1]) == 'rfc822') {
             return self::extractPartAsRfc822($item);
         }
-        
-        if ( is_scalar($item) ) {
-        	$ex = new \Exception("trace");
-        	print $ex->getTraceAsString();
-        	var_dump($item);
-        	exit;
-        	
-        }
-        if ( in_array("related", $item) ) {
-        	return self::extractPartAsRelated($item);
+
+        if ( ($relatedIndex = array_search("related", $item)) !== false ) {
+        	return self::extractPartAsRelated($item, $relatedIndex);
         }
 
         $attribute = null;
@@ -248,11 +241,11 @@ class BodyStructure
         return self::processSubParts($item, $part);
     }
 
-    protected static function extractPartAsRelated($item)
+    protected static function extractPartAsRelated($item, $relatedIndex = 2)
     {
         $part = (object) [
             'type' => 1,
-            'encoding' => self::getEncoding($item, 5),
+            'encoding' => self::getEncoding($item, $relatedIndex+2),
             'ifsubtype' => 1,
             'subtype' => 'RELATED',
             'ifdescription' => 0,
