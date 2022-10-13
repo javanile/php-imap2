@@ -62,6 +62,12 @@ class BodyStructure
                 continue;
             }
 
+            if (is_scalar($item) && strtolower($item) == '*') {
+            	$subType = '*';
+                $section = 'parameters';
+                continue;
+            }
+
             if ($section == 'parts') {
                 $parts[] = self::extractPart($item);
             } elseif (is_array($item)) {
