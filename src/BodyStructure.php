@@ -355,7 +355,7 @@ class BodyStructure
         ];
 
         foreach ($item[8] as $itemPart) {
-            if (isset($itemPart[2]) && strtolower($itemPart[2]) == 'alternative') {
+            if (isset($itemPart[2]) && is_scalar($itemPart[2]) && strtolower($itemPart[2]) == 'alternative') {
                 $message->parts[] = self::extractPartAsAlternative($itemPart);
                 continue;
             }
@@ -387,6 +387,7 @@ class BodyStructure
             'ifdescription' => 0,
             'description' => null,
             'ifid' => 0,
+            'id' => null,
             'lines' => intval($itemPart[7]),
             'bytes' => intval($itemPart[6]),
             'ifdisposition' => 0,
@@ -409,6 +410,13 @@ class BodyStructure
 
         if ($type == 3) {
             unset($part->lines);
+        }
+
+        if ($itemPart[3]) {
+            $part->ifid = 1;
+            $part->id = $itemPart[3];
+        } else {
+            unset($part->id);
         }
 
         $dispositionParametersIndex = 9;
