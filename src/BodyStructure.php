@@ -41,10 +41,6 @@ class BodyStructure
             return self::extractPart($structure);
         }
         
-        if (isset($structure[1]) && is_scalar($structure[1]) && strtolower($structure[1]) == 'json') {
-            return self::textStructure($structure);
-        }
-        
         $section = 'parts';
         $subType = 'ALTERNATIVE';
 
@@ -606,12 +602,8 @@ class BodyStructure
     {
         $parameters = self::extractParameters($structure[2], []);
 
-        $type = 0;
-        if (is_scalar($structure[0]) && strtolower($structure[0]) == 'application')
-            $type = 3;
-
         $part = (object) [
-            'type' => $type,
+            'type' => 0,
             'encoding' => self::getEncoding($structure, 5),
             'ifsubtype' => 1,
             'subtype' => strtoupper($structure[1]),
@@ -624,10 +616,6 @@ class BodyStructure
             'ifparameters' => count($parameters),
             'parameters' => count($parameters) ? $parameters : (object) [],
         ];
-        
-        if ( $type == 3 ) {
-        	unset($part->lines);
-        }
         
         return $part;
     }
