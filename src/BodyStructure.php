@@ -36,6 +36,10 @@ class BodyStructure
         if (isset($structure[0]) && is_scalar($structure[0]) && strtolower($structure[0]) == 'text') {
             return self::textStructure($structure);
         }
+
+        if (isset($structure[0]) && is_scalar($structure[0]) && strtolower($structure[0]) == 'application') {
+            return self::extractPart($structure);
+        }
         
         if (isset($structure[1]) && is_scalar($structure[1]) && strtolower($structure[1]) == 'json') {
             return self::textStructure($structure);
@@ -58,6 +62,12 @@ class BodyStructure
 
             if (is_scalar($item) && strtolower($item) == 'related') {
                 $subType = 'RELATED';
+                $section = 'parameters';
+                continue;
+            }
+            
+            if (is_scalar($item) && strtolower($item) == 'signed') {
+                $subType = 'SIGNED';
                 $section = 'parameters';
                 continue;
             }
