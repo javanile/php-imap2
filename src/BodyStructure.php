@@ -98,7 +98,7 @@ class BodyStructure
 
             /* for each body part */
             while( is_array($structure[$index]) )
-                $parts[] = self::fromBodyStructure( $structure[$index++] );
+                $parts[] = self::extractBodyStructure( $structure[$index++] );
 
             /* parse subtype */
             if ( $body->subtype = strtoupper($structure[$index++]) )
@@ -190,7 +190,7 @@ class BodyStructure
                     /* make certain server sends an envelope */
                     ++$index;
 
-                    $body->parts[] = self::fromBodyStructure( $structure[$index++] );
+                    $body->parts[] = self::extractBodyStructure( $structure[$index++] );
 
                     /* drop into text case */
 
