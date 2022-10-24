@@ -22,11 +22,14 @@
   ],
   "require": {
     "php": ">=7.0",
-    "ext-mbstring": "*",
     "zbateson/mail-mime-parser": "^2.2"
   },
   "require-dev": {
     "phpunit/phpunit": "^6.5"
+  },
+  "suggest": {
+    "ext-mbstring": "For best support/performance",
+    "ext-iconv": "For best support/performance"
   },
   "autoload": {
     "psr-4": {
