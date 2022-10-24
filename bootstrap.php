@@ -727,7 +727,7 @@ if (!function_exists('imap2_search')) {
     function imap2_search($imap, $criteria, $flags = SE_FREE, $charset = "")
     {
         if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
-            return imap_search($imap, $criteria, $flags, $charset)
+            return imap_search($imap, $criteria, $flags, $charset);
         }
         
         return Message::search($imap, $criteria, $flags, $charset);
