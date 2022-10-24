@@ -87,22 +87,40 @@ class Message
         }
     }
 
-    public static function headers($imap, $messageNum, $fromLength = 0, $subjectLength = 0, $defaultHost = null)
+    public static function headers($imap)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-            #$client->setDebug(true);
-
-            $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
-
-            if ($section) {
-                return $messages[$messageNum]->bodypart[$section];
-            }
-
-            return $messages[$messageNum]->body;
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_headerinfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0);
+        $client = $imap->getClient();
+        $client->setDebug(true);
+
+        $sequence = '1:';
+        $messages = $client->fetch($imap->getMailboxName(), $sequence, false, [
+            'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE REFERENCES)]',
+            'UID',
+            'FLAGS',
+            'INTERNALDATE',
+            'RFC822.SIZE',
+            #'ENVELOPE',
+            'RFC822.HEADER'
+        ]);
+
+        var_dump($messages);
+        die();
+
+        if (empty($messages)) {
+            return false;
+        }
+
+        $headers = [];
+        foreach ($messages as $message) {
+            $header = ' '.$message->id.' ';
+            $headers[] = $header;
+        }
+
+        return $headers;
     }
 
     public static function body($imap, $messageNum, $flags = 0)

@@ -746,6 +746,10 @@ if (!function_exists('imap_headers')) {
 if (!function_exists('imap2_headers')) {
     function imap2_headers($imap)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_headers($imap);
+        }
+
         return Message::headers($imap);
     }
 }

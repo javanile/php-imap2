@@ -101,6 +101,9 @@ test-fetch-structure:
 test-header-info:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testHeaderInfo
 
+test-headers:
+	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testHeaders
+
 test-num-msg:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testNumMsg
 

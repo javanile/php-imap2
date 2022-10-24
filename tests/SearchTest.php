@@ -6,7 +6,7 @@ use Javanile\Imap2\Connection;
 use Javanile\Imap2\Functions;
 use PHPUnit\Framework\Error\Warning;
 
-class CompatibilityTest extends ImapTestCase
+class SearchTest extends ImapTestCase
 {
     public function testSearch()
     {
