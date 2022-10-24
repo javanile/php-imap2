@@ -1074,6 +1074,10 @@ if (!function_exists('imap_undelete')) {
 if (!function_exists('imap2_undelete')) {
     function imap2_undelete($imap, $messageNums, $flags = 0)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            return imap_undelete($imap, $messageNums, $flags);
+        }
+
         return Message::undelete($imap, $messageNums, $flags);
     }
 }

@@ -130,7 +130,8 @@ class Message
         $client = $imap->getClient();
         #$client->setDebug(true);
 
-        $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+        $isUid = boolval($flags & FT_UID);
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY['.$section.']']);
 
         if (empty($messages)) {
             trigger_error(Errors::badMessageNumber(debug_backtrace(), 1), E_USER_WARNING);
