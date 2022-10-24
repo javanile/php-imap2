@@ -6,7 +6,7 @@ nav_order: 3
 
 ## Compatibility
 
-This page is intended to track the compatibility of all standard PHP [IMAP functions](https://www.php.net/manual/en/ref.imap.php) the ones provided by [PHP-IMAP2](https://php-imap2.javanile.org/functions.html)
+This page is intended to track the compatibility of all standard PHP [IMAP functions](https://www.php.net/manual/en/ref.imap.php) over the ones provided by [PHP-IMAP2](https://php-imap2.javanile.org/functions.html)
 For each function is reported a list of issues born around problems on real use cases. Please add new issue if your have some concerns with specific function.
 All below checked functions are tested with complex tests and will be considered an exact equivalent of the original one. 
 
