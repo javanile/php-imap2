@@ -41,6 +41,12 @@ Scope: https://mail.google.com/
 - Gmail Demo - <https://phpsandbox.io/e/x/zwauf?layout=EditorPreview&defaultPath=%2F&theme=dark&showExplorer=no&openedFiles=>
 - Outlook Demo - **COMING SOON**
 
+
+## Contributors
+
+- [dicode-nl](https://github.com/dicode-nl)
+- [glensc](https://github.com/glensc)
+
 ## Other links 
 
 - <https://php.libhunt.com/php-imap2-alternatives>
