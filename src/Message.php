@@ -96,9 +96,14 @@ class Message
         $client = $imap->getClient();
         $client->setDebug(true);
 
-        $sequence = '1:';
+        $status = $client->status($imap->getMailboxName(), ['MESSAGES']);
+        if (empty($status['MESSAGES'])) {
+            return [];
+        }
+
+        $sequence = '1:'.intval($status['MESSAGES']);
         $messages = $client->fetch($imap->getMailboxName(), $sequence, false, [
-            'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE REFERENCES)]',
+            'BODY.PEEK[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE REFERENCES)]',
             'UID',
             'FLAGS',
             'INTERNALDATE',
@@ -107,16 +112,31 @@ class Message
             'RFC822.HEADER'
         ]);
 
-        var_dump($messages);
-        die();
-
         if (empty($messages)) {
-            return false;
+            return [];
         }
 
         $headers = [];
         foreach ($messages as $message) {
-            $header = ' '.$message->id.' ';
+            #var_dump($message);
+            $from = ' ';
+            if ($message->from != 'no_host') {
+                $from = imap_rfc822_parse_adrlist($message->from, 'no_host');
+                $from = isset($from[0]->personal) ? $from[0]->personal : $message->from;
+            }
+
+            $date = explode(' ', $message->internaldate);
+            $subject = empty($message->subject) ? ' ' : $message->subject;
+            $unseen = ' ';
+            $flagged = empty($message->flags['FLAGGED']) ? ' ' : 'F';
+            $answered = empty($message->flags['ANSWERED']) ? ' ' : 'A';
+            $draft = empty($message->flags['DRAFT']) ? ' ' : 'D';
+            $deleted = empty($message->flags['DELETED']) ? ' ' : 'X';
+
+            $header = ' ' . $unseen . $flagged . $answered . $draft . $deleted . '   '
+                    . $message->id . ')' . $date[0] .' ' . str_pad($from, 20, ' ') . ' '
+                    . substr($subject, 0, 25) . ' (' . $message->size . ' chars)';
+
             $headers[] = $header;
         }
 
