@@ -178,12 +178,17 @@ class Message
         #$client->setDebug(true);
 
         $isUid = boolval($flags & FT_UID);
-        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY['.$section.']']);
+        $isPeek = $flags & FT_PEEK ? '.PEEK' : '';
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY'.$isPeek.'['.$section.']']);
 
         if (empty($messages)) {
             trigger_error(Errors::badMessageNumber(debug_backtrace(), 1), E_USER_WARNING);
 
             return false;
+        }
+
+        if ($isUid) {
+            $messageNum = array_keys($messages)[0];
         }
 
         if ($section) {

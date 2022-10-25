@@ -118,12 +118,15 @@ class CompatibilityTest extends ImapTestCase
         $countMessage = imap_num_msg($imap1);
 
         for ($message = 1; $message <= $countMessage; $message++) {
-            foreach ([null, 1] as $section) {
-                $body1 = imap_fetchbody($imap1, $message, $section);
-                #file_put_contents('t1.txt', $body1);
-                $body2 = imap2_fetchbody($imap2, $message, $section);
-                #file_put_contents('t2.txt', $body2);
-                $this->assertEquals($body1, $body2);
+            foreach ([0, FT_UID, FT_PEEK, FT_UID | FT_PEEK] as $flags) {
+                $messageNum = $flags & FT_UID ? imap_uid($imap1, $message) : $message;
+                foreach ([null, 1] as $section) {
+                    $body1 = imap_fetchbody($imap1, $messageNum, $section, $flags);
+                    #file_put_contents('t1.txt', $body1);
+                    $body2 = imap2_fetchbody($imap2, $messageNum, $section, $flags);
+                    #file_put_contents('t2.txt', $body2);
+                    $this->assertEquals($body1, $body2);
+                }
             }
         }
         
