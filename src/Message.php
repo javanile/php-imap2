@@ -30,7 +30,7 @@ class Message
         }
 
         $client = $imap->getClient();
-        $client->setDebug(true);
+        #$client->setDebug(true);
 
         $result = $client->search($imap->getMailboxName(), $criteria, $flags & SE_UID);
 
@@ -228,7 +228,7 @@ class Message
     {
         if (is_a($imap, Connection::class)) {
             $client = $imap->getClient();
-           # $client->setDebug(true);
+            #$client->setDebug(true);
 
             $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
 
