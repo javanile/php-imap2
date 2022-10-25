@@ -115,11 +115,18 @@ class CompatibilityTest extends ImapTestCase
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
+        /* * /
+        // Test single message
+        $body2 = imap2_fetchbody($imap2, 2870, null, FT_UID | FT_PEEK);
+        var_dump($body2);
+        die();
+        /* */
+
         $listFlags = [
             0,
             FT_UID,
-            FT_PEEK,
-            FT_UID | FT_PEEK
+            #FT_PEEK,
+            #FT_UID | FT_PEEK
         ];
 
         $countMessage = imap_num_msg($imap1);
@@ -134,6 +141,7 @@ class CompatibilityTest extends ImapTestCase
                     #file_put_contents('t2.txt', $body2);
                     #echo "LAST>>>";
                     #var_dump($message, $messageNum, $section, $flags);
+                    $this->assertNotEmpty($body2, 'Problem with message: '.$messageNum);
                     $this->assertEquals($body1, $body2);
                 }
             }
