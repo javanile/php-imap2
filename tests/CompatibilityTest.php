@@ -115,16 +115,25 @@ class CompatibilityTest extends ImapTestCase
         $imap1 = imap_open($this->mailbox, $this->username, $this->password);
         $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
 
+        $listFlags = [
+            0,
+            FT_UID,
+            FT_PEEK,
+            FT_UID | FT_PEEK
+        ];
+
         $countMessage = imap_num_msg($imap1);
 
         for ($message = 1; $message <= $countMessage; $message++) {
-            foreach ([0, FT_UID, FT_PEEK, FT_UID | FT_PEEK] as $flags) {
+            foreach ($listFlags as $flags) {
                 $messageNum = $flags & FT_UID ? imap_uid($imap1, $message) : $message;
                 foreach ([null, 1] as $section) {
                     $body1 = imap_fetchbody($imap1, $messageNum, $section, $flags);
-                    #file_put_contents('t1.txt', $body1);
+                    file_put_contents('t1.txt', $body1);
                     $body2 = imap2_fetchbody($imap2, $messageNum, $section, $flags);
-                    #file_put_contents('t2.txt', $body2);
+                    file_put_contents('t2.txt', $body2);
+                    echo "LAST>>>";
+                    var_dump($message, $messageNum, $section, $flags);
                     $this->assertEquals($body1, $body2);
                 }
             }

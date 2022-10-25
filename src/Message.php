@@ -187,6 +187,8 @@ class Message
             return false;
         }
 
+        var_dump($messages);
+
         if ($isUid) {
             $messageNum = array_keys($messages)[0];
         }
