@@ -129,11 +129,11 @@ class CompatibilityTest extends ImapTestCase
                 $messageNum = $flags & FT_UID ? imap_uid($imap1, $message) : $message;
                 foreach ([null, 1] as $section) {
                     $body1 = imap_fetchbody($imap1, $messageNum, $section, $flags);
-                    file_put_contents('t1.txt', $body1);
+                    #file_put_contents('t1.txt', $body1);
                     $body2 = imap2_fetchbody($imap2, $messageNum, $section, $flags);
-                    file_put_contents('t2.txt', $body2);
-                    echo "LAST>>>";
-                    var_dump($message, $messageNum, $section, $flags);
+                    #file_put_contents('t2.txt', $body2);
+                    #echo "LAST>>>";
+                    #var_dump($message, $messageNum, $section, $flags);
                     $this->assertEquals($body1, $body2);
                 }
             }
