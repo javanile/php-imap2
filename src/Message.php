@@ -94,7 +94,7 @@ class Message
         }
 
         $client = $imap->getClient();
-        $client->setDebug(true);
+        #$client->setDebug(true);
 
         $status = $client->status($imap->getMailboxName(), ['MESSAGES']);
         if (empty($status['MESSAGES'])) {
@@ -104,7 +104,7 @@ class Message
         $sequence = '1:'.intval($status['MESSAGES']);
         $messages = $client->fetch($imap->getMailboxName(), $sequence, false, [
             'BODY.PEEK[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE REFERENCES)]',
-            'UID',
+            #'UID',
             'FLAGS',
             'INTERNALDATE',
             'RFC822.SIZE',
@@ -118,7 +118,6 @@ class Message
 
         $headers = [];
         foreach ($messages as $message) {
-            #var_dump($message);
             $from = ' ';
             if ($message->from != 'no_host') {
                 $from = imap_rfc822_parse_adrlist($message->from, 'no_host');
@@ -127,14 +126,14 @@ class Message
 
             $date = explode(' ', $message->internaldate);
             $subject = empty($message->subject) ? ' ' : $message->subject;
-            $unseen = ' ';
+            $unseen = empty($message->flags['SEEN']) ? 'U' : ' ';
             $flagged = empty($message->flags['FLAGGED']) ? ' ' : 'F';
             $answered = empty($message->flags['ANSWERED']) ? ' ' : 'A';
             $draft = empty($message->flags['DRAFT']) ? ' ' : 'D';
             $deleted = empty($message->flags['DELETED']) ? ' ' : 'X';
 
-            $header = ' ' . $unseen . $flagged . $answered . $draft . $deleted . '   '
-                    . $message->id . ')' . $date[0] .' ' . str_pad($from, 20, ' ') . ' '
+            $header = ' ' . $unseen . $flagged . $answered . $draft . $deleted . ' '
+                    . str_pad($message->id, 3, ' ', STR_PAD_LEFT) . ')' . $date[0] .' ' . str_pad($from, 20, ' ') . ' '
                     . substr($subject, 0, 25) . ' (' . $message->size . ' chars)';
 
             $headers[] = $header;
