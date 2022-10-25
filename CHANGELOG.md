@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [v0.1.10](https://github.com/javanile/php-imap2/compare/0.1.10...0.1.9) - 2022-10-25
+
+### Changed
+
+- Updated imap2_fetchstructure message with support over 2000 emails ([#10](https://github.com/javanile/php-imap2/issues/10))
+
+### Fixed
+
+- Fixed imap2_headers missing un-flagged emails ([#17](https://github.com/javanile/php-imap2/issues/17))
+
+
 
 ## [v0.1.9](https://github.com/javanile/php-imap2/compare/0.1.9...0.1.8) - 2022-09-15
 
