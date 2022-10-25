@@ -13,27 +13,37 @@ namespace Javanile\Imap2;
 
 class Message
 {
+    /**
+     * Returns an array of messages matching the given search criteria.
+     *
+     * @param $imap
+     * @param $criteria
+     * @param $flags
+     * @param $charset
+     *
+     * @return array|false|mixed
+     */
     public static function search($imap, $criteria, $flags = SE_FREE, $charset = "")
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-            #$client->setDebug(true);
-
-            $result = $client->search($imap->getMailboxName(), $criteria, $flags & SE_UID);
-
-            if (empty($result->count())) {
-                return false;
-            }
-
-            $messages = $result->get();
-            foreach ($messages as &$message) {
-                $message = is_numeric($message) ? intval($message) : $message;
-            }
-
-            return $messages;
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_search($imap, $criteria, $flags, $charset);
+        $client = $imap->getClient();
+        $client->setDebug(true);
+
+        $result = $client->search($imap->getMailboxName(), $criteria, $flags & SE_UID);
+
+        if (empty($result->count())) {
+            return false;
+        }
+
+        $messages = $result->get();
+        foreach ($messages as &$message) {
+            $message = is_numeric($message) ? intval($message) : $message;
+        }
+
+        return $messages;
     }
 
     public static function sort($imap, $criteria, $reverse, $flags = 0, $searchCriteria = null, $charset = null)
