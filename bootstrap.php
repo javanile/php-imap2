@@ -810,6 +810,14 @@ if (!function_exists('imap_sort')) {
 if (!function_exists('imap2_sort')) {
     function imap2_sort($imap, $criteria, $reverse, $flags = 0, $searchCriteria = null, $charset = null)
     {
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            if (empty($charset)) {
+                return imap_sort($imap, $criteria, $reverse, $flags, $searchCriteria);
+            } else {
+                return imap_sort($imap, $criteria, $reverse, $flags, $searchCriteria, $charset);
+            }
+        }
+        
         return Message::sort($imap, $criteria, $reverse, $flags, $searchCriteria, $charset);
     }
 }
