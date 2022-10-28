@@ -9,9 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [v0.1.9](https://github.com/javanile/php-imap2/compare/0.1.9...0.1.8) 
 
-- **[INFO]**  Release date 2022-09-15
-- **[CHANGED]** Updated imap2_last_error message ([#3](https://github.com/javanile/php-imap2/issues/3))
-- **[FIXED]** Fixed imap2_fetchmime unexpected behaviour ([#10](https://github.com/javanile/php-imap2/issues/10))
+- **INFO** - Release date 2022-09-15
+- **CHANGED** - Updated imap2_last_error message ([#3](https://github.com/javanile/php-imap2/issues/3))
+- **FIXED** - Fixed imap2_fetchmime unexpected behaviour ([#10](https://github.com/javanile/php-imap2/issues/10))
 
 ## [v0.1.8](https://github.com/javanile/php-imap2/compare/0.1.8...0.1.7) - 2022-09-05
 
