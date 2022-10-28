@@ -8,14 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [v0.1.10](https://github.com/javanile/php-imap2/compare/0.1.9...0.1.10)
 
 - **INFO** - Release date 2022-10-25
-- **CHANGED** - Updated imap2_fetchstructure message with support over 2000 emails ([#10](https://github.com/javanile/php-imap2/issues/10))
-- **FIXED** - Fixed imap2_headers missing un-flagged emails ([#17](https://github.com/javanile/php-imap2/issues/17))
+- **CHANGED** - Updated `imap2_fetchstructure` message with support over 2000 emails ([#10](https://github.com/javanile/php-imap2/issues/10))
+- **FIXED** - Fixed `imap2_headers` missing un-flagged emails ([#17](https://github.com/javanile/php-imap2/issues/17))
 
 ## [v0.1.9](https://github.com/javanile/php-imap2/compare/0.1.8...0.1.9) 
 
 - **INFO** - Release date 2022-09-15
-- **CHANGED** - Updated imap2_last_error message ([#3](https://github.com/javanile/php-imap2/issues/3))
-- **FIXED** - Fixed imap2_fetchmime unexpected behaviour ([#10](https://github.com/javanile/php-imap2/issues/10))
+- **CHANGED** - Updated `imap2_last_error` message ([#3](https://github.com/javanile/php-imap2/issues/3))
+- **FIXED** - Fixed `imap2_fetchmime` unexpected behaviour ([#10](https://github.com/javanile/php-imap2/issues/10))
 
 ## [v0.1.8](https://github.com/javanile/php-imap2/compare/0.1.7...0.1.8)
 
@@ -27,4 +27,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - **INFO** - Release date 2022-01-01
 - **CHANGED** - Documentation amends ([#3](https://github.com/javanile/php-imap2/issues/3))
-- **FIXED** - Generic imap2_open bugs ([#3](https://github.com/javanile/php-imap2/issues/3)) 
+- **FIXED** - Generic `imap2_open` bugs ([#3](https://github.com/javanile/php-imap2/issues/3)) 
