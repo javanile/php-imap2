@@ -131,6 +131,9 @@ test-body-struct:
 test-search:
 	@docker-compose run --rm phpunit tests --filter SearchTest
 
+test-sort-search:
+	@docker-compose run --rm phpunit tests --filter SearchTest::testSortSearch
+
 test-timeout:
 	@docker-compose run --rm phpunit tests --filter XoauthTest::testTimeout
 

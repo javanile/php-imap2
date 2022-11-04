@@ -48,25 +48,30 @@ class Message
 
     public static function sort($imap, $criteria, $reverse, $flags = 0, $searchCriteria = null, $charset = null)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-            #$client->setDebug(true);
-
-            $result = $client->search($imap->getMailboxName(), $criteria, $flags & SE_UID);
-
-            if (empty($result->count())) {
-                return false;
-            }
-
-            $messages = $result->get();
-            foreach ($messages as &$message) {
-                $message = is_numeric($message) ? intval($message) : $message;
-            }
-
-            return $messages;
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_sort($imap, $criteria, $reverse, $flags, $searchCriteria, $charset);
+        $client = $imap->getClient();
+        #$client->setDebug(true);
+
+        $returnUid = $flags & SE_UID;
+        $result = $client->search($imap->getMailboxName(), $searchCriteria, $returnUid);
+
+        if (empty($result->count())) {
+            return false;
+        }
+
+        $messages = $result->get();
+        foreach ($messages as &$message) {
+            $message = is_numeric($message) ? intval($message) : $message;
+        }
+
+        #$sortFunction = Sort::getFunction($imap, $criteria);
+
+        #usort($messages, $sortFunction);
+
+        return $reverse ? array_reverse($messages) : $messages;
     }
 
     public static function headerInfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0, $defaultHost = null)

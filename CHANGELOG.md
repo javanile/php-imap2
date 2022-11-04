@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [v0.1.11](https://github.com/javanile/php-imap2/compare/0.1.10...0.1.11)
 
-- **INFO** - Release date 2022-10-25
-- **CHANGED** - Updated `imap2_fetchstructure` message with support over 2000 emails ([#10](https://github.com/javanile/php-imap2/issues/10))
+- **INFO** - Release date 2022-11-05
+- **CHANGED** - Added support for search on `imap2_sort` ([#25](https://github.com/javanile/php-imap2/issues/25))
 - **FIXED** - Undefined variables on `imap2_bodystruct` ([#5](https://github.com/javanile/php-imap2/issues/5))
 
 
