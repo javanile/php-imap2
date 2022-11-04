@@ -55,7 +55,7 @@ class Message
         $client = $imap->getClient();
         #$client->setDebug(true);
 
-        $returnUid = $flags & SE_UID;
+        $returnUid = boolval($flags & SE_UID);
         $result = $client->search($imap->getMailboxName(), $searchCriteria, $returnUid);
 
         if (empty($result->count())) {
@@ -321,7 +321,7 @@ class Message
 
         $isUid = boolval($flags & FT_UID);
 
-        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY[HEADER]']);
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY.PEEK[HEADER]']);
 
         if (empty($messages)) {
             return false;
@@ -341,8 +341,9 @@ class Message
         $client = $imap->getClient();
         #$client->setDebug(true);
 
-        $messages = $client->fetch($imap->getMailboxName(), $sequence, false, [
-            'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE REFERENCES)]',
+        $isUid = boolval($flags & FT_UID);
+        $messages = $client->fetch($imap->getMailboxName(), $sequence, $isUid, [
+            'BODY.PEEK[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE REFERENCES)]',
             'UID',
             'FLAGS',
             'INTERNALDATE',

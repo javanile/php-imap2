@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **INFO** - Release date 2022-11-05
 - **CHANGED** - Added support for search on `imap2_sort` ([#25](https://github.com/javanile/php-imap2/issues/25))
 - **FIXED** - Undefined variables on `imap2_bodystruct` ([#5](https://github.com/javanile/php-imap2/issues/5))
+- **FIXED** - Missing body peek on `imap2_fetch_overview` ([#24](https://github.com/javanile/php-imap2/issues/24))
+- **FIXED** - Missing body peek on `imap2_fetchheader` ([#24](https://github.com/javanile/php-imap2/issues/5))
 
 
 
