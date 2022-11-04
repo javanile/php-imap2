@@ -285,9 +285,7 @@ class Message
         }
 
         $client = $imap->getClient();
-        #$client->setDebug(true);
 
-        //$messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
         $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODYSTRUCTURE']);
 
         if (empty($messages)) {
@@ -296,7 +294,7 @@ class Message
 
         $bodyStructure = BodyStructure::fromMessage($messages[$messageNum]);
 
-        file_put_contents('t3.json', json_encode($bodyStructure, JSON_PRETTY_PRINT));
+        #file_put_contents('t3.json', json_encode($bodyStructure, JSON_PRETTY_PRINT));
 
         return BodyStructure::searchSection($bodyStructure, $section);
     }
