@@ -122,8 +122,11 @@ test-get-mailboxes:
 test-delete-mailbox:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testDeleteMailbox
 
-test-body-structure:
+test-fetch-structure-2:
 	@docker-compose run --rm phpunit tests --filter BodyStructureTest::testFetchStructure
+
+test-body-struct:
+	@docker-compose run --rm phpunit tests --filter BodyStructureTest::testBodyStruct
 
 test-search:
 	@docker-compose run --rm phpunit tests --filter SearchTest

@@ -269,7 +269,16 @@ class Message
         }
     }
 
-    public static function bodyStruct($imap, $messageNum, $flags = 0)
+    /**
+     * Read the structure of a specified body section of a specific message.
+     *
+     * @param $imap
+     * @param $messageNum
+     * @param $section
+     *
+     * @return mixed
+     */
+    public static function bodyStruct($imap, $messageNum, $section)
     {
         if (!is_a($imap, Connection::class)) {
             return Errors::invalidImapConnection(debug_backtrace(), 1, false);
@@ -278,13 +287,18 @@ class Message
         $client = $imap->getClient();
         #$client->setDebug(true);
 
-        $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+        //$messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODYSTRUCTURE']);
 
-        if ($section) {
-            return $messages[$messageNum]->bodypart[$section];
+        if (empty($messages)) {
+            return false;
         }
 
-        return $messages[$messageNum]->body;
+        $bodyStructure = BodyStructure::fromMessage($messages[$messageNum]);
+
+        file_put_contents('t3.json', json_encode($bodyStructure, JSON_PRETTY_PRINT));
+
+        return BodyStructure::searchSection($bodyStructure, $section);
     }
 
     public static function fetchHeader($imap, $messageNum, $flags = 0)
