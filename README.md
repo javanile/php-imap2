@@ -46,6 +46,7 @@ Scope: https://mail.google.com/
 
 - [dicode-nl](https://github.com/dicode-nl)
 - [glensc](https://github.com/glensc)
+- [bago](https://github.com/bago)
 
 ## Other links 
 
