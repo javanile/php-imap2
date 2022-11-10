@@ -48,8 +48,8 @@
   "minimum-stability": "dev",
   "extra": {
     "thanks": {
-      "name": "Roundcube",
-      "url": "https://github.com/roundcube"
+      "name": "PHP",
+      "url": "https://github.com/php/php-src"
     }
   },
   "config": {
