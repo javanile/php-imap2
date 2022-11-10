@@ -11,6 +11,9 @@ install:
 update:
 	@docker-compose run --rm composer update
 
+require:
+	@docker-compose run --rm composer require webklex/php-imap
+
 dump-autoload:
 	@docker-compose run --rm composer dump-autoload
 
@@ -163,6 +166,9 @@ test-cleaning:
 
 test-retrofit:
 	@docker-compose run --rm phpunit tests --filter RetrofitTest
+
+test-imap-client:
+	@docker-compose run --rm phpunit tests --filter ImapClientTest
 
 test-errors:
 	@docker-compose run --rm phpunit tests --filter ErrorsTest
