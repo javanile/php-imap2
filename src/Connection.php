@@ -237,7 +237,7 @@ class Connection
      */
     public function selectMailbox()
     {
-        $success = $this->client->select($this->currentMailbox);
+        $success = $this->client->connection->selectFolder($this->currentMailbox);
 
         if (empty($success)) {
             $this->rewriteMailbox('<no_mailbox>');

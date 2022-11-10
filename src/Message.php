@@ -409,8 +409,10 @@ class Message
         }
 
         $client = $imap->getClient();
-
-        $messages = $client->fetch($imap->getMailboxName(), $messageNums, false, ['UID']);
+        $messages = $client->connection->fetch(['UID'], $messageNums, null, false);
+        //var_dump($messages);
+        //die();
+        //$messages = $client->fetch($imap->getMailboxName(), $messageNums, false, ['UID']);
 
         $uid = [];
         foreach ($messages as $message) {
