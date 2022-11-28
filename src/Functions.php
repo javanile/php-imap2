@@ -195,4 +195,22 @@ class Functions
     {
         return is_resource($imap) && get_resource_type($imap) == 'imap';
     }
+
+    public static function keyBy(string $name, array $list): array
+    {
+        $keyBy = [];
+        foreach ($list as $item) {
+            if (!isset($item->$name)) {
+                trigger_error('keyBy: key "' . $name . '" not found!', E_USER_WARNING);
+                continue;
+            }
+            if (isset($keyBy[$item->$name])) {
+                trigger_error('keyBy: duplicate key "' . $name . '" = "' . $item->$name . '"', E_USER_WARNING);
+                continue;
+            }
+            $keyBy[$item->$name] = $item;
+        }
+
+        return $keyBy;
+    }
 }
