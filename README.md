@@ -38,7 +38,7 @@ Scope: https://mail.google.com/
 
 ## Sandbox
 
-- Gmail Demo - <https://phpsandbox.io/e/x/zwauf?layout=EditorPreview&defaultPath=%2F&theme=dark&showExplorer=no&openedFiles=>
+- [Gmail Demo](https://replit.com/@frabik/PHP-IMAP2-Google-Demo?v=1#main.php)
 - Outlook Demo - **COMING SOON**
 
 
