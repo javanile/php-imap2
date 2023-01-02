@@ -87,10 +87,10 @@ class Polyfill
         {
             $ret .= '@' . $hostname;
         }
-        if (!empty($personal))
-        {
-            $ret .= ' <' . $personal . '>';
-        }
+//        if (!empty($personal))
+//        {
+//            $ret .= ' <' . $personal . '>';
+//        }
         return $ret;
     }
 
