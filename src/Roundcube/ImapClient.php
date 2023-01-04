@@ -2482,7 +2482,7 @@ class ImapClient
 
             if (preg_match('/^\* ([0-9]+) FETCH/', $line, $m)) {
 
-                if ($is_uid && preg_match('/UID ([0-9]+) FLAGS/', $line, $m2)) {
+                if ($is_uid && preg_match('/UID ([0-9]+) /', $line, $m2)) {
                     $id = intval($m2[1]);
                 } else {
                     $id = intval($m[1]);
