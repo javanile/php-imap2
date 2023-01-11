@@ -13,7 +13,7 @@
     "exchange"
   ],
   "homepage": "https://github.com/javanile/php-imap2",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "authors": [
     {
       "name": "Francesco Bianco",
