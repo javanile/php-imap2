@@ -193,6 +193,6 @@ class Functions
 
     public static function isRetrofitResource($imap)
     {
-        return (is_resource($imap) && get_resource_type($imap) == 'imap') || $imap instanceof \IMAP\Connection;
+        return (class_exists('\IMAP\Connection') && $imap instanceof \IMAP\Connection) || (is_resource($imap) && get_resource_type($imap) == 'imap');
     }
 }
