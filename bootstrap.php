@@ -733,7 +733,7 @@ if (!function_exists('imap2_search')) {
                 return imap_search($imap, $criteria, $flags, $charset);
             }
         }
-        
+
         return Message::search($imap, $criteria, $flags, $charset);
     }
 }
@@ -817,7 +817,7 @@ if (!function_exists('imap2_sort')) {
                 return imap_sort($imap, $criteria, $reverse, $flags, $searchCriteria, $charset);
             }
         }
-        
+
         return Message::sort($imap, $criteria, $reverse, $flags, $searchCriteria, $charset);
     }
 }
@@ -855,7 +855,11 @@ if (!function_exists('imap2_headerinfo')) {
     function imap2_headerinfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0, $defaultHost = null)
     {
         if (IMAP2_RETROFIT_MODE && Functions::isRetrofitResource($imap)) {
-            return imap_headerinfo($imap, $messageNum, $fromLength, $subjectLength, $defaultHost);
+            if(PHP_MAJOR_VERSION < 8) {
+                return imap_headerinfo($imap, $messageNum, $fromLength, $subjectLength, $defaultHost);
+            }
+
+            return imap_headerinfo($imap, $messageNum, $fromLength, $subjectLength);
         }
 
         return Message::headerInfo($imap, $messageNum, $fromLength, $subjectLength, $defaultHost);
