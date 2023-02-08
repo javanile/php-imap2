@@ -153,7 +153,7 @@ class Functions
 
     public static function isValidImap1Connection($imap)
     {
-        return is_resource($imap) && get_resource_type($imap) == 'imap';
+        return self::isRetrofitResource($imap);
     }
 
     public static function isValidImap2Connection($imap)
@@ -193,6 +193,6 @@ class Functions
 
     public static function isRetrofitResource($imap)
     {
-        return is_resource($imap) && get_resource_type($imap) == 'imap';
+        return (is_resource($imap) && get_resource_type($imap) == 'imap') || $imap instanceof \IMAP\Connection;
     }
 }
