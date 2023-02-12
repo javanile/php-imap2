@@ -132,7 +132,7 @@ class Connection
         $success = $client->connect($this->host, $this->user, $this->password, [
             'port' => $this->port,
             'ssl_mode' => $this->sslMode,
-            'auth_type' => $this->flags & OP_XOAUTH2 ? 'XOAUTH2' : 'CHECK',
+            'auth_type' => $this->flags & OP_XOAUTH2 ? 'XOAUTH2' : 'IMAP',
             'timeout' => -1,
             'force_caps' => false,
         ]);
