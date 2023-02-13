@@ -274,7 +274,7 @@ class Message
         }
     }
 
-    public static function bodyStruct($imap, $messageNum, $flags = 0)
+    public static function bodyStruct($imap, $messageNum, $section)
     {
         if (!is_a($imap, Connection::class)) {
             return Errors::invalidImapConnection(debug_backtrace(), 1, false);
@@ -329,7 +329,8 @@ class Message
         $client = $imap->getClient();
         #$client->setDebug(true);
 
-        $messages = $client->fetch($imap->getMailboxName(), $sequence, false, [
+        $isUid = boolval($flags & FT_UID);
+        $messages = $client->fetch($imap->getMailboxName(), $sequence, $isUid, [
             'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE REFERENCES)]',
             'UID',
             'FLAGS',
