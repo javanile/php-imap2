@@ -1426,7 +1426,8 @@ if (!function_exists('imap2_base64')) {
             return imap_base64($string);
         }
 
-        return Polyfill::base64($string);
+        // please check: https://www.php.net/manual/en/function.imap-base64.php#102766
+        return base64_decode($string, true);
     }
 }
 
@@ -1446,7 +1447,8 @@ if (!function_exists('imap2_binary')) {
             return imap_binary($string);
         }
 
-        return Polyfill::binary($string);
+        // please check: https://www.php.net/manual/en/function.base64-encode.php#111942
+        return base64_encode($string);
     }
 }
 
