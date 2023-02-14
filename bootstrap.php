@@ -1352,6 +1352,12 @@ if (!function_exists('imap2_thread')) {
 if (!function_exists('imap_errors')) {
     function imap_errors()
     {
+        return imap2_errors();
+    }
+}
+if (!function_exists('imap2_errors')) {
+    function imap2_errors()
+    {
         if (IMAP2_RETROFIT_MODE) {
             $errors = imap_errors();
             if ($errors) {
@@ -1359,12 +1365,6 @@ if (!function_exists('imap_errors')) {
             }
         }
         
-        return imap2_errors();
-    }
-}
-if (!function_exists('imap2_errors')) {
-    function imap2_errors()
-    {
         return Errors::errors();
     }
 }
