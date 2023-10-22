@@ -23,8 +23,8 @@
 
 namespace Javanile\Imap2\Roundcube;
 
-use Javanile\Imap2\ErrorException;
-use Javanile\Imap2\rcube;
+use ErrorException;
+use rcube;
 
 /**
  * Character sets conversion functionality

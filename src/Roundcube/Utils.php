@@ -21,12 +21,12 @@
 
 namespace Javanile\Imap2\Roundcube;
 
-use Javanile\Imap2\DateTime;
-use Javanile\Imap2\DateTimeZone;
-use Javanile\Imap2\Exception;
-use Javanile\Imap2\rcube;
-use Javanile\Imap2\rcube_charset;
-use Javanile\Imap2\rcube_string_replacer;
+use DateTime;
+use DateTimeZone;
+use Exception;
+use rcube;
+use rcube_charset;
+use rcube_string_replacer;
 
 /**
  * Utility class providing common functions
