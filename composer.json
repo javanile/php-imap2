@@ -25,7 +25,9 @@
     "zbateson/mail-mime-parser": "^2.2"
   },
   "require-dev": {
-    "phpunit/phpunit": "^6.5"
+    "phpunit/phpunit": "^6.5",
+    "phpstan/phpstan": "^1.10",
+    "pear/auth_sasl": "^1.1"
   },
   "suggest": {
     "ext-mbstring": "For best support/performance",

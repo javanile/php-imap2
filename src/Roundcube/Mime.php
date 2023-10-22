@@ -21,8 +21,8 @@
 
 namespace Javanile\Imap2\Roundcube;
 
-use Javanile\Imap2\rcube;
-use Javanile\Imap2\rcube_mime_decode;
+use rcube;
+use rcube_mime_decode;
 
 /**
  * Class for parsing MIME messages
