@@ -80,14 +80,23 @@ class Polyfill
         ];
     }
 
-    public static function rfc822WriteHeaders($string)
+    public static function rfc822WriteHeaders($mailbox, $hostname, $personal)
     {
-        return $string;
+        $ret = $mailbox;
+        if (!empty($hostname))
+        {
+            $ret .= '@' . $hostname;
+        }
+//        if (!empty($personal))
+//        {
+//            $ret .= ' <' . $personal . '>';
+//        }
+        return $ret;
     }
 
     public static function utf7Decode($string)
     {
-        return mb_convert_decoding($string, "UTF7-IMAP", "UTF-8");
+        return mb_convert_encoding($string, "UTF7-IMAP", "UTF-8");
     }
 
     public static function utf7Encode($string)

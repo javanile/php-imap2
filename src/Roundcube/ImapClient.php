@@ -2481,12 +2481,19 @@ class ImapClient
             // BODY[HEADER.FIELDS ...
 
             if (preg_match('/^\* ([0-9]+) FETCH/', $line, $m)) {
-                $id = intval($m[1]);
+
+                if ($is_uid && preg_match('/UID ([0-9]+)/', $line, $m2)) {
+                    $id = intval($m2[1]);
+                } else {
+                    $id = intval($m[1]);
+                }
+
+                $message_id = intval($m[1]);
 
                 $result[$id]            = new MessageHeader;
-                $result[$id]->id        = $id;
+                $result[$id]->id        = $message_id;
                 $result[$id]->subject   = '';
-                $result[$id]->messageID = 'mid:' . $id;
+                $result[$id]->messageID = 'mid:' . $message_id;
 
                 $headers = null;
                 $lines   = array();
