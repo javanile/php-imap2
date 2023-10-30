@@ -50,7 +50,7 @@ class Functions
             return count(explode(',', $sequence));
         } elseif (strpos($sequence, ':') > 0) {
             $range = explode(':', $sequence);
-            return $range[1] - $range[0];
+            return (int) $range[1] - (int) $range[0];
         } else {
             return 1;
         }
