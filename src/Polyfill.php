@@ -96,7 +96,7 @@ class Polyfill
 
     public static function utf7Decode($string)
     {
-        return mb_convert_encoding($string, "UTF7-IMAP", "UTF-8");
+        return mb_convert_decoding($string, "UTF7-IMAP", "UTF-8");
     }
 
     public static function utf7Encode($string)
