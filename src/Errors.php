@@ -105,6 +105,8 @@ class Errors
 
     public static function appendErrorCanNotOpen($mailbox, $error)
     {
+        $mailbox = (string) $mailbox;
+
         if ($mailbox[0] == '{') {
             $error = preg_replace("/^AUTHENTICATE [A-Z]+\d*:\s/i", '', $error);
             //$error = preg_replace("/^([A-Z]+\d+ )(OK|NO|BAD|BYE|PREAUTH)?\s/i", '', $error);
