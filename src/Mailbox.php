@@ -35,7 +35,7 @@ class Mailbox
             return imap_check($imap);
         }
 
-        trigger_error(Errors::invalidImapConnection(debug_backtrace(), 1), E_USER_WARNING);
+        trigger_error(Errors::invalidImapConnection(debug_backtrace(), 1, false), E_USER_WARNING);
 
         return false;
     }
