@@ -399,7 +399,7 @@ class Message
         return $overview;
     }
 
-    public static function fetchUids($imap, string $sequence, int $flags = 0): array
+    public static function fetchUids($imap, string $sequence, int $flags = 0)
     {
         if (!is_a($imap, Connection::class)) {
             return Errors::invalidImapConnection(debug_backtrace(), 1, false);
@@ -411,15 +411,10 @@ class Message
         $messages = $client->fetch($imap->getMailboxName(), $sequence, $isUid, ['UID']);
 
         if ($sequence != '*' && count($messages) < Functions::expectedNumberOfMessages($sequence)) {
-            return [];
+            return false;
         }
 
-        $uids = [];
-        foreach ($messages as $message) {
-            $uids[] = $message->uid;
-        }
-
-        return $uids;
+        return $messages;
     }
 
     public static function delete($imap, $messageNums, $flags = 0)
