@@ -2,7 +2,7 @@
 
 
 <a href="https://ko-fi.com/francescobianco/goal?g=10">
-<img src="./docs/banner.svg" />
+<img src="https://raw.githubusercontent.com/javanile/php-imap2/refs/heads/main/docs/banner.svg" />
 </a>
 
 
