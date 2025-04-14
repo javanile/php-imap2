@@ -1,0 +1,31 @@
+<svg viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4F5D95;stop-opacity:1" /> <!-- PHP blue color -->
+      <stop offset="100%" style="stop-color:#8892BF;stop-opacity:1" /> <!-- PHP lighter blue shade -->
+    </linearGradient>
+  </defs>
+  
+  <!-- Main banner background -->
+  <rect width="800" height="120" rx="10" ry="10" fill="url(#bg-gradient)" />
+  
+  <!-- Yellow accent border -->
+  <rect width="796" height="116" x="2" y="2" rx="8" ry="8" fill="none" stroke="#FFD700" stroke-width="3" />
+  
+  <!-- Yellow decorative element on the left -->
+  <rect x="15" y="15" width="8" height="90" rx="4" ry="4" fill="#FFD700" opacity="0.8" />
+  
+  <!-- Yellow decorative element on the right -->
+  <rect x="777" y="15" width="8" height="90" rx="4" ry="4" fill="#FFD700" opacity="0.8" />
+  
+  <!-- Main title -->
+  <text x="400" y="45" font-family="Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#ffffff">PHP 8.4 Support for PHP-IMAP2</text>
+  
+  <!-- Subtitle with formatted goal -->
+  <text x="400" y="72" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#ffffff">Help us reach our €5.000 goal to ensure full compatibility</text>
+  
+  <!-- Call to action - moved up further for more bottom padding -->
+  <rect x="280" y="78" width="240" height="28" rx="14" ry="14" fill="#FFD700" />
+  <text x="400" y="98" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#4F5D95">DONATE & CONTRIBUTE NOW</text>
+</svg>
