@@ -27,5 +27,5 @@
   
   <!-- Call to action - moved up further for more bottom padding -->
   <rect x="280" y="78" width="240" height="28" rx="14" ry="14" fill="#FFD700" />
-  <text x="400" y="98" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#4F5D95">DONATE & CONTRIBUTE NOW</text>
+  <text x="400" y="98" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#4F5D95">DONATE NOW</text>
 </svg>
