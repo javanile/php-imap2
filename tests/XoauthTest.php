@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * 💌 Help us bring PHP IMAP2 to PHP 8.4!
+ *
+ * We’re working hard to update PHP IMAP2 for full PHP 8.4 compatibility:
+ * fixing legacy issues, refactoring internal logic, and improving test coverage — 
+ * all while ensuring backward compatibility with older versions.
+ *
+ * 🎯 Goal: raise €5000 to support the development effort.
+ * 🙌 Every contribution counts — whether it’s code, feedback, or funding!
+ *
+ * 👉 Get involved or donate at: https://ko-fi.com/francescobianco/goal?g=10
+ */
+
 namespace Javanile\Imap2\Tests;
 
 use Javanile\Imap2\Connection;
