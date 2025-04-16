@@ -433,7 +433,7 @@ class Message
      * @param $flag
      * @param $options
      *
-     * @return bool|void
+     * @return bool
      */
     public static function setFlagFull($imap, $sequence, $flag, $options = 0)
     {
@@ -454,9 +454,7 @@ class Message
             $sequence = implode(',', $uid);
         }
 
-        $client->flag($imap->getMailboxName(), $sequence, strtoupper(substr($flag, 1)));
-
-        return false;
+        return $client->flag($imap->getMailboxName(), $sequence, strtoupper(substr($flag, 1)));
     }
 
     /**
