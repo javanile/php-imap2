@@ -2,3 +2,7 @@ title: "PHP IMAP2"
 remote_theme: pmarsceill/just-the-docs
 
 logo: /logo.png
+
+exclude:
+  - README.md
+ 
