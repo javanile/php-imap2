@@ -11,7 +11,7 @@
 
 namespace Javanile\Imap2;
 
-use Javanile\Imap2\Roundcube\ImapClient;
+use Webklex\PHPIMAP\ClientManager;
 
 class Connection
 {
@@ -42,9 +42,35 @@ class Connection
 
         $this->openMailbox($mailbox);
 
-        $this->client = new ImapClient();
+        $clientManager = new ClientManager();
+
+        if (defined('IMAP2_DEBUG') && IMAP2_DEBUG) {
+            echo "\n\n";
+            $clientManager->setConfig([
+                'options' => [
+                    'debug' => true
+                ]
+            ]);
+        }
+
+        $this->client = $clientManager->make([
+            'host' => $this->host,
+            'port' => $this->port,
+            'protocol'  => 'imap',
+            'encryption' => 'ssl',
+            'validate_cert' => true,
+            'username' => $user,
+            'password' => $password,
+            'authentication' => $this->flags & OP_XOAUTH2 ? 'oauth' : null,
+        ]);
     }
 
+    /**
+     *
+     * @param $mailbox
+     *
+     * @return void
+     */
     public function openMailbox($mailbox)
     {
         $this->mailbox = $mailbox;
@@ -129,21 +155,15 @@ class Connection
         $client = $this->getClient();
         #$client->setDebug(true);
 
-        $success = $client->connect($this->host, $this->user, $this->password, [
-            'port' => $this->port,
-            'ssl_mode' => $this->sslMode,
-            'auth_type' => $this->flags & OP_XOAUTH2 ? 'XOAUTH2' : 'CHECK',
-            'timeout' => -1,
-            'force_caps' => false,
-        ]);
-
-        if (empty($success)) {
+        try {
+            $client->connect();
+        } catch (\Throwable $error) {
             return false;
         }
 
         if (empty($this->currentMailbox)) {
-            $mailboxes = $this->client->listMailboxes('', '*');
-            if (in_array('INBOX', $mailboxes)) {
+            $mailboxes = $this->client->connection->folders('', '*');
+            if (isset($mailboxes['INBOX']) && $mailboxes['INBOX']) {
                 $this->currentMailbox = 'INBOX';
                 $this->mailbox .= 'INBOX';
             }
@@ -217,7 +237,7 @@ class Connection
      */
     public function selectMailbox()
     {
-        $success = $this->client->select($this->currentMailbox);
+        $success = $this->client->connection->selectFolder($this->currentMailbox);
 
         if (empty($success)) {
             $this->rewriteMailbox('<no_mailbox>');
@@ -234,11 +254,8 @@ class Connection
         }
 
         $client = $imap->getClient();
-        if ($client->close()) {
-            return true;
-        }
 
-        $client->closeConnection();
+        $client->disconnect();
 
         return true;
     }

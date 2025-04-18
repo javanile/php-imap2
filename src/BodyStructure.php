@@ -57,9 +57,33 @@ class BodyStructure
         return self::extractBodyStructure($message->bodystructure);
     }
 
+    public static function searchSection($structure, $section, $currentSection = '')
+    {
+        if ($section == $currentSection) {
+            unset($structure->parts);
+
+            return $structure;
+        }
+
+        if (empty($structure->parts)) {
+            return false;
+        }
+
+        $index = 1;
+        foreach ($structure->parts as $part) {
+            $nextSection = strval($currentSection ? $currentSection.'.'.$index : $index);
+            $sectionStructure = self::searchSection($part, $section, $nextSection);
+            if ($sectionStructure) {
+                return $sectionStructure;
+            }
+            $index++;
+        }
+
+        return false;
+    }
+
     protected static function extractBodyStructure($structure)
     {
-
         /* if NIL */
         if ( is_null($structure) )
             return null;
@@ -239,11 +263,12 @@ class BodyStructure
                 ++$index;
             }
 
-            if ( count( $body->parameters = self::extractParameters($structure[2], []) ) )
+            if (isset($structure[2]) && is_array($structure[2]) &&
+                count( $body->parameters = self::extractParameters($structure[2], []))) {
                 $body->ifparameters = 1;
-            else
+            } else {
                 $body->parameters = (object)[];
-
+            }
         }
 
         if ( is_null($body->description) ) unset($body->description);

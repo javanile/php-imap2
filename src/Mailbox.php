@@ -21,14 +21,14 @@ class Mailbox
             $imap->selectMailbox();
 
             $client = $imap->getClient();
-            $status = $client->status($imap->getMailboxName(), ['MESSAGES', 'RECENT']);
+            $status = $client->connection->examineFolder($imap->getMailboxName());
 
             return (object) [
                 'Date' => date('D, j M Y G:i:s').' +0000 (UTC)',
                 'Driver' => 'imap',
                 'Mailbox' => $imap->getMailbox(),
-                'Nmsgs' => intval($status['MESSAGES']),
-                'Recent' => intval($status['RECENT']),
+                'Nmsgs' => intval($status['exists']),
+                'Recent' => intval($status['recent']),
             ];
 
         } elseif (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
@@ -205,17 +205,20 @@ class Mailbox
         $client = $imap->getClient();
         #$client->setDebug(true);
         $return = [];
-        $delimiter = $client->getHierarchyDelimiter();
-        $mailboxes = $client->listMailboxes($referenceParts[1], $pattern);
-        foreach ($mailboxes as $mailbox) {
+        //$delimiter = $client->getHierarchyDelimiter();
+        $mailboxes = $client->connection->folders($referenceParts[1], $pattern);
+        foreach ($mailboxes as $mailboxName => $mailbox) {
+            /*
+            // TODO: Restore check of google folder
             $attributesValue = Functions::getListAttributesValue($client->data['LIST'][$mailbox]);
             if ($mailbox == '[Gmail]' && $imap->getHost() == 'imap.gmail.com') {
                 $attributesValue = 34;
             }
+            */
             $return[] = (object) [
-                'name' => $referenceParts[0].'}'.$mailbox,
-                'attributes' => $attributesValue,
-                'delimiter' => $delimiter,
+                'name' => $referenceParts[0].'}'.$mailboxName,
+                'attributes' => $mailbox['flags'],
+                'delimiter' => $mailbox['delimiter'],
             ];
         }
 
@@ -266,12 +269,11 @@ class Mailbox
             $mailbox = (string) \preg_replace('/^{.+}/', '', $mailbox);
         }
 
-        $result = $client->execute('DELETE', array($client->escape($mailbox)), ImapClient::COMMAND_RAW_LASTLINE);
-
-        $success = $result[0] == ImapClient::ERROR_OK;
+        $success = $client->connection->deleteFolder($mailbox);
+        //$result = $client->execute('DELETE', array($client->escape($mailbox)), ImapClient::COMMAND_RAW_LASTLINE);
 
         if (!$success && $imap->getRegistryValue('mailbox', $mailbox, 'deleted')) {
-            Errors::appendError($result[1]);
+            Errors::appendError("Server error: debug IMAP2 for info.");
         } elseif (!$success) {
             Errors::appendError("Can't delete mailbox {$mailbox}: no such mailbox");
         } else {

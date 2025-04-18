@@ -11,6 +11,9 @@ install:
 update:
 	@docker-compose run --rm composer update
 
+require:
+	@docker-compose run --rm composer require webklex/php-imap
+
 dump-autoload:
 	@docker-compose run --rm composer dump-autoload
 
@@ -122,11 +125,17 @@ test-get-mailboxes:
 test-delete-mailbox:
 	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testDeleteMailbox
 
-test-body-structure:
+test-fetch-structure-2:
 	@docker-compose run --rm phpunit tests --filter BodyStructureTest::testFetchStructure
+
+test-body-struct:
+	@docker-compose run --rm phpunit tests --filter BodyStructureTest::testBodyStruct
 
 test-search:
 	@docker-compose run --rm phpunit tests --filter SearchTest
+
+test-sort-search:
+	@docker-compose run --rm phpunit tests --filter SearchTest::testSortSearch
 
 test-timeout:
 	@docker-compose run --rm phpunit tests --filter XoauthTest::testTimeout
@@ -157,6 +166,9 @@ test-cleaning:
 
 test-retrofit:
 	@docker-compose run --rm phpunit tests --filter RetrofitTest
+
+test-imap-client:
+	@docker-compose run --rm phpunit tests --filter ImapClientTest
 
 test-errors:
 	@docker-compose run --rm phpunit tests --filter ErrorsTest

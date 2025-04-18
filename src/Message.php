@@ -48,25 +48,30 @@ class Message
 
     public static function sort($imap, $criteria, $reverse, $flags = 0, $searchCriteria = null, $charset = null)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-            #$client->setDebug(true);
-
-            $result = $client->search($imap->getMailboxName(), $criteria, $flags & SE_UID);
-
-            if (empty($result->count())) {
-                return false;
-            }
-
-            $messages = $result->get();
-            foreach ($messages as &$message) {
-                $message = is_numeric($message) ? intval($message) : $message;
-            }
-
-            return $messages;
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_sort($imap, $criteria, $reverse, $flags, $searchCriteria, $charset);
+        $client = $imap->getClient();
+        #$client->setDebug(true);
+
+        $returnUid = boolval($flags & SE_UID);
+        $result = $client->search($imap->getMailboxName(), $searchCriteria, $returnUid);
+
+        if (empty($result->count())) {
+            return false;
+        }
+
+        $messages = $result->get();
+        foreach ($messages as &$message) {
+            $message = is_numeric($message) ? intval($message) : $message;
+        }
+
+        #$sortFunction = Sort::getFunction($imap, $criteria);
+
+        #usort($messages, $sortFunction);
+
+        return $reverse ? array_reverse($messages) : $messages;
     }
 
     public static function headerInfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0, $defaultHost = null)
@@ -178,12 +183,19 @@ class Message
         #$client->setDebug(true);
 
         $isUid = boolval($flags & FT_UID);
-        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY['.$section.']']);
+        $isPeek = $flags & FT_PEEK ? '.PEEK' : '';
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY'.$isPeek.'['.$section.']']);
 
         if (empty($messages)) {
             trigger_error(Errors::badMessageNumber(debug_backtrace(), 1), E_USER_WARNING);
 
             return false;
+        }
+
+        #var_dump($messages);
+
+        if ($isUid) {
+            $messageNum = array_keys($messages)[0];
         }
 
         if ($section) {
@@ -262,22 +274,34 @@ class Message
         }
     }
 
-    public static function bodyStruct($imap, $messageNum, $flags = 0)
+    /**
+     * Read the structure of a specified body section of a specific message.
+     *
+     * @param $imap
+     * @param $messageNum
+     * @param $section
+     *
+     * @return mixed
+     */
+    public static function bodyStruct($imap, $messageNum, $section)
     {
         if (!is_a($imap, Connection::class)) {
             return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
         $client = $imap->getClient();
-        #$client->setDebug(true);
 
-        $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODY['.$section.']']);
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, false, ['BODYSTRUCTURE']);
 
-        if ($section) {
-            return $messages[$messageNum]->bodypart[$section];
+        if (empty($messages)) {
+            return false;
         }
 
-        return $messages[$messageNum]->body;
+        $bodyStructure = BodyStructure::fromMessage($messages[$messageNum]);
+
+        #file_put_contents('t3.json', json_encode($bodyStructure, JSON_PRETTY_PRINT));
+
+        return BodyStructure::searchSection($bodyStructure, $section);
     }
 
     public static function fetchHeader($imap, $messageNum, $flags = 0)
@@ -297,7 +321,7 @@ class Message
 
         $isUid = boolval($flags & FT_UID);
 
-        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY[HEADER]']);
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY.PEEK[HEADER]']);
 
         if (empty($messages)) {
             return false;
@@ -317,8 +341,9 @@ class Message
         $client = $imap->getClient();
         #$client->setDebug(true);
 
-        $messages = $client->fetch($imap->getMailboxName(), $sequence, false, [
-            'BODY[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE REFERENCES)]',
+        $isUid = boolval($flags & FT_UID);
+        $messages = $client->fetch($imap->getMailboxName(), $sequence, $isUid, [
+            'BODY.PEEK[HEADER.FIELDS (SUBJECT FROM TO CC REPLYTO MESSAGEID DATE SIZE REFERENCES)]',
             'UID',
             'FLAGS',
             'INTERNALDATE',
@@ -384,8 +409,10 @@ class Message
         }
 
         $client = $imap->getClient();
-
-        $messages = $client->fetch($imap->getMailboxName(), $messageNums, false, ['UID']);
+        $messages = $client->connection->fetch(['UID'], $messageNums, null, false);
+        //var_dump($messages);
+        //die();
+        //$messages = $client->fetch($imap->getMailboxName(), $messageNums, false, ['UID']);
 
         $uid = [];
         foreach ($messages as $message) {
