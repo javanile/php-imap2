@@ -35,7 +35,7 @@ class Mailbox
             return imap_check($imap);
         }
 
-        trigger_error(Errors::invalidImapConnection(debug_backtrace(), 1), E_USER_WARNING);
+        trigger_error(Errors::invalidImapConnection(debug_backtrace(), 1, false), E_USER_WARNING);
 
         return false;
     }
@@ -245,13 +245,13 @@ class Mailbox
 
     public static function renameMailbox($imap, $from, $to)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-
-            return $client->createFolder($mailbox);
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_createmailbox($imap, $mailbox);
+        $client = $imap->getClient();
+
+        return $client->renameFolder($from, $to);
     }
 
     public static function deleteMailbox($imap, $mailbox)
