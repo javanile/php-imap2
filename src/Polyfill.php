@@ -80,14 +80,6 @@ class Polyfill
         ];
     }
 
-    public static function rfc822WriteHeaders($mailbox, $hostname, $personal) {
-		$string = $mailbox . '@' . $hostname;
-
-		if ($personal) {
-			$string = $personal . ' <'  . $string . '>';
-		}
-
-        return $string;
     public static function rfc822WriteHeaders($mailbox, $hostname, $personal)
     {
         $ret = $mailbox;

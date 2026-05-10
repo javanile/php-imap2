@@ -41,8 +41,8 @@ This folder is not intended to be used directly. Instead, include the library vi
 Example:
 
 ```php
-use PhpImap2\Connection;
-use PhpImap2\Mail;
+use Javanile\Imap2\Connection;
+use Javanile\Imap2\Mail;
 
 // Connect to mailbox
 $connection = new Connection([

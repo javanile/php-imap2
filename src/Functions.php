@@ -190,11 +190,14 @@ class Functions
             && substr($backtrace[$depth + 1]['function'], 4) == substr($backtrace[$depth]['function'], 5);
     }
 
-    public static function isRetrofitConnection($imap) {
+    public static function isRetrofitConnection($imap)
+    {
         return IMAP2_RETROFIT_MODE && self::isValidImap1Connection($imap);
+    }
+
     public static function isRetrofitResource($imap)
     {
-        return  get_class($imap) == 'IMAP\Connection';
+        return is_a($imap, 'IMAP\Connection');
     }
 
     public static function keyBy(string $name, array $list): array
