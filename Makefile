@@ -28,7 +28,7 @@ coverage:
 
 release:
 	git add .
-	git commit -am "Test CI"
+	git commit -am "Test CI" && true
 	git push
 
 
