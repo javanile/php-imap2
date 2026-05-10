@@ -1,5 +1,15 @@
 <div align="center">
 
+# ⭐ Give me a star, please! ⭐
+
+<img src="https://raw.githubusercontent.com/francescobianco/gif/main/images/give-stars-h192.gif" /><img src="https://raw.githubusercontent.com/francescobianco/gif/main/images/push-button-h192.gif" />
+
+</div>
+
+---
+
+<div align="center">
+
 <a href="https://ko-fi.com/francescobianco/goal?g=10">
     <img src="https://raw.githubusercontent.com/javanile/php-imap2/refs/heads/main/docs/banner.svg" alt="Support PHP IMAP2" />
 </a>
