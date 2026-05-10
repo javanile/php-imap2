@@ -165,6 +165,10 @@ class Message
 
         $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY[TEXT]']);
 
+        if ($isUid && is_array($messages)) {
+            $messages = Functions::keyBy('uid', $messages);
+        }
+
         return $messages[$messageNum]->bodypart['TEXT'];
     }
 
@@ -184,6 +188,10 @@ class Message
             trigger_error(Errors::badMessageNumber(debug_backtrace(), 1), E_USER_WARNING);
 
             return false;
+        }
+
+        if ($isUid && is_array($messages)) {
+            $messages = Functions::keyBy('uid', $messages);
         }
 
         if ($section) {
@@ -215,6 +223,10 @@ class Message
 
         if (empty($messages)) {
             return "";
+        }
+
+        if ($isUid && is_array($messages)) {
+            $messages = Functions::keyBy('uid', $messages);
         }
 
         if ($section && isset($messages[$messageNum]->bodypart[$sectionKey])) {
