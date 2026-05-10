@@ -1298,7 +1298,11 @@ if (!function_exists('imap_get_quotaroot')) {
 if (!function_exists('imap2_get_quotaroot')) {
     function imap2_get_quotaroot($imap, $mailbox)
     {
-        return Message::expunge($imap, $mailbox);
+        if (Functions::isRetrofitConnection($imap)) {
+            return imap_get_quotaroot($imap, $mailbox);
+        }
+
+        return Mailbox::getQuotaroot($imap, $mailbox);
     }
 }
 
