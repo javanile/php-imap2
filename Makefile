@@ -35,6 +35,7 @@ release:
 ## =======
 ## Develop
 ## =======
+
 dev-init:
 	@docker run --rm -ti -p 8080:8080 -v $(PWD):/app -w /app php php contrib/dev-init.php
 
