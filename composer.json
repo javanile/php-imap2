@@ -23,7 +23,7 @@
   "require": {
     "php": ">=7.0",
     "zbateson/mail-mime-parser": "^2.2",
-    "webklex/php-imap": "v5.x-dev"
+    "webklex/php-imap": "v5.x-dev",
     "zbateson/mail-mime-parser": "^2.2 || ^3.0 || ^4.0"
   },
   "require-dev": {
