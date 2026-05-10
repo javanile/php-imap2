@@ -27,9 +27,9 @@ coverage:
 	@docker compose run --rm php ./vendor/bin/phpunit tests/ErrorsTest.php --coverage-html docs/coverage
 
 release:
-	git add .
-	git commit -am "Test CI" && true
-	git push
+	@git add .
+	@git commit -am "Test CI" || true
+	@git push
 
 
 ## =======
