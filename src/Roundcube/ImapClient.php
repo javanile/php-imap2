@@ -61,6 +61,7 @@ class ImapClient
 
     protected $fp;
     protected $host;
+	protected $user;
     protected $cmd_tag;
     protected $cmd_num = 0;
     protected $resourceid;
@@ -439,8 +440,10 @@ class ImapClient
      */
     protected function closeSocket()
     {
-        @fclose($this->fp);
-        $this->fp = null;
+		if ($this->fp !== null) {
+			@fclose($this->fp);
+			$this->fp = null;
+		}
     }
 
     /**

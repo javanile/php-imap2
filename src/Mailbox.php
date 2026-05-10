@@ -31,7 +31,7 @@ class Mailbox
                 'Recent' => intval($status['RECENT']),
             ];
 
-        } elseif (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+        } elseif (Functions::isRetrofitConnection($imap)) {
             return imap_check($imap);
         }
 

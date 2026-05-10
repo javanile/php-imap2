@@ -87,7 +87,7 @@ class HeaderInfo
 
     protected static function parseAddressList($address, $defaultHost)
     {
-        $addressList = imap_rfc822_parse_adrlist($address, $defaultHost);
+        $addressList = imap_rfc822_parse_adrlist($address  ?? '', $defaultHost ?? '');
         $customAddressList = [];
 
         foreach ($addressList as $objectEntry) {

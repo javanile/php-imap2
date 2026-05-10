@@ -23,7 +23,7 @@ class Polyfill
 
     public static function mimeHeaderDecode($string)
     {
-        return $string;
+	    return mb_decode_mimeheader($string);
     }
 
     public static function mutf7ToUtf8($string)
@@ -80,6 +80,14 @@ class Polyfill
         ];
     }
 
+    public static function rfc822WriteHeaders($mailbox, $hostname, $personal) {
+		$string = $mailbox . '@' . $hostname;
+
+		if ($personal) {
+			$string = $personal . ' <'  . $string . '>';
+		}
+
+        return $string;
     public static function rfc822WriteHeaders($mailbox, $hostname, $personal)
     {
         $ret = $mailbox;
