@@ -18,13 +18,13 @@ This was full tested, every input to imap2_* functions get back the same output 
 
 - <https://github.com/javanile/php-imap2/blob/main/tests/XoauthTest.php>
 
-This libray can be installed with composer
+This library can be installed with composer
 
 ```shell
 composer require javanile/php-imap2
 ```
 
-This library introduce a easy way to replace the old PHP-IMAP with new one:
+This library introduces an easy way to replace the old PHP-IMAP with the new one:
 
 > JUST replace all imap_(...) functions with imap2_(...)
 
