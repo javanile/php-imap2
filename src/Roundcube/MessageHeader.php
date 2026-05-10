@@ -189,6 +189,11 @@ class MessageHeader
      */
     public $flags = array();
 
+	public $body;
+	public $modseq;
+	public $envelope;
+	public $bodypart;
+
     // map header to rcube_message_header object property
     private $obj_headers = array(
         'date'      => 'date',

@@ -26,10 +26,10 @@
 
 namespace Javanile\Imap2\Roundcube;
 
-use Javanile\Imap2\Auth_SASL;
-use Javanile\Imap2\Exception;
-use Javanile\Imap2\GSSAPIContext;
-use Javanile\Imap2\KRB5CCache;
+use Auth_SASL;
+use Exception;
+use GSSAPIContext;
+use KRB5CCache;
 use Javanile\Imap2\rcube_message_header;
 use Javanile\Imap2\rcube_result_index;
 use Javanile\Imap2\rcube_result_thread;
@@ -61,6 +61,7 @@ class ImapClient
 
     protected $fp;
     protected $host;
+	protected $user;
     protected $cmd_tag;
     protected $cmd_num = 0;
     protected $resourceid;
@@ -439,8 +440,10 @@ class ImapClient
      */
     protected function closeSocket()
     {
-        @fclose($this->fp);
-        $this->fp = null;
+		if ($this->fp !== null) {
+			@fclose($this->fp);
+			$this->fp = null;
+		}
     }
 
     /**

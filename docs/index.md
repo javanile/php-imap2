@@ -4,6 +4,19 @@ title: PHP IMAP2
 nav_order: 1
 ---
 
+
+
+<div align="center">
+
+
+<a href="https://ko-fi.com/francescobianco/goal?g=10">
+<img src="https://raw.githubusercontent.com/javanile/php-imap2/refs/heads/main/docs/banner.svg" />
+</a>
+
+
+</div>
+
+
 # PHP IMAP2
 
 Welcome, please, get you a chance to PHP-IMAP2 <https://github.com/javanile/php-imap2>  

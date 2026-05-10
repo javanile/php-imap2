@@ -105,7 +105,7 @@ class Functions
 
         $sanitizedAddress = [];
         foreach ($addressList as $addressEntry) {
-            $parsedAddressEntry = imap_rfc822_write_address($addressEntry[2], $addressEntry[3], $addressEntry[0]);
+            $parsedAddressEntry = imap_rfc822_write_address($addressEntry[2], $addressEntry[3], $addressEntry[0] ?? '');
             if (substr($parsedAddressEntry, -3) == '@""') {
                 $parsedAddressEntry = substr($parsedAddressEntry, 0, strlen($parsedAddressEntry) - 3).': ';
             }
@@ -151,9 +151,8 @@ class Functions
         return $attributesValue;
     }
 
-    public static function isValidImap1Connection($imap)
-    {
-        return is_resource($imap) && get_resource_type($imap) == 'imap';
+    public static function isValidImap1Connection($imap) {
+	    return (is_resource($imap) && get_resource_type($imap) == 'imap') || is_a($imap, 'IMAP\Connection');
     }
 
     public static function isValidImap2Connection($imap)
@@ -191,8 +190,28 @@ class Functions
             && substr($backtrace[$depth + 1]['function'], 4) == substr($backtrace[$depth]['function'], 5);
     }
 
+    public static function isRetrofitConnection($imap) {
+        return IMAP2_RETROFIT_MODE && self::isValidImap1Connection($imap);
     public static function isRetrofitResource($imap)
     {
-        return is_resource($imap) && get_resource_type($imap) == 'imap';
+        return  get_class($imap) == 'IMAP\Connection';
+    }
+
+    public static function keyBy(string $name, array $list): array
+    {
+        $keyBy = [];
+        foreach ($list as $item) {
+            if (!isset($item->$name)) {
+                trigger_error('keyBy: key "' . $name . '" not found!', E_USER_WARNING);
+                continue;
+            }
+            if (isset($keyBy[$item->$name])) {
+                trigger_error('keyBy: duplicate key "' . $name . '" = "' . $item->$name . '"', E_USER_WARNING);
+                continue;
+            }
+            $keyBy[$item->$name] = $item;
+        }
+
+        return $keyBy;
     }
 }

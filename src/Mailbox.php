@@ -31,11 +31,11 @@ class Mailbox
                 'Recent' => intval($status['recent']),
             ];
 
-        } elseif (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+        } elseif (Functions::isRetrofitConnection($imap)) {
             return imap_check($imap);
         }
 
-        trigger_error(Errors::invalidImapConnection(debug_backtrace(), 1), E_USER_WARNING);
+        trigger_error(Errors::invalidImapConnection(debug_backtrace(), 1, false), E_USER_WARNING);
 
         return false;
     }
@@ -248,13 +248,13 @@ class Mailbox
 
     public static function renameMailbox($imap, $from, $to)
     {
-        if (is_a($imap, Connection::class)) {
-            $client = $imap->getClient();
-
-            return $client->createFolder($mailbox);
+        if (!is_a($imap, Connection::class)) {
+            return Errors::invalidImapConnection(debug_backtrace(), 1, false);
         }
 
-        return imap_createmailbox($imap, $mailbox);
+        $client = $imap->getClient();
+
+        return $client->renameFolder($from, $to);
     }
 
     public static function deleteMailbox($imap, $mailbox)

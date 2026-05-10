@@ -170,6 +170,10 @@ class Message
 
         $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY[TEXT]']);
 
+        if ($isUid && is_array($messages)) {
+            $messages = Functions::keyBy('uid', $messages);
+        }
+
         return $messages[$messageNum]->bodypart['TEXT'];
     }
 
@@ -185,6 +189,7 @@ class Message
         $isUid = boolval($flags & FT_UID);
         $isPeek = $flags & FT_PEEK ? '.PEEK' : '';
         $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY'.$isPeek.'['.$section.']']);
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY.PEEK['.$section.']']);
 
         if (empty($messages)) {
             trigger_error(Errors::badMessageNumber(debug_backtrace(), 1), E_USER_WARNING);
@@ -196,6 +201,8 @@ class Message
 
         if ($isUid) {
             $messageNum = array_keys($messages)[0];
+        if ($isUid && is_array($messages)) {
+            $messages = Functions::keyBy('uid', $messages);
         }
 
         if ($section) {
@@ -227,6 +234,10 @@ class Message
 
         if (empty($messages)) {
             return "";
+        }
+
+        if ($isUid && is_array($messages)) {
+            $messages = Functions::keyBy('uid', $messages);
         }
 
         if ($section && isset($messages[$messageNum]->bodypart[$sectionKey])) {
@@ -460,7 +471,7 @@ class Message
      * @param $flag
      * @param $options
      *
-     * @return bool|void
+     * @return bool
      */
     public static function setFlagFull($imap, $sequence, $flag, $options = 0)
     {
@@ -481,9 +492,7 @@ class Message
             $sequence = implode(',', $uid);
         }
 
-        $client->flag($imap->getMailboxName(), $sequence, strtoupper(substr($flag, 1)));
-
-        return false;
+        return $client->flag($imap->getMailboxName(), $sequence, strtoupper(substr($flag, 1)));
     }
 
     /**

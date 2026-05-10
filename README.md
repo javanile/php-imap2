@@ -1,5 +1,17 @@
 <div align="center">
 
+
+<a href="https://ko-fi.com/francescobianco/goal?g=10">
+<img src="https://raw.githubusercontent.com/javanile/php-imap2/refs/heads/main/docs/banner.svg" />
+</a>
+
+
+</div>
+
+---
+
+<div align="center">
+
 ![PHP IMAP2](docs/logo.png)
 
 # PHP IMAP2
@@ -38,7 +50,7 @@ Scope: https://mail.google.com/
 
 ## Sandbox
 
-- Gmail Demo - <https://phpsandbox.io/e/x/zwauf?layout=EditorPreview&defaultPath=%2F&theme=dark&showExplorer=no&openedFiles=>
+- [Gmail Demo](https://replit.com/@frabik/PHP-IMAP2-Google-Demo?v=1#main.php)
 - Outlook Demo - **COMING SOON**
 
 
@@ -46,6 +58,7 @@ Scope: https://mail.google.com/
 
 - [dicode-nl](https://github.com/dicode-nl)
 - [glensc](https://github.com/glensc)
+- [bago](https://github.com/bago)
 
 ## Other links 
 
