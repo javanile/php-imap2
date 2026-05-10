@@ -353,4 +353,15 @@ class Mailbox
 
         return imap_deletemailbox($imap, $mailbox);
     }
+
+    public static function getQuotaroot($imap, $mailbox)
+    {
+        if (is_a($imap, Connection::class)) {
+            $client = $imap->getClient();
+            $mailboxName = Functions::getMailboxName($mailbox);
+            return $client->getQuotaRoot($mailboxName);
+        }
+
+        return imap_get_quotaroot($imap, $mailbox);
+    }
 }

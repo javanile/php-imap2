@@ -797,4 +797,109 @@ class CompatibilityTest extends ImapTestCase
         imap_close($imap1);
         imap2_close($imap2);
     }
+    public function testExpunge()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $this->assertEquals(imap_expunge($imap1), imap2_expunge($imap2));
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
+    public function testClearflagFullAndSetflagFull()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        // set flag
+        $res1 = imap_setflag_full($imap1, "1", "\\Seen \\Flagged");
+        $res2 = imap2_setflag_full($imap2, "1", "\\Seen \\Flagged");
+        $this->assertEquals($res1, $res2);
+
+        // clear flag
+        $res1 = imap_clearflag_full($imap1, "1", "\\Flagged");
+        $res2 = imap2_clearflag_full($imap2, "1", "\\Flagged");
+        $this->assertEquals($res1, $res2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
+    public function testGetQuotaroot()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $res1 = imap_get_quotaroot($imap1, "INBOX");
+        $res2 = imap2_get_quotaroot($imap2, "INBOX");
+        
+        $this->assertEquals($res1, $res2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
+    public function testSavebody()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $file1 = tmpfile();
+        $file2 = tmpfile();
+
+        $res1 = imap_savebody($imap1, $file1, 1);
+        $res2 = imap2_savebody($imap2, $file2, 1);
+
+        $this->assertEquals($res1, $res2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
+    public function testSort()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $res1 = imap_sort($imap1, SORTDATE, 0);
+        $res2 = imap2_sort($imap2, SORTDATE, 0);
+
+        $this->assertEquals($res1, $res2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
+    public function testThread()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $res1 = imap_thread($imap1);
+        $res2 = imap2_thread($imap2);
+
+        $this->assertEquals($res1, $res2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
+
+    public function testUndelete()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        imap_delete($imap1, "1");
+        imap2_delete($imap2, "1");
+
+        $res1 = imap_undelete($imap1, "1");
+        $res2 = imap2_undelete($imap2, "1");
+
+        $this->assertEquals($res1, $res2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
 }
