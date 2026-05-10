@@ -1,30 +1,30 @@
 
 bash:
-	@docker-compose run --rm php bash
+	@docker compose run --rm php bash
 
 build:
-	@docker-compose build
+	@docker compose build
 
 install:
-	@docker-compose run --rm composer install
+	@docker compose run --rm composer install
 
 update:
-	@docker-compose run --rm composer update
+	@docker compose run --rm composer update
 
 require:
-	@docker-compose run --rm composer require webklex/php-imap
+	@docker compose run --rm composer require webklex/php-imap
 
 dump-autoload:
-	@docker-compose run --rm composer dump-autoload
+	@docker compose run --rm composer dump-autoload
 
 imap2-coverage:
-	@docker-compose run --rm imap2 ./vendor/bin/phpunit tests --coverage-html docs/coverage
+	@docker compose run --rm imap2 ./vendor/bin/phpunit tests --coverage-html docs/coverage
 
 imap2-test:
-	@docker-compose run --rm imap2 ./vendor/bin/phpunit tests --stop-on-failure
+	@docker compose run --rm imap2 ./vendor/bin/phpunit tests --stop-on-failure
 
 coverage:
-	@docker-compose run --rm php ./vendor/bin/phpunit tests/ErrorsTest.php --coverage-html docs/coverage
+	@docker compose run --rm php ./vendor/bin/phpunit tests/ErrorsTest.php --coverage-html docs/coverage
 
 release:
 	git add .
@@ -51,146 +51,146 @@ refresh-access-token:
 ## Tests
 ## =====
 test:
-	@docker-compose run --rm phpunit tests --stop-on-failure --verbose
+	@docker compose run --rm phpunit tests --stop-on-failure --verbose
 
 test-open:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testOpenAndClose
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testOpenAndClose
 
 test-alerts:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testAlerts
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testAlerts
 
 test-last-error:
-	@docker-compose run --rm phpunit tests --filter ErrorsTest::testLastError
+	@docker compose run --rm phpunit tests --filter ErrorsTest::testLastError
 
 test-check:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testCheck
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testCheck
 
 test-status:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testStatus
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testStatus
 
 test-mailbox-msg-info:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testMailboxMsgInfo
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testMailboxMsgInfo
 
 test-append:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testAppend
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testAppend
 
 test-list:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testList
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testList
 
 test-delete:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testDelete
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testDelete
 
 test-fetch-body:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchBody
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testFetchBody
 
 test-fetch-overview:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchOverview
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testFetchOverview
 
 test-uid:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testUid
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testUid
 
 test-create-mailbox:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testCreateMailbox
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testCreateMailbox
 
 test-copy:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testCopy
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testCopy
 
 test-move:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testMove
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testMove
 
 test-fetch-header:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchHeader
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testFetchHeader
 
 test-fetch-structure:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchStructure
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testFetchStructure
 
 test-header-info:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testHeaderInfo
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testHeaderInfo
 
 test-headers:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testHeaders
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testHeaders
 
 test-num-msg:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testNumMsg
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testNumMsg
 
 test-reopen:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testReopen
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testReopen
 
 test-fetch-mime:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testFetchMime
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testFetchMime
 
 test-ping:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testPing
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testPing
 
 test-get-mailboxes:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testGetMailboxes
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testGetMailboxes
 
 test-delete-mailbox:
-	@docker-compose run --rm phpunit tests --filter CompatibilityTest::testDeleteMailbox
+	@docker compose run --rm phpunit tests --filter CompatibilityTest::testDeleteMailbox
 
 test-fetch-structure-2:
-	@docker-compose run --rm phpunit tests --filter BodyStructureTest::testFetchStructure
+	@docker compose run --rm phpunit tests --filter BodyStructureTest::testFetchStructure
 
 test-body-struct:
-	@docker-compose run --rm phpunit tests --filter BodyStructureTest::testBodyStruct
+	@docker compose run --rm phpunit tests --filter BodyStructureTest::testBodyStruct
 
 test-search:
-	@docker-compose run --rm phpunit tests --filter SearchTest
+	@docker compose run --rm phpunit tests --filter SearchTest
 
 test-sort-search:
-	@docker-compose run --rm phpunit tests --filter SearchTest::testSortSearch
+	@docker compose run --rm phpunit tests --filter SearchTest::testSortSearch
 
 test-timeout:
-	@docker-compose run --rm phpunit tests --filter XoauthTest::testTimeout
+	@docker compose run --rm phpunit tests --filter XoauthTest::testTimeout
 
 test-xoauth:
-	@docker-compose run --rm phpunit tests --filter XoauthTest
+	@docker compose run --rm phpunit tests --filter XoauthTest
 
 test-signatures:
-	@docker-compose run --rm phpunit tests --filter SignaturesTest
+	@docker compose run --rm phpunit tests --filter SignaturesTest
 
 test-polyfill:
-	@docker-compose run --rm phpunit tests --filter PolyfillTest
+	@docker compose run --rm phpunit tests --filter PolyfillTest
 
 test-parse-headers:
-	@docker-compose run --rm phpunit tests --filter PolyfillTest::testRfc822ParseHeaders
+	@docker compose run --rm phpunit tests --filter PolyfillTest::testRfc822ParseHeaders
 
 test-parse-adrlist:
-	@docker-compose run --rm phpunit tests --filter PolyfillTest::testRfc822ParseAdrList
+	@docker compose run --rm phpunit tests --filter PolyfillTest::testRfc822ParseAdrList
 
 test-special:
-	@docker-compose run --rm phpunit tests --filter HeaderInfoTest::testSanitizeAddress
+	@docker compose run --rm phpunit tests --filter HeaderInfoTest::testSanitizeAddress
 
 test-minimal:
-	@docker-compose run --rm phpunit tests --filter MinimalTest
+	@docker compose run --rm phpunit tests --filter MinimalTest
 
 test-cleaning:
-	@docker-compose run --rm phpunit tests --filter CleaningTest
+	@docker compose run --rm phpunit tests --filter CleaningTest
 
 test-retrofit:
-	@docker-compose run --rm phpunit tests --filter RetrofitTest
+	@docker compose run --rm phpunit tests --filter RetrofitTest
 
 test-imap-client:
-	@docker-compose run --rm phpunit tests --filter ImapClientTest
+	@docker compose run --rm phpunit tests --filter ImapClientTest
 
 test-errors:
-	@docker-compose run --rm phpunit tests --filter ErrorsTest
+	@docker compose run --rm phpunit tests --filter ErrorsTest
 
 ## ======
 ## Legacy
 ## ======
 legacy-last-error:
-	@docker-compose run --rm php -f tests/legacy/last-error.php
+	@docker compose run --rm php -f tests/legacy/last-error.php
 
 ## ====
 ## Diff
 ## ====
 diff-last-error:
-	@docker-compose run --rm php bash -c "php -f tests/legacy/last-error.php > tests/legacy/last-error.1.txt 2>&1"
-	@docker-compose run --rm imap2 bash -c "php -f tests/legacy/last-error.php > tests/legacy/last-error.2.txt 2>&1"
-	@docker-compose run --rm imap2 bash -c "chmod 777 -R tests/legacy"
+	@docker compose run --rm php bash -c "php -f tests/legacy/last-error.php > tests/legacy/last-error.1.txt 2>&1"
+	@docker compose run --rm imap2 bash -c "php -f tests/legacy/last-error.php > tests/legacy/last-error.2.txt 2>&1"
+	@docker compose run --rm imap2 bash -c "chmod 777 -R tests/legacy"
 
 diff-fetch-body-error:
-	@docker-compose run --rm php bash -c "php -f tests/legacy/fetch-body-error.php > tests/legacy/fetch-body-error.1.txt 2>&1"
-	@docker-compose run --rm imap2 bash -c "php -f tests/legacy/fetch-body-error.php > tests/legacy/fetch-body-error.2.txt 2>&1"
-	@docker-compose run --rm imap2 bash -c "chmod 777 -R tests/legacy"
+	@docker compose run --rm php bash -c "php -f tests/legacy/fetch-body-error.php > tests/legacy/fetch-body-error.1.txt 2>&1"
+	@docker compose run --rm imap2 bash -c "php -f tests/legacy/fetch-body-error.php > tests/legacy/fetch-body-error.2.txt 2>&1"
+	@docker compose run --rm imap2 bash -c "chmod 777 -R tests/legacy"
