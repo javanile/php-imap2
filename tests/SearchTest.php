@@ -56,4 +56,66 @@ class SearchTest extends ImapTestCase
         imap_close($imap1);
         imap2_close($imap2);
     }
+
+    public function testSortSearch()
+    {
+        $imap1 = imap_open($this->mailbox, $this->username, $this->password);
+        $imap2 = imap2_open($this->mailbox, $this->username, $this->accessToken, OP_XOAUTH2);
+
+        $criteriaList = [
+            'ALL',
+            #'ANSWERED',
+            #'BCC "string"',
+            #'BEFORE "date"',
+            #'BODY "string"',
+            #'CC "string"',
+            #'DELETED',
+            #'FLAGGED',
+            #'FROM "string"',
+            #'KEYWORD "string"',
+            #'NEW',
+            #'OLD',
+            #'ON "date"',
+            #'RECENT',
+            #'SEEN',
+            #'SINCE "date"',
+            #'SUBJECT "string"',
+            #'TEXT "string"',
+            #'TO "string"',
+            #'UNANSWERED',
+            #'UNDELETED',
+            #'UNFLAGGED',
+            #'UNKEYWORD "string"',
+            #'UNSEEN',
+        ];
+
+        $sortCriteria = [
+            SORTDATE,
+            SORTARRIVAL,
+            SORTFROM,
+            SORTSUBJECT,
+            SORTTO,
+            SORTCC,
+            SORTSIZE,
+        ];
+
+        foreach ($sortCriteria as $criteria) {
+            foreach ($criteriaList as $searchCriteria) {
+                $search1 = imap_sort($imap1, $criteria, false, 0, $searchCriteria);
+                file_put_contents('s1.json', json_encode($search1, JSON_PRETTY_PRINT));
+                $search2 = imap2_sort($imap2, $criteria, false, 0, $searchCriteria);
+                file_put_contents('s2.json', json_encode($search2, JSON_PRETTY_PRINT));
+                die();
+                $this->assertEquals($search1, $search2);
+            }
+        }
+
+        $search1 = imap_sort($imap1, SORTDATE, true, SE_UID);
+        $search2 = imap2_sort($imap2, SORTDATE, true, SE_UID);
+
+        $this->assertEquals($search1, $search2);
+
+        imap_close($imap1);
+        imap2_close($imap2);
+    }
 }

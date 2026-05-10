@@ -22,6 +22,8 @@
   ],
   "require": {
     "php": ">=7.0",
+    "zbateson/mail-mime-parser": "^2.2",
+    "webklex/php-imap": "v5.x-dev"
     "zbateson/mail-mime-parser": "^2.2 || ^3.0 || ^4.0"
   },
   "require-dev": {
@@ -49,8 +51,13 @@
   "minimum-stability": "dev",
   "extra": {
     "thanks": {
-      "name": "Roundcube",
-      "url": "https://github.com/roundcube"
+      "name": "PHP",
+      "url": "https://github.com/php/php-src"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "kylekatarnls/update-helper": false
     }
   }
 }
