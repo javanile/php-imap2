@@ -68,7 +68,7 @@ class ImapClient
     protected $prefs             = array();
     protected $logged            = false;
     protected $capability        = array();
-    protected $capability_readed = false;
+    protected $capability_read   = false;
     protected $debug             = false;
     protected $debug_handler     = false;
     protected $rawLastLine;
@@ -234,7 +234,7 @@ class ImapClient
     }
 
     /**
-     * Reads a line of data from the connection stream inluding all
+     * Reads a line of data from the connection stream including all
      * string continuation literals.
      *
      * @param int $size Buffer size
@@ -245,7 +245,7 @@ class ImapClient
     {
         $line = $this->readLine($size);
 
-        // include all string literels untile the real end of "line"
+        // include all string literals until the real end of "line"
         while (preg_match('/\{([0-9]+)\}\r\n$/', $line, $m)) {
             $bytes = $m[1];
             $out   = '';
@@ -274,7 +274,7 @@ class ImapClient
      *
      * @return string Line of text response
      */
-    protected function multLine($line, $escape = false)
+    protected function multiline($line, $escape = false)
     {
         $line = rtrim($line);
         if (preg_match('/\{([0-9]+)\}$/', $line, $m)) {
@@ -533,7 +533,7 @@ class ImapClient
         if (!empty($result)) {
             return $result;
         }
-        else if ($this->capability_readed) {
+        else if ($this->capability_read) {
             return false;
         }
 
@@ -544,7 +544,7 @@ class ImapClient
             $this->parseCapability($result[1]);
         }
 
-        $this->capability_readed = true;
+        $this->capability_read = true;
 
         return $this->hasCapability($name);
     }
@@ -555,7 +555,7 @@ class ImapClient
     public function clearCapability()
     {
         $this->capability        = array();
-        $this->capability_readed = false;
+        $this->capability_read = false;
     }
 
     /**
@@ -565,7 +565,7 @@ class ImapClient
      * @param string $pass Password
      * @param string $type Authentication type (PLAIN/CRAM-MD5/DIGEST-MD5)
      *
-     * @return resource Connection resourse on success, error code on error
+     * @return resource Connection resource on success, error code on error
      */
     protected function authenticate($user, $pass, $type = 'PLAIN')
     {
@@ -815,7 +815,7 @@ class ImapClient
      * @param string $user Username
      * @param string $pass Password
      *
-     * @return resource Connection resourse on success, error code on error
+     * @return resource Connection resource on success, error code on error
      */
     protected function login($user, $password)
     {
@@ -982,9 +982,7 @@ class ImapClient
         }
 
         // pre-login capabilities can be not complete
-        $this->capability_readed = false;
-
-
+        $this->capability_read = false;
 
         // Authenticate
         switch ($auth_method) {
@@ -2140,7 +2138,7 @@ class ImapClient
 
         do {
             $line = rtrim($this->readLine(200));
-            $line = $this->multLine($line);
+            $line = $this->multiline($line);
 
             if (preg_match('/^\* ([0-9]+) FETCH/', $line, $m)) {
                 $id     = $m[1];
@@ -2762,7 +2760,7 @@ class ImapClient
      * @param string $mailbox Mailbox name
      * @param int    $uid     Message UID
      * @param array  $parts   Message part identifiers
-     * @param bool   $mime    Use MIME instad of HEADER
+     * @param bool   $mime    Use MIME instead of HEADER
      *
      * @return array|bool Array containing headers string for each specified body
      *                    False on failure.
@@ -2799,7 +2797,7 @@ class ImapClient
                 $line = ltrim(substr($line, strlen($m[0])));
                 while (preg_match('/^BODY\[([0-9\.]+)\.'.$type.'\]/', $line, $matches)) {
                     $line = substr($line, strlen($matches[0]));
-                    $result[$matches[1]] = trim($this->multLine($line));
+                    $result[$matches[1]] = trim($this->multiline($line));
                     $line = $this->readLine(1024);
                 }
             }
@@ -4080,7 +4078,7 @@ class ImapClient
         }
 
         if ($trusted) {
-            $this->capability_readed = true;
+            $this->capability_read = true;
         }
     }
 

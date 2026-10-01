@@ -29,7 +29,7 @@ nav_order: 2
 - imap_fetchstructure — Read the structure of a particular message
 - imap_fetchtext — Alias of imap_body
 - imap_gc — Clears IMAP cache
-- imap_get_quota — Retrieve the quota level settings, and usage statics per mailbox
+- imap_get_quota — Retrieve the quota level settings, and usage statistics per mailbox
 - imap_get_quotaroot — Retrieve the quota settings per user
 - imap_getacl — Gets the ACL for a given mailbox
 - imap_getmailboxes — Read the list of mailboxes, returning detailed information on each one
