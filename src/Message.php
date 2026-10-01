@@ -189,7 +189,6 @@ class Message
         $isUid = boolval($flags & FT_UID);
         $isPeek = $flags & FT_PEEK ? '.PEEK' : '';
         $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY'.$isPeek.'['.$section.']']);
-        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY.PEEK['.$section.']']);
 
         if (empty($messages)) {
             trigger_error(Errors::badMessageNumber(debug_backtrace(), 1), E_USER_WARNING);
@@ -197,12 +196,9 @@ class Message
             return false;
         }
 
-        #var_dump($messages);
-
-        if ($isUid) {
-            $messageNum = array_keys($messages)[0];
         if ($isUid && is_array($messages)) {
             $messages = Functions::keyBy('uid', $messages);
+            $messageNum = array_keys($messages)[0];
         }
 
         if ($section) {

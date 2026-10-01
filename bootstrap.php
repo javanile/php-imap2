@@ -856,6 +856,8 @@ if (!function_exists('imap2_headerinfo')) {
     {
         if (Functions::isRetrofitConnection($imap)) {
             return imap_headerinfo($imap, $messageNum, $fromLength, $subjectLength);
+        }
+
         if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
             // PHP version === 8.0.*
             if (PHP_VERSION_ID >= 80000) return imap_headerinfo($imap, $messageNum, $fromLength, $subjectLength);
